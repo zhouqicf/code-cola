@@ -1,0 +1,162 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>Code Cola Options</title>
+<style>
+html,body,h1,pre,h2{
+  padding:0;
+  margin:0;
+}
+p{
+  margin:2px 0 4px;
+  line-height:1.231;
+}
+body{
+  font:12px/1 Arial, Helvetica, sans-serif;
+}
+h2{
+  font:bold 14px/1 Georgia, "Times New Roman", Times, serif;
+  margin-bottom:10px;
+}
+code{
+  font-family:"Courier New", "Andale Mono", monospace;
+}
+a,
+a:visited{
+  color:#000;
+}
+a:hover{
+  color:#f60;
+}
+pre{
+  word-wrap:break-word;
+}
+header h1{
+  font-family:Georgia, "Times New Roman", Times, serif;
+  font-size:150px;
+  color:#ddd;
+  font-weight:normal;
+  font-style:italic;
+  text-align:center;
+}
+input,label{
+  font:28px/1 Georgia, "Times New Roman", Times, serif;
+  padding:2px 8px 0 6px;
+  vertical-align:middle;
+}
+input[type="url"]{
+  font-family:Arial, Helvetica, sans-serif;
+  border-color:#ccc #aaa #aaa #ccc;
+  border-style:solid;
+  border-width:1px;
+  width:550px;
+  font-size:14px;
+  padding:9px 5px;
+  -webkit-box-shadow:1px 1px 0 #ddd;
+}
+.version{
+  font-size:50px;
+}
+section,
+footer{
+  border-top:4px double #eee;
+  width:800px;
+  margin:0 auto;
+  padding:20px 0 0;
+}
+footer{
+  padding-top:10px;
+  overflow:hidden;
+}
+#codeCola-doc::before{
+  content:url("cc-on.png");
+  width:22px;
+  height:22px;
+  margin-right:5px;
+  vertical-align:middle;
+}
+#codeCola-author{
+  font-size: 10px;
+  -webkit-text-size-adjust: none;
+}
+.success{
+  color:green;
+}
+.fail{
+  color:red;
+}
+#option{
+  padding:10px 10px 0;
+  margin:10px 0;
+  background-color:#f0f0f0;
+  border:1px solid #ddd;
+}
+.note{
+  color:#f90;
+}
+.string{
+  color:#c00;
+}
+.keyword{
+  color:#00f;
+}
+.item{
+  padding-bottom:25px;
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Code Cola<sup class="version">V2.2.0</sup></h1>
+</header>
+<section id="main">
+	<aside>
+  	<p>This is a config for the <strong><q>Get Link</q> function</strong>, when user click the <q>Get Link</q> button, codecola will send the whole modified page to <strong>server action page</strong>, then the action will save the page to a folder of server which you set in the server action page.</p>
+  	<p><strong>It's very dangerous, anyone can send any content to your server, make sure only someone you trust have access to visit the action page</strong>.</p>
+  </aside>
+	<div id="option">
+  	<div class="item">
+        <h2>1. Upload "codecola.php" to Server</h2>
+        <p>Here is the <strong><a href="codecola.zip">codecola.php</a></strong>, download and unzip it, then upload it to a folder of <strong>PHP server</strong>.</p>
+    </div>
+    <div class="item">
+        <h2>2. Config</h2>
+        <pre><code><span class="note">//Users can visit modified pages through this address. And pages will save in this folder, so make sure the directory has access to write.</span>
+$path = <span class="string">"http://kxt.koubei.com/codecola/"</span>;
+<span class="note">//Set filename. Filename use timestamp by default.</span>
+$fileName = <span class="keyword">time</span>();</code></pre>
+    </div>
+    <div class="item">
+        <h2>3. Set Action Url</h2>
+        <form id="form">
+          <input type="url" id="action" required autofocus placeholder="For example: http://kxt.koubei.com/codecola/action.php" pattern="^(http|https):\/\/\w+\.(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$">
+          <input type="submit" value="save">
+          <span id="info"></span>
+        </form>
+    </div>
+  </div>
+</section>
+<footer>
+    <p id="codeCola-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="http://code.google.com/p/code-cola/" target="_blank">Source</a></p>
+    <p id="codeCola-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>
+</footer>
+<script>var info = document.getElementById("info");
+document.getElementById("form").addEventListener("submit",
+function(e) {
+  e.preventDefault();
+  var action = document.getElementById("action").value;
+  if (/^(http|https):\/\/\w+(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/.test(action)) {
+    localStorage["codecola_getLink_action"] = action;
+    localStorage["codecola_stylesheet"] = action.replace(/\/\w+\.\w+$/, "/codecola.css");
+    info.innerHTML = "Options Saved.";
+    info.className = "success";
+  } else {
+    info.innerHTML = "invalid url.";
+    info.className = "fail";
+  }
+},
+false);</script>
+</body>
+</html>
