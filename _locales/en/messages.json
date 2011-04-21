@@ -131,6 +131,9 @@
   "style_lg": {
   	"message": "Linear Gradient"
   },
+  "style_op": {
+  	"message": "Opacity"
+  },
   "style_bs": {
   	"message": "Box Shadow"
   },

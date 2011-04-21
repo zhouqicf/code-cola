@@ -131,6 +131,9 @@
   "style_lg": {
   	"message": "线性渐变"
   },
+  "style_op": {
+  	"message": "透明度"
+  },
   "style_bs": {
   	"message": "盒阴影"
   },

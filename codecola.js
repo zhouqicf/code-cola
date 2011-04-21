@@ -208,7 +208,7 @@
             if (rgb === "transparent" || rgb === "rgba(0, 0, 0, 0)") {
                 return "transparent";
             }
-            var a = rgb.replace(/rgb\(|\)/g, "").split(","),
+            var a = [rgb.r, rgb.g, rgb.b],
                 hex = "";
             for (var i = 0; i < 3; i++) {
                 var b = parseInt(a[i]).toString(16);
@@ -221,17 +221,30 @@
                 return "transparent";
             }
             var rgb = [
-            parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16)]
-            return "rgb(" + rgb[0] + "," + rgb[1] + "," + rgb[2] + ")";
+            parseInt(hex.substring(1, 3), 16), parseInt(hex.substring(3, 5), 16), parseInt(hex.substring(5, 7), 16)];
+            return {
+                "r": rgb[0],
+                "g": rgb[1],
+                "b": rgb[2],
+                "a": 1
+            }
         },
-        "rgbToHsb": function(rgb) {
-            if (rgb === "transparent" || rgb === "rgba(0, 0, 0, 0)") {
+        "rgbToHsb": function(rgba) {
+            if (rgba === "transparent" || rgba === "rgba(0, 0, 0, 0)") {
                 return "transparent";
             }
-            var a = rgb.replace(/rgb\(|\)/g, "").split(",");
-            var nH, nS, nV, nR = a[0] / 255,
-                nG = a[1] / 255,
-                nB = a[2] / 255,
+            if (typeof rgba == "string") {
+                rgba = rgba.replace(/rgba{0,1}\(|\)/g, "").split(",");
+                rgba = {
+                    "r": rgba[0],
+                    "g": rgba[1],
+                    "b": rgba[2],
+                    "a": rgba[3] ? rgba[3] : 1
+                }
+            }
+            var nH, nS, nV, nR = rgba.r / 255,
+                nG = rgba.g / 255,
+                nB = rgba.b / 255,
                 nmax = Math.max(nR, nG, nB),
                 nmin = Math.min(nR, nG, nB),
                 ndelMax = nmax - nmin,
@@ -264,20 +277,21 @@
                 "h": Math.round(nH * 360),
                 "s": Math.round(nS * 100),
                 "b": Math.round(nV * 100),
+                "a": rgba.a ? rgba.a : 1
             }
         },
-        "hsbToRgb": function(hsb) {
-            if (hsb === "transparent" || hsb === "rgba(0, 0, 0, 0)") {
+        "hsbToRgb": function(hsba) {
+            if (hsba === "transparent" || hsba === "rgba(0, 0, 0, 0)") {
                 return "transparent";
             }
             var nH, nS, nV, nR, nG, nB, hi, f, p, q, t;
 
-            nH = hsb.h / 360;
-            nS = hsb.s / 100;
-            nV = hsb.b / 100;
+            nH = hsba.h / 360;
+            nS = hsba.s / 100;
+            nV = hsba.b / 100;
 
-            if (hsb.s === 0) {
-                nR = nG = nB = nV * 255;
+            if (hsba.s === 0) {
+                nR = nG = nB = nV;
             } else {
                 hi = nH * 6
                 if (hi === 6) {
@@ -320,7 +334,12 @@
                     break;
                 }
             }
-            return "rgb(" + Math.round(nR * 255) + "," + Math.round(nG * 255) + "," + Math.round(nB * 255) + ")";
+            return {
+                "r": Math.round(nR * 255),
+                "g": Math.round(nG * 255),
+                "b": Math.round(nB * 255),
+                "a": hsba.a
+            }
         },
         "hexToComplate": function(hex) {
             if (hex.length === 4) {
@@ -514,13 +533,17 @@
     function ColorControl(wrap, param) {
         var that = this;
         that.config = {
-            "hex": param.color ? param.color : "transparent",
+            "hsba": param.color ? that.changeColor(param.color, "hsba") : "transparent",
             "name": param.name ? param.name : "color-picker",
             "afterChange": param.afterChange ? param.afterChange : function() {}
-        }
-
+        };
+        that.supportRGBA = (function() {
+            var a = document.createElement("i");
+            a.style.color = "rgba(0,0,0,0.1)";
+            return /^rgba/.test(a.style.color);
+        })();
         var idRandom = Math.ceil(Math.random() * 100000000000),
-            html = '<input type="text" id="form-color-input-' + idRandom + '" class="form-color-input" name="' + that.config.name + '"/>' + '<ol class="form-color-picker" id="form-color-picker-' + idRandom + '">' + '    <li class="form-color-hsb form-color-hsbH">' + '		    <div class="form-color-current"><label for="form-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="text" id="form-color-hsbH-current-' + idRandom + '" min="0" max="360"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="360" id="form-color-hsbH-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbS">' + '		    <div class="form-color-current"><label for="form-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="text" id="form-color-hsbS-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbS-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbB">' + '		    <div class="form-color-current"><label for="form-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="text" id="form-color-hsbB-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbB-' + idRandom + '"/></div>' + '	  </li>' + '</ol>';
+            html = '<input type="text" id="form-color-input-' + idRandom + '" class="form-color-input" name="' + that.config.name + '">' + '<ol class="form-color-picker" id="form-color-picker-' + idRandom + '">' + '    <li class="form-color-hsb form-color-hsbH">' + '		    <div class="form-color-current"><label for="form-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="text" id="form-color-hsbH-current-' + idRandom + '" min="0" max="360"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="360" id="form-color-hsbH-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbS">' + '		    <div class="form-color-current"><label for="form-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="text" id="form-color-hsbS-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbS-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbB">' + '		    <div class="form-color-current"><label for="form-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="text" id="form-color-hsbB-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbB-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbA">' + '		    <div class="form-color-current"><label for="form-color-hsbA-curren-' + idRandom + '">Aphla:</label><input type="text" id="form-color-hsbA-current-' + idRandom + '" min="0" max="1"/></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="1" id="form-color-hsbA-' + idRandom + '" step="0.01"/></div>' + '	  </li>' + '</ol>';
 
         var editorWrap = document.createElement("div");
         editorWrap.id = "form-color-editorWrap-" + idRandom;
@@ -534,17 +557,17 @@
             "hCurren": Z.get("form-color-hsbH-current-" + idRandom),
             "sCurren": Z.get("form-color-hsbS-current-" + idRandom),
             "bCurren": Z.get("form-color-hsbB-current-" + idRandom),
+            "aCurren": Z.get("form-color-hsbA-current-" + idRandom),
             "hRange": Z.get("form-color-hsbH-" + idRandom),
             "sRange": Z.get("form-color-hsbS-" + idRandom),
-            "bRange": Z.get("form-color-hsbB-" + idRandom)
+            "bRange": Z.get("form-color-hsbB-" + idRandom),
+            "aRange": Z.get("form-color-hsbA-" + idRandom)
         }
 
-        //controls events
-        var currentRanges = [that.vars.hCurren, that.vars.sCurren, that.vars.bCurren],
-            colorRanges = [that.vars.hRange, that.vars.sRange, that.vars.bRange];
+        var currentRanges = [that.vars.hCurren, that.vars.sCurren, that.vars.bCurren, that.vars.aCurren],
+            colorRanges = [that.vars.hRange, that.vars.sRange, that.vars.bRange, that.vars.aRange];
 
-        //current hex
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < 4; i++) {
             (function(index) {
                 Z.on(currentRanges[index], "change", function() {
                     var maxNum = parseInt(this.getAttribute("max"), 10),
@@ -554,133 +577,172 @@
                     } else if (value < 0) {
                         this.value = 0;
                     }
-                    var hsb = {
+                    var hsba = {
                         "h": currentRanges[0].value,
                         "s": currentRanges[1].value,
-                        "b": currentRanges[2].value
+                        "b": currentRanges[2].value,
+                        "a": currentRanges[3].value
                     },
-                        initRangeHSB = ["initRangeH", "initRangeS", "initRangeB"];
+                        initRangeHSB = ["initRangeH", "initRangeS", "initRangeB", "initRangeA"];
                     that.setColor({
-                        "color": hsb,
-                        "oType": "hsb",
+                        "color": hsba,
+                        "oType": "hsba",
                         "initControls": [initRangeHSB[index], "initInput"]
                     });
                 });
                 Z.on(colorRanges[index], "change", function() {
-                    var hsb = {
+                    var hsba = {
                         "h": colorRanges[0].value,
                         "s": colorRanges[1].value,
-                        "b": colorRanges[2].value
+                        "b": colorRanges[2].value,
+                        "a": colorRanges[3].value
                     },
-                        initCurrentHSB = ["initCurrentH", "initCurrentS", "initCurrentB"];
+                        initCurrentHSB = ["initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA"];
                     that.setColor({
-                        "color": hsb,
-                        "oType": "hsb",
+                        "color": hsba,
+                        "oType": "hsba",
                         "initControls": [initCurrentHSB[index], "initInput"]
                     });
                 });
             })(i);
         }
         Z.on(that.vars.hsbInput, "change", function() {
-            var hex = this.value;
+            var value = Z.trim(this.value);
             that.setColor({
-                "color": hex,
-                "oType": "hex"
+                "color": that.changeColor(value, "hsba"),
+                "oType": "hsba"
             });
         });
         Z.on(that.vars.hsbInput, "focus", function() {
-            Z.setStyle(Z.getElementsByClassName("form-color-picker"), "display", "none");
+            Z.each(Z.getElementsByClassName("form-color-picker"), function(node) {
+                Z.setStyle(node, "display", "none");
+            });
             Z.setStyle(that.vars.picker, "display", "block");
         });
         that.setColor({
-            "color": that.config.hex
+            "color": that.config.hsba,
+            "oType": "hsba"
         });
     }
-    ColorControl.prototype.initInput = function(hex) {
+
+    ColorControl.prototype.initInput = function(color) {
         var input = this.vars.hsbInput;
-        input.value = input.style.backgroundColor = hex;
+        input.value = input.style.backgroundColor = color;
     }
-    ColorControl.prototype.initRangeH = function(hsb) {
-        this.vars.hRange.value = hsb.h;
+    ColorControl.prototype.initRangeH = function(hsba) {
+        this.vars.hRange.value = hsba.h;
     }
-    ColorControl.prototype.initRangeS = function(hsb) {
-        this.vars.sRange.value = hsb.s;
+    ColorControl.prototype.initRangeS = function(hsba) {
+        this.vars.sRange.value = hsba.s;
     }
-    ColorControl.prototype.initRangeB = function(hsb) {
-        this.vars.bRange.value = hsb.b;
+    ColorControl.prototype.initRangeB = function(hsba) {
+        this.vars.bRange.value = hsba.b;
     }
-    ColorControl.prototype.initCurrentH = function(hsb) {
-        this.vars.hCurren.value = hsb.h;
+    ColorControl.prototype.initRangeA = function(hsba) {
+        this.vars.aRange.value = hsba.a;
     }
-    ColorControl.prototype.initCurrentS = function(hsb) {
-        this.vars.sCurren.value = hsb.s;
+    ColorControl.prototype.initCurrentH = function(hsba) {
+        this.vars.hCurren.value = hsba.h;
     }
-    ColorControl.prototype.initCurrentB = function(hsb) {
-        this.vars.bCurren.value = hsb.b;
+    ColorControl.prototype.initCurrentS = function(hsba) {
+        this.vars.sCurren.value = hsba.s;
+    }
+    ColorControl.prototype.initCurrentB = function(hsba) {
+        this.vars.bCurren.value = hsba.b;
+    }
+    ColorControl.prototype.initCurrentA = function(hsba) {
+        this.vars.aCurren.value = hsba.a;
     }
     ColorControl.prototype.setColor = function(parms) {
         var that = this,
+            hsba = typeof parms.color == "string" ? parms.color.replace(/\s/g, "") : parms.color,
             oType = parms.oType ? parms.oType : "",
-            callback = typeof parms.callback != "undefined" ? parms.callback : true;
-        initControls = parms.initControls ? parms.initControls : ["initRangeH", "initRangeS", "initRangeB", "initCurrentH", "initCurrentS", "initCurrentB", "initInput"];
-        var hex = that.changeColor(parms.color, "hex", oType);
-        if (hex == "error") {
-            //Z.log("error hex color");
+            callback = parms.callback != undefined ? parms.callback : true,
+            initControls = parms.initControls ? parms.initControls : ["initRangeH", "initRangeS", "initRangeB", "initRangeA", "initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA", "initInput"];
+        if (oType != "hsba") {
+            hsba = that.changeColor(hsba, "hsba");
+        }
+        rgba = that.changeColor(hsba, "rgba", "hsba");
+
+        if (rgba == "error") {
+            Z.log("error rgba color");
             return;
         }
-        var hsb = that.changeColor(parms.color, "hsb", oType);
+
+        if (typeof rgba == "string") {
+            rgba = rgba.replace(/rgba\(|\)/g, "").split(",");
+            rgba = {
+                "r": rgba[0],
+                "g": rgba[1],
+                "b": rgba[2],
+                "a": rgba[3]
+            }
+        }
+        that.config.rgba = rgba;
+
         for (var i = 0, j = initControls.length; i < j; i++) {
             var cInit = initControls[i];
             if (cInit == "initInput") {
-                that[cInit](hex);
+                that[cInit]("rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")");
             } else {
-                that[cInit](hsb);
+                that[cInit](hsba);
             }
         }
-        that.config.hex = hex;
-        that.config.hsb = hsb;
+
+        that.config.hsba = hsba;
         if (callback) {
-            that.onColorChange(hex);
+            that.onColorChange(rgba);
         }
     }
     ColorControl.prototype.onColorChange = function() {
         this.config.afterChange(this.getColor());
     }
     ColorControl.prototype.getColor = function() {
-        return this.config.hex;
+        var rgba = this.config.rgba;
+        if (this.supportRGBA) {
+            rgba = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
+        } else {
+            rgba = "rgb(" + rgba.r + "," + rgba.g + "," + rgba.b + ")";
+        }
+        return rgba;
     }
     ColorControl.prototype.changeColor = function(color, nType, oType) {
         var that = this;
-        var oType = oType ? oType : that.getColorType(color);
-        switch (oType) {
-        case "hsb":
-            if (!that.ensureHSB(color)) {
-                //Z.log(color + " is not a valid hsb color!");
-                return "error";
+        if (/^transparent$/i.test(color)) {
+            color = "rgba(0,0,0,0)";
+        } else if (color in Z.color.keywords) {
+            color = Z.color.keywords[color];
+            color = {
+                "r": color[0],
+                "g": color[1],
+                "b": color[2]
             }
+        }
+        oType = oType ? oType : that.getColorType(color);
+        switch (oType) {
+        case "hsba":
             if (nType == "hex") {
                 return Z.color.rgbToHex(Z.color.hsbToRgb(color));
-            } else if (nType == "rgb") {
+            } else if (nType == "rgba") {
                 return Z.color.hsbToRgb(color);
             }
             break;
         case "hex":
-            if (!that.ensureHEX(color)) {
-                //Z.log(color + " is not a valid hex color!");
-                return "error";
-            }
-            if (nType == "hsb") {
+            if (nType == "hsba") {
                 return Z.color.rgbToHsb(Z.color.hexToRgb(Z.color.hexToComplate(color)));
-            } else if (nType == "rgb") {
+            } else if (nType == "rgba") {
                 return Z.color.hexToRgb(Z.color.hexToComplate(color));
             }
             break;
         case "rgb":
-            if (!that.ensureRGB(color)) {
-                //Z.log(color + " is not a valid rgb color!");
-                return "error";
+            if (nType == "hsba") {
+                return Z.color.rgbToHsb(color);
+            } else if (nType == "hex") {
+                return Z.color.rgbToHex(color);
             }
-            if (nType == "hsb") {
+            break;
+        case "rgba":
+            if (nType == "hsba") {
                 return Z.color.rgbToHsb(color);
             } else if (nType == "hex") {
                 return Z.color.rgbToHex(color);
@@ -695,17 +757,19 @@
     ColorControl.prototype.getColorType = function(color) {
         var that = this;
         if (that.ensureHSB(color)) {
-            return "hsb";
+            return "hsba";
         } else if (that.ensureHEX(color)) {
             return "hex";
         } else if (that.ensureRGB(color)) {
             return "rgb";
+        } else if (that.ensureRGBA(color)) {
+            return "rgba";
         }
         return "error";
     }
-    ColorControl.prototype.ensureHSB = function(hsb) {
+    ColorControl.prototype.ensureHSB = function(hsba) {
         var reg = /^\d$|^[1-9]\d$|^100$/;
-        if (typeof hsb == "object" && /^\d$|^[1-9]\d$|^[1-2]\d{2}$|^3[0-5][0-9]$|^360$/.test(hsb.h) && reg.test(hsb.s) && reg.test(hsb.b)) {
+        if (typeof hsb == "object" && /^\d$|^[1-9]\d$|^[1-2]\d{2}$|^3[0-5][0-9]$|^360$/.test(hsba.h) && reg.test(hsba.s) && reg.test(hsba.b)) {
             return true;
         }
         return false;
@@ -717,11 +781,21 @@
         return false;
     }
     ColorControl.prototype.ensureRGB = function(rgb) {
-        var a = rgb.replace(/rgb\(|\)/g, "").split(","),
-            reg = /^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/;
-        if (typeof rgb == "string" && reg.test(parseInt(a[0], 10)) && reg.test(parseInt(a[1], 10)) && reg.test(parseInt(a[2], 10))) {
+        var reg = /^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/;
+        if (typeof rgb == "object" && reg.test(rgb.r) && reg.test(rgb.g) && reg.test(rgb.b)) {
             return true;
-        } else if (/^transparent$|^rgba(0, 0, 0, 0)$/.test(rgb)) {
+        } else if (typeof rgb == "string" && /^rgb\(((\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\,){2}(\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\)$/.test(rgb)) {
+            return true;
+        }
+        return false;
+    }
+    ColorControl.prototype.ensureRGBA = function(rgba) {
+        var reg = /^\d$|^[1-9]\d$|^1\d{2}$|^2[0-4]\d$|^25[0-5]$/;
+        if (typeof rgba == "object" && reg.test(rgba.r) && reg.test(rgba.g) && reg.test(rgba.b) && /^0|1|0\.\d+$/.test(rgba.a)) {
+            return true;
+        } else if (/^rgba(0, 0, 0, 0)$/.test(rgba)) {
+            return true;
+        } else if (typeof rgba == "string" && /^rgba\(((\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\,){3}(0|1|0\.\d+)\)/.test(rgba)) {
             return true;
         }
         return false;
@@ -736,6 +810,155 @@
         controls.hsbInput.disabled = false;
         Z.setStyle(this.vars.picker, "display", "block");
     }
+    Z.color.keywords = {
+        "aliceblue": [240, 248, 255],
+        "antiquewhite": [250, 235, 215],
+        "aqua": [0, 255, 255],
+        "aquamarine": [127, 255, 212],
+        "azure": [240, 255, 255],
+        "beige": [245, 245, 220],
+        "bisque": [255, 228, 196],
+        "black": [0, 0, 0],
+        "blanchedalmond": [255, 235, 205],
+        "blue": [0, 0, 255],
+        "blueviolet": [138, 43, 226],
+        "brown": [165, 42, 42],
+        "burlywood": [222, 184, 135],
+        "cadetblue": [95, 158, 160],
+        "chartreuse": [127, 255, 0],
+        "chocolate": [210, 105, 30],
+        "coral": [255, 127, 80],
+        "cornflowerblue": [100, 149, 237],
+        "cornsilk": [255, 248, 220],
+        "crimson": [220, 20, 60],
+        "cyan": [0, 255, 255],
+        "darkblue": [0, 0, 139],
+        "darkcyan": [0, 139, 139],
+        "darkgoldenrod": [184, 134, 11],
+        "darkgray": [169, 169, 169],
+        "darkgreen": [0, 100, 0],
+        "darkgrey": [169, 169, 169],
+        "darkkhaki": [189, 183, 107],
+        "darkmagenta": [139, 0, 139],
+        "darkolivegreen": [85, 107, 47],
+        "darkorange": [255, 140, 0],
+        "darkorchid": [153, 50, 204],
+        "darkred": [139, 0, 0],
+        "darksalmon": [233, 150, 122],
+        "darkseagreen": [143, 188, 143],
+        "darkslateblue": [72, 61, 139],
+        "darkslategray": [47, 79, 79],
+        "darkslategrey": [47, 79, 79],
+        "darkturquoise": [0, 206, 209],
+        "darkviolet": [148, 0, 211],
+        "deeppink": [255, 20, 147],
+        "deepskyblue": [0, 191, 255],
+        "dimgray": [105, 105, 105],
+        "dimgrey": [105, 105, 105],
+        "dodgerblue": [30, 144, 255],
+        "firebrick": [178, 34, 34],
+        "floralwhite": [255, 250, 240],
+        "forestgreen": [34, 139, 34],
+        "fuchsia": [255, 0, 255],
+        "gainsboro": [220, 220, 220],
+        "ghostwhite": [248, 248, 255],
+        "gold": [255, 215, 0],
+        "goldenrod": [218, 165, 32],
+        "gray": [128, 128, 128],
+        "green": [0, 128, 0],
+        "greenyellow": [173, 255, 47],
+        "grey": [128, 128, 128],
+        "honeydew": [240, 255, 240],
+        "hotpink": [255, 105, 180],
+        "indianred": [205, 92, 92],
+        "indigo": [75, 0, 130],
+        "ivory": [255, 255, 240],
+        "khaki": [240, 230, 140],
+        "lavender": [230, 230, 250],
+        "lavenderblush": [255, 240, 245],
+        "lawngreen": [124, 252, 0],
+        "lemonchiffon": [255, 250, 205],
+        "lightblue": [173, 216, 230],
+        "lightcoral": [240, 128, 128],
+        "lightcyan": [224, 255, 255],
+        "lightgoldenrodyellow": [250, 250, 210],
+        "lightgray": [211, 211, 211],
+        "lightgreen": [144, 238, 144],
+        "lightgrey": [211, 211, 211],
+        "lightpink": [255, 182, 193],
+        "lightsalmon": [255, 160, 122],
+        "lightseagreen": [32, 178, 170],
+        "lightskyblue": [135, 206, 250],
+        "lightslategray": [119, 136, 153],
+        "lightslategrey": [119, 136, 153],
+        "lightsteelblue": [176, 196, 222],
+        "lightyellow": [255, 255, 224],
+        "lime": [0, 255, 0],
+        "limegreen": [50, 205, 50],
+        "linen": [250, 240, 230],
+        "magenta": [255, 0, 255],
+        "maroon": [128, 0, 0],
+        "mediumaquamarine": [102, 205, 170],
+        "mediumblue": [0, 0, 205],
+        "mediumorchid": [186, 85, 211],
+        "mediumpurple": [147, 112, 219],
+        "mediumseagreen": [60, 179, 113],
+        "mediumslateblue": [123, 104, 238],
+        "mediumspringgreen": [0, 250, 154],
+        "mediumturquoise": [72, 209, 204],
+        "mediumvioletred": [199, 21, 133],
+        "midnightblue": [25, 25, 112],
+        "mintcream": [245, 255, 250],
+        "mistyrose": [255, 228, 225],
+        "moccasin": [255, 228, 181],
+        "navajowhite": [255, 222, 173],
+        "navy": [0, 0, 128],
+        "oldlace": [253, 245, 230],
+        "olive": [128, 128, 0],
+        "olivedrab": [107, 142, 35],
+        "orange": [255, 165, 0],
+        "orangered": [255, 69, 0],
+        "orchid": [218, 112, 214],
+        "palegoldenrod": [238, 232, 170],
+        "palegreen": [152, 251, 152],
+        "paleturquoise": [175, 238, 238],
+        "palevioletred": [219, 112, 147],
+        "papayawhip": [255, 239, 213],
+        "peachpuff": [255, 218, 185],
+        "peru": [205, 133, 63],
+        "pink": [255, 192, 203],
+        "plum": [221, 160, 221],
+        "powderblue": [176, 224, 230],
+        "purple": [128, 0, 128],
+        "red": [255, 0, 0],
+        "rosybrown": [188, 143, 143],
+        "royalblue": [65, 105, 225],
+        "saddlebrown": [139, 69, 19],
+        "salmon": [250, 128, 114],
+        "sandybrown": [244, 164, 96],
+        "seagreen": [46, 139, 87],
+        "seashell": [255, 245, 238],
+        "sienna": [160, 82, 45],
+        "silver": [192, 192, 192],
+        "skyblue": [135, 206, 235],
+        "slateblue": [106, 90, 205],
+        "slategray": [112, 128, 144],
+        "slategrey": [112, 128, 144],
+        "snow": [255, 250, 250],
+        "springgreen": [0, 255, 127],
+        "steelblue": [70, 130, 180],
+        "tan": [210, 180, 140],
+        "teal": [0, 128, 128],
+        "thistle": [216, 191, 216],
+        "tomato": [255, 99, 71],
+        "turquoise": [64, 224, 208],
+        "violet": [238, 130, 238],
+        "wheat": [245, 222, 179],
+        "white": [255, 255, 255],
+        "whitesmoke": [245, 245, 245],
+        "yellow": [255, 255, 0],
+        "yellowgreen": [154, 205, 50]
+    };
     /**
      *@name:form gradient
      *@author:zhouqicf@gmail.com
@@ -768,6 +991,7 @@
         var randomNum = Math.ceil(Math.random() * 100000000000),
             ids = {
                 panel: "form-gradient-panel-" + randomNum,
+                panelWrap: "form-gradient-panel-wrap" + randomNum,
                 stops: "form-gradient-stops-" + randomNum,
                 color: "form-gradient-color-" + randomNum,
                 location: "form-gradient-location-" + randomNum,
@@ -776,7 +1000,7 @@
                 stopDetail: "form-gradient-stop-detail" + randomNum
             };
 
-        var html = '<div class="form-gradient-panel" id="' + ids.panel + '"></div>' + '<div class="form-gradient-stops" id="' + ids.stops + '"></div>' + '<div class="form-gradient-orientation-wrap">' + '	<label class="form-gradient-label" for="' + ids.orientation + '">Orientation:</label>' + '	<select class="form-gradient-orientation" id="' + ids.orientation + '">' + '		<option value="horizontal">horizontal</option>' + '		<option value="vertical">vertical</option>' + '	</select>' + '</div>' + '<div class="form-gradient-stop-detail" id="' + ids.stopDetail + '">' + '	<div class="form-gradient-color-wrap">' + '		<label class="form-gradient-label">Color:</label>' + '		<div class="form-gradient-color" id="' + ids.color + '"></div>' + '	</div>' + '	<div class="form-gradient-location-wrap">' + '		<label for="' + ids.location + '" class="form-gradient-label">Location:</label>' + '		<input type="text" class="form-gradient-location" id="' + ids.location + '"> %' + '	</div>' + '	<div class="form-gradient-stop-delete">' + '		<button class="form-gradient-stop-delete-button" id="' + ids.button + '">delete</button>' + '	</div>' + '</div>';
+        var html = '<div class="form-gradient-panel-wrap" id="' + ids.panelWrap + '"><div class="form-gradient-panel" id="' + ids.panel + '"></div></div>' + '<div class="form-gradient-stops" id="' + ids.stops + '"></div>' + '<div class="form-gradient-orientation-wrap">' + '	<label class="form-gradient-label" for="' + ids.orientation + '">Orientation:</label>' + '	<select class="form-gradient-orientation" id="' + ids.orientation + '">' + '		<option value="horizontal">horizontal</option>' + '		<option value="vertical">vertical</option>' + '	</select>' + '</div>' + '<div class="form-gradient-stop-detail" id="' + ids.stopDetail + '">' + '	<div class="form-gradient-color-wrap">' + '		<label class="form-gradient-label">Color:</label>' + '		<div class="form-gradient-color" id="' + ids.color + '"></div>' + '	</div>' + '	<div class="form-gradient-location-wrap">' + '		<label for="' + ids.location + '" class="form-gradient-label">Location:</label>' + '		<input type="text" class="form-gradient-location" id="' + ids.location + '"> %' + '	</div>' + '	<div class="form-gradient-stop-delete">' + '		<button class="form-gradient-stop-delete-button" id="' + ids.button + '">delete</button>' + '	</div>' + '</div>';
 
         //create nodes
         var gradientWrap = document.createElement("div");
@@ -786,6 +1010,7 @@
 
         that.vars = {
             panel: Z.get(ids.panel),
+            panelWrap: Z.get(ids.panelWrap),
             stops: Z.get(ids.stops),
             color: Z.get(ids.color),
             location: Z.get(ids.location),
@@ -799,6 +1024,7 @@
         };
         that.vars.panelWidth = that.config.panelWidth ? that.config.panelWidth : that.vars.panel.clientWidth;
         Z.setStyle(that.vars.panel, "width", that.vars.panelWidth + "px");
+        Z.setStyle(that.vars.panelWrap, "width", that.vars.panelWidth + "px");
 
         that.rule = {
             type: "",
@@ -855,6 +1081,7 @@
         });
         Z.on(that.vars.button, "click", function(e) {
             var cStop = that.vars.currentStop;
+            //that.vars.stops.getElementsByTagName("i").length <= 2
             if (!cStop) {
                 return;
             }
@@ -1199,10 +1426,12 @@
                 //url(http://xxx)
                 s0 = Z.trim(s[0]),
                 s1 = Z.trim(s[1]);
-
+            /*
             cssRules[s0] = s1.replace(/rgb\([^\)]+\)/g, function(color) {
                 return Z.color.rgbToHex(color);
             });
+            */
+            cssRules[s0] = s1;
         }
         //combine border
         var borderTop = ["border-top-width", "border-top-style", "border-top-color"],
@@ -1276,8 +1505,8 @@
         }
         return Z.getAttr(nodes, property);
     }
-    
-    function getAbsolutePath(url){
+
+    function getAbsolutePath(url) {
         var a = document.createElement('a');
         a.href = url;
         return a.href;
@@ -1292,7 +1521,7 @@
         SCRIPT_codeCola = '<script>' + '	var getElementsByClassName = function(className,tagName){' + '			if(typeof document.getElementsByClassName == "function"){' + '					return document.getElementsByClassName(className);' + '			}else{' + '					var allNodes = document.getElementsByTagName(tagName?tagName:"*"),' + '							nodes = [];' + '					for(var i=0,j=allNodes.length;i<j;i++){' + '							var c = allNodes[i];' + '							if(c.className.indexOf(className) != -1){' + '									nodes.push(c);' + '							}' + '					}' + '					return nodes;' + '			}' + '	};' + '	var codeColaNotes = getElementsByClassName("codeCola-note","span");' + '	for(var i=0,j=codeColaNotes.length;i<j;i++){' + '			codeColaNotes[i].onmouseover = function(){' + '					var targets = getElementsByClassName(this.id);' + '					for(var k=0,l=targets.length;k<l;k++){' + '						targets[k].className+=" codeCola-selecting";' + '					}' + '			};' + '			codeColaNotes[i].onmouseout = function(){' + '					var targets = getElementsByClassName(this.id);' + '					for(var k=0,l=targets.length;k<l;k++){' + '						targets[k].className = targets[k].className.replace(" codeCola-selecting","");' + '					}' + '			}' + '	}' + '</script>';
 
     //create nodes
-    var HTML_editItems = '<div id="codeCola" class="codeCola-wrap">' + '  <div id="codeCola-option"><div id="codeCola-drag"></div><div id="codeCola-fold" title="' + getMSG("opt_fold") + '"><ccs></ccs><ccb></ccb></div><cci id="codeCola-show-about" title="' + getMSG("opt_about") + '">!</cci></div>' + '  <div id="codeCola-current-info"><cccode id="codeCola-current-node">none</cccode> x <cccode id="codeCola-current-node-count">0</cccode><vabbr id="codeCola-show-currentNode" title="' + getMSG("opt_cNode") + '">?</vabbr><cci id="codeCola-open-all" title="' + getMSG("opt_unfoldAll") + '"><ccb></ccb><ccu></ccu></cci><cci id="codeCola-getNote" title="' + getMSG("opt_showNote") + '" class="codeCola-opt-button"></cci><cci id="codeCola-getStyles" title="' + getMSG("opt_showStyle") + '" class="codeCola-opt-button">{}</cci><cci id="codeCola-getHTML" title="' + getMSG("opt_html") + '" class="codeCola-opt-button">&lt;&gt;</cci><cci id="codeCola-getLink" title="' + getMSG("opt_link") + '" class="codeCola-opt-button"></cci><cci id="codeCola-switch" title="' + getMSG("opt_turnOff") + '" class="codeCola-opt-button cc-open"></cci></div>' + '  <textarea id="codeCola-styles"></textarea>' + '  <textarea id="codeCola-note"></textarea>' + '  <ul id="codeCola-controls" class="cc-close">' + '  </ul>' + '</div>' + '<div id="codeCola-selectors" class="codeCola-wrap"></div>' + '<div id="codeCola-notes-wrap"></div>' + '<div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span><cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <textarea id="codeCola-getHTML-content"></textarea>' + '</div>' + '<div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span><cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <input id="codeCola-getLink-content">' + '</div>' + '<div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-about-title" class="codeCola-pop-title">About</span><cci id="codeCola-about-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <div id="codeCola-about-content">' + '    <div id="codeCola-about-global" style="background-image:url(' + chrome.extension.getURL('128.png') + ')">' + '      <cctitle id="codeCola-about-name">Code Cola</cctitle>' + '      <p id="codeCola-about-version">v2.2.0</p>' + '    </div>' + '    <div id="codeCola-about-detail">' + '      <p id="codeCola-about-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="http://code.google.com/p/code-cola/" target="_blank">Source</a></p>' + '      <p id="codeCola-about-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>' + '    </div>' + '  </div>' + '</div>';
+    var HTML_editItems = '<div id="codeCola" class="codeCola-wrap">' + '  <div id="codeCola-option"><div id="codeCola-drag"></div><div id="codeCola-fold" title="' + getMSG("opt_fold") + '"><ccs></ccs><ccb></ccb></div><cci id="codeCola-show-about" title="' + getMSG("opt_about") + '">!</cci></div>' + '  <div id="codeCola-current-info"><cccode id="codeCola-current-node">none</cccode> x <cccode id="codeCola-current-node-count">0</cccode><vabbr id="codeCola-show-currentNode" title="' + getMSG("opt_cNode") + '">?</vabbr><cci id="codeCola-open-all" title="' + getMSG("opt_unfoldAll") + '"><ccb></ccb><ccu></ccu></cci><cci id="codeCola-getNote" title="' + getMSG("opt_showNote") + '" class="codeCola-opt-button"></cci><cci id="codeCola-getStyles" title="' + getMSG("opt_showStyle") + '" class="codeCola-opt-button">{}</cci><cci id="codeCola-getHTML" title="' + getMSG("opt_html") + '" class="codeCola-opt-button">&lt;&gt;</cci><cci id="codeCola-getLink" title="' + getMSG("opt_link") + '" class="codeCola-opt-button"></cci><cci id="codeCola-switch" title="' + getMSG("opt_turnOff") + '" class="codeCola-opt-button cc-open"></cci></div>' + '  <textarea id="codeCola-styles"></textarea>' + '  <textarea id="codeCola-note"></textarea>' + '  <ul id="codeCola-controls" class="cc-close">' + '  </ul>' + '</div>' + '<div id="codeCola-selectors" class="codeCola-wrap"></div>' + '<div id="codeCola-notes-wrap"></div>' + '<div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span><cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <textarea id="codeCola-getHTML-content"></textarea>' + '</div>' + '<div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span><cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <input id="codeCola-getLink-content">' + '</div>' + '<div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-about-title" class="codeCola-pop-title">About</span><cci id="codeCola-about-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <div id="codeCola-about-content">' + '    <div id="codeCola-about-global" style="background-image:url(' + chrome.extension.getURL('128.png') + ')">' + '      <cctitle id="codeCola-about-name">Code Cola</cctitle>' + '      <p id="codeCola-about-version">v2.3.0</p>' + '    </div>' + '    <div id="codeCola-about-detail">' + '      <p id="codeCola-about-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>' + '      <p id="codeCola-about-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>' + '    </div>' + '  </div>' + '</div>';
     var editWrap = document.createElement("div");
     editWrap.innerHTML = HTML_editItems;
     document.getElementsByTagName("html")[0].appendChild(editWrap);
@@ -1324,7 +1553,7 @@
     //html
     var HTMLS = {
         "fontSize": '<cctitle><label for="codeCola-fontSize">' + getMSG("style_fz") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="fontSize"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="fontSize"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="10" max="100" id="codeCola-fontSize"/><input type="text" class="codeCola-currentStyle" name="fontSize" min="10"/> (px)</div>',
-        "lineHeight": '<cctitle><label for="codeCola-lineHeight">' + getMSG("style_lh") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="lineHeight"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="lineHeight"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="10" max="100" id="codeCola-lineHeight"/><input type="text" class="codeCola-currentStyle" name="lineHeight" min="10"/></div>',
+        "lineHeight": '<cctitle><label for="codeCola-lineHeight">' + getMSG("style_lh") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="lineHeight"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="lineHeight"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="1" max="10" id="codeCola-lineHeight" step="0.1"/><input type="text" class="codeCola-currentStyle" name="lineHeight" min="10"/></div>',
         "fontFamily": '<cctitle><label for="codeCola-fontFamily">' + getMSG("style_ff") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="fontFamily"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="fontFamily"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '  <select id="codeCola-fontFamily">' + '	   <optgroup label="Chinese">' + '	   <option selected="seleted" value="\u5B8B\u4F53,Serif">' + getMSG("style_ff_simsun") + '</option>' + '      <option value="\u5FAE\u8F6F\u96C5\u9ED1,\u9ED1\u4F53,Sans-Serif">' + getMSG("style_ff_MSYH") + '</option>' + '      <option value="\u9ED1\u4F53,Sans-Serif">' + getMSG("style_ff_simhei") + '</option>' + '      <option value="\u5E7C\u5706,Sans-Serif">' + getMSG("style_ff_youyuan") + '</option>' + '    </optgroup>' + '    <optgroup label="English">' + '      <option value="Helvetica,tahoma,Arial,Sans-Serif">Helvetica</option>' + '      <option value="Arial,Helvetica,tahoma,Sans-Serif">Arial</option>' + '      <option value="tahoma,Helvetica,Arial,Sans-Serif">tahoma</option>' + '      <option value="\'Lucida Grande\', Helvetica,Arial,Sans-Serif">Lucida Grande</option>' + '      <option value="Georgia,Serif">Georgia</option>' + '    </optgroup>' + '  </select>' + '</div>',
         "fontOther": '<cctitle><label>' + getMSG("style_fs") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></cci></cctitle>' + '<div class="codeCola-editorWrap"><label><input type="checkbox" value="bold" name="fontWeight" id="codeCola-fontWeight"> ' + getMSG("style_fs_bold") + '</label> <label><input type="checkbox" value="italic" name="fontStyle" id="codeCola-fontStyle"> ' + getMSG("style_fs_italic") + '</label> <label><input type="checkbox" value="underline" name="textDecoration" id="codeCola-textDecoration"> ' + getMSG("style_fs_underline") + '</div>',
         "textAlign": '<cctitle><label>' + getMSG("style_ta") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="textAlign"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="textAlign"></cci></cctitle>' + '<div class="codeCola-editorWrap"><label><input type="radio" value="left" name="textAlign" id="codeCola-textAlignLeft"> ' + getMSG("style_ta_left") + '</label> <label><input type="radio" value="center" name="textAlign" id="codeCola-textAlignCenter"> ' + getMSG("style_ta_center") + '</label> <label><input type="radio" value="right" name="textAlign" id="codeCola-textAlignRight"> ' + getMSG("style_ta_right") + '</div>',
@@ -1332,6 +1561,7 @@
         "textShadow": '<cctitle><label>' + getMSG("style_ts") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="textShadow"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="textShadow"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '		<ccfieldset id="codeCola-textShadowWrap">' + '			<ol>' + '				<li><label>Degree:</label><div id="codeCola-textShadowDegree"></div></li>' + '				<li><label for="codeCola-textShadowDistance">Distance:</label><input type="range" min="0" max="100" id="codeCola-textShadowDistance" name="textShadowDistance"/><input type="text" class="codeCola-currentStyle" name="textShadowDistance"/> (px)</li>' + '				<li><label for="codeCola-textShadowSize">Size:</label><input type="range" min="0" max="100" id="codeCola-textShadowSize" name="textShadowSize"/><input type="text" class="codeCola-currentStyle" name="textShadowSize" min="0"/> (px)</li>' + '				<li><label for="codeCola-textShadowColor">Color:</label><div id="codeCola-textShadowColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
         "backgroundColor": '<cctitle><label for="codeCola-backgroundColor">' + getMSG("style_bc") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="backgroundColor"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="backgroundColor"></cci></cctitle>' + '<div class="codeCola-editorWrap" id="codeCola-backgroundColor"></div>',
         "backgroundImage": '<cctitle><label>' + getMSG("style_lg") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="backgroundImage"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="backgroundImage"></cci></cctitle>' + '<div class="codeCola-editorWrap" id="codeCola-backgroundImage"></div>',
+        "opacity": '<cctitle><label for="codeCola-opacity">' + getMSG("style_op") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="opacity"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="opacity"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="0" max="1" id="codeCola-opacity" step="0.01"/><input type="text" class="codeCola-currentStyle" name="fontSize" min="0" max="1"/></div>',
         "boxShadow": '<cctitle><label>' + getMSG("style_bs") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="boxShadow"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="boxShadow"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '		<ccfieldset id="codeCola-boxShadowWrap">' + '			<ol>' + '				<li><label>Inset:</label><label><input type="radio" value="inset" name="boxShadowInset" id="codeCola-boxShadowInset"> ' + getMSG("style_bs_inset") + '</label> <label><input type="radio" value="outset" name="boxShadowInset" id="codeCola-boxShadowOutset"> ' + getMSG("style_bs_outset") + '</label></li>' + '				<li><label>Degree:</label><div id="codeCola-boxShadowDegree"></div></li>' + '				<li><label for="codeCola-boxShadowDistance">Distance:</label><input type="range" min="0" max="100" id="codeCola-boxShadowDistance" name="boxShadowDistance"/><input type="text" class="codeCola-currentStyle" name="boxShadowDistance"/> (px)</li>' + '				<li><label for="codeCola-boxShadowSize">Size:</label><input type="range" min="0" max="100" id="codeCola-boxShadowSize" name="boxShadowSize"/><input type="text" class="codeCola-currentStyle" name="boxShadowSize" min="0"/> (px)</li>' + '				<li><label for="codeCola-boxShadowSpread">Spread:</label><input type="range" min="-100" max="100" id="codeCola-boxShadowSpread" name="boxShadowSpread"/><input type="text" class="codeCola-currentStyle" name="boxShadowSpread" min="0"/> (px)</li>' + '				<li><label for="codeCola-boxShadowColor">Color:</label><div id="codeCola-boxShadowColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
         "border": '<cctitle><label>' + getMSG("style_b") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="borderTop,borderRight,borderBottom,borderLeft,borderRadius" mutil="border"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="border,borderRadius" mutil="border"></cci></cctitle>' + '<div class="codeCola-editorWrap codeCola-editor-multi">' + '		<ccfieldset id="codeCola-borderWidthWrap">' + '			<cclegend>' + getMSG("style_b_width") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderWidth" id="codeCola-sameBorderWidth"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderTopWidth">Top:</label><input type="range" min="0" max="100" id="codeCola-borderTopWidth" name="borderTopWidth"/><input type="text" class="codeCola-currentStyle" name="borderTopWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRightWidth">Right:</label><input type="range" min="0" max="100" id="codeCola-borderRightWidth" name="borderRightWidth"/><input type="text" class="codeCola-currentStyle" name="borderRightWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderBottomWidth">Bottom:</label><input type="range" min="0" max="100" id="codeCola-borderBottomWidth" name="borderBottomWidth"/><input type="text" class="codeCola-currentStyle" name="borderBottomWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderLeftWidth">Left:</label><input type="range" min="0" max="100" id="codeCola-borderLeftWidth" name="borderLeftWidth"/><input type="text" class="codeCola-currentStyle" name="borderLeftWidth" min="0"/> (px)</li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderStyleWrap">' + '			<cclegend>' + getMSG("style_b_style") + '</cclegend>' + '			<label><input type="checkbox" class="set-same selects" name="borderStyle" id="codeCola-sameBorderStyle"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li>' + '					<label for="codeCola-borderTopStyle">Top:</label>' + '  				<select id="codeCola-borderTopStyle" name="borderTopStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderRightStyle">Right:</label>' + '  				<select id="codeCola-borderRightStyle" name="borderRightStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderBottomStyle">Bottom:</label>' + '  				<select id="codeCola-borderBottomStyle" name="borderBottomStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderLeftStyle">Left:</label>' + '  				<select id="codeCola-borderLeftStyle" name="borderLeftStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderColorWrap">' + '			<cclegend>' + getMSG("style_b_color") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderColor" id="codeCola-sameBorderColor"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderTopColor">Top:</label><div id="codeCola-borderTopColor"></div></li>' + '				<li><label for="codeCola-borderRightColor">Right:</label><div id="codeCola-borderRightColor"></div></li>' + '				<li><label for="codeCola-borderBottomColor">Bottom:</label><div id="codeCola-borderBottomColor"></div></li>' + '				<li><label for="codeCola-borderLeftColor">Left:</label><div id="codeCola-borderLeftColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderRadiusWrap">' + '			<cclegend>' + getMSG("style_b_radius") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderRadius" id="codeCola-sameBorderRadius"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderRadiusTopLeft">TL:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusTopLeft" name="borderTopLeftRadius"/><input type="text" class="codeCola-currentStyle" name="borderTopLeftRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusTopRight">TR:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusTopRight" name="borderTopRightRadius"/><input type="text" class="codeCola-currentStyle" name="borderTopRightRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusBottomRight">BR:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusBottomRight" name="borderBottomRightRadius"/><input type="text" class="codeCola-currentStyle" name="borderBottomRightRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusBottomLeft">BL:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusBottomLeft" name="borderBottomLeftRadius"/><input type="text" class="codeCola-currentStyle" name="borderBottomLeftRadius" min="0"/> (px)</li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
         "listStyle": '<cctitle><label>' + getMSG("style_ls") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="listStyle"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="listStyle"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '  <select id="codeCola-listStyleType">' + '	     <option selected="seleted" value="none">' + getMSG("style_ls_none") + '</option>' + '      <option value="disc">disc</option>' + '      <option value="circle">circle</option>' + '      <option value="square">square</option>' + '      <option value="decimal">decimal</option>' + '      <option value="decimal-leading-zero">decimal-leading-zero</option>' + '      <option value="lower-roman">lower-roman</option>' + '      <option value="upper-roman">upper-roman</option>' + '      <option value="lower-alpha">lower-alpha</option>' + '      <option value="upper-alpha">upper-alpha</option>' + '      <option value="cjk-ideographic">cjk-ideographic</option>' + '  </select>' + '  <select id="codeCola-listStylePosition">' + '	     <option selected="seleted" value="inside">inside</option>' + '      <option value="outside">outside</option>' + '  </select>' + '</div>',
@@ -1341,10 +1571,10 @@
 
     //modules
     var LOADER = {
-        "all": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "boxShadow", "border", "layout", "size"],
-        "normal": ["fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "boxShadow", "border", "layout", "size"],
-        "list": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "boxShadow", "border", "layout", "size"],
-        "img": ["size", "backgroundColor", "backgroundImage", "border", "boxShadow", "layout"]
+        "all": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
+        "normal": ["fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
+        "list": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
+        "img": ["size", "backgroundColor", "backgroundImage", "opacity", "border", "boxShadow", "layout"]
     };
     LOADER["li"] = LOADER["ol"] = LOADER["ul"] = LOADER.list;
 
@@ -1433,7 +1663,7 @@
         },
         "lineHeight": function() {
             Z.on("codeCola-lineHeight", "change", function(e) {
-                var lineHeight = (this.value * 0.1).toFixed(1);
+                var lineHeight = this.value;
                 setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
                 this.nextSibling.value = lineHeight;
             });
@@ -1441,7 +1671,7 @@
             Z.on($("codeCola-item-lineHeight").getElementsByClassName("codeCola-currentStyle")[0], "change", function() {
                 var lineHeight = this.value;
                 setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
-                this.previousSibling.value = lineHeight * 10;
+                this.previousSibling.value = lineHeight;
             });
         },
         "fontFamily": function() {
@@ -1472,7 +1702,7 @@
                         setStyle(codeColaCurrentNode, "color", hex);
                     }
                 });
-            })
+            });
         },
         "textShadow": function() {
             var distance = $("codeCola-textShadowDistance"),
@@ -1541,6 +1771,22 @@
                         setStyle(codeColaCurrentNode, "backgroundImage", gradient);
                     }
                 });
+            });
+        },
+        "opacity": function() {
+            this.common.cAccountChange("opacity", function() {
+                var opacity = $("codeCola-opacity").value;
+                if (opacity < 0) {
+                    opacity = 0;
+                } else if (opacity > 1) {
+                    opacity = 1;
+                }
+                setStyle(codeColaCurrentNode, "opacity", opacity + "px");
+            });
+            Z.on("codeCola-opacity", "change", function(e) {
+                var value = this.value;
+                setStyle(codeColaCurrentNode, "opacity", value);
+                this.nextSibling.value = value;
             });
         },
         "boxShadow": function() {
@@ -1636,15 +1882,16 @@
                     Z.loader("color", function() {
                         CONTROLS[n] = new ColorControl("codeCola-" + n, {
                             "name": n,
-                            "afterChange": function(hex) {
+                            "afterChange": function(color) {
                                 if (!codeColaCurrentNode) {
                                     return
                                 };
                                 if ($("codeCola-sameBorderColor").checked) {
-                                    setStyle(codeColaCurrentNode, "borderColor", hex);
-                                    setStyle([nodes[7], nodes[14], nodes[21]], "backgroundColor", hex);
+                                    setStyle(codeColaCurrentNode, "borderColor", color);
+                                    setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
+                                    nodes[9].value = nodes[18].value = nodes[27].value = color;
                                 } else {
-                                    setStyle(codeColaCurrentNode, n, hex);
+                                    setStyle(codeColaCurrentNode, n, color);
                                 }
                             }
                         });
@@ -1656,12 +1903,12 @@
                 if (this.checked) {
                     nodes[0].focus();
                     var color = nodes[0].value;
-                    nodes[7].value = nodes[14].value = nodes[21].value = color;
-                    setStyle([nodes[7], nodes[14], nodes[21]], "backgroundColor", color);
+                    nodes[9].value = nodes[18].value = nodes[27].value = color;
+                    setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
                     setStyle(codeColaCurrentNode, "borderColor", color);
-                    nodes[7].disabled = nodes[14].disabled = nodes[21].disabled = true;
+                    nodes[9].disabled = nodes[18].disabled = nodes[27].disabled = true;
                 } else {
-                    nodes[7].disabled = nodes[14].disabled = nodes[21].disabled = false;
+                    nodes[9].disabled = nodes[18].disabled = nodes[27].disabled = false;
                 }
             });
         },
@@ -1697,13 +1944,19 @@
             editor.value = editor.nextSibling.value = value;
         },
         "lineHeight": function(node) {
-            var value = getStyle(node, "lineHeight").replace(/px/g, ""),
+            var lineHeight = getStyle(node, "lineHeight");
+            //can't calculate a number value when line-height:normal
+            if(lineHeight == "normal"){
+                return;
+            }
+            var value = lineHeight.replace(/px/g, "") / getStyle(node, "fontSize").replace(/px/g, ""),
                 editor = $("codeCola-lineHeight");
             editor.value = value;
-            editor.nextSibling.value = (value / 10).toFixed(1);
+            editor.nextSibling.value = value;
         },
         "fontFamily": function(node) {
-            $("codeCola-fontFamily").value = getStyle(node, "fontFamily");
+            //difficult
+            //$("codeCola-fontFamily").value = getStyle(node, "fontFamily");
         },
         "fontOther": function(node) {
             if (getStyle(node, "fontWeight") == "bold") {
@@ -1750,11 +2003,7 @@
             } else {
                 textShadow = textShadow.replace(/\,\s/g, ",").replace(/px/g, "").split(" ");
                 value[2] = textShadow[3];
-                if (/rgba/.test(textShadow[0])) {
-                    value[3] = "transparent";
-                } else {
-                    value[3] = textShadow[0];
-                }
+                value[3] = textShadow[0];
                 value[0] = Math.round(Math.atan2(textShadow[1], textShadow[2]) * (360 / (2 * Math.PI)));
                 if (value[0] >= -180 && value[0] <= 90) {
                     value[0] += 90;
@@ -1792,6 +2041,11 @@
                 "callback": false
             });
         },
+        "opacity": function(node) {
+            var value = getStyle(node, "opacity"),
+                editor = $("codeCola-opacity");
+            editor.value = editor.nextSibling.value = value;
+        },
         "boxShadow": function(node) {
             var boxShadow = getStyle(node, "boxShadow"),
                 value = [],
@@ -1804,11 +2058,7 @@
                 value = ["transparent", 0, 0, 0, 0, "outset"];
             } else {
                 boxShadow = boxShadow.replace(/\,\s/g, ",").replace(/px/g, "").split(" ");
-                if (/rgba/.test(boxShadow[0])) {
-                    value[0] = "transparent";
-                } else {
-                    value[0] = boxShadow[0];
-                }
+                value[0] = boxShadow[0];
                 value[1] = Math.round(Math.atan2(boxShadow[1], boxShadow[2]) * (360 / (2 * Math.PI)));
                 if (value[1] >= -180 && value[1] <= 90) {
                     value[1] += 90;
@@ -1939,7 +2189,7 @@
     document.body.appendChild(NODE_mask);
     Z.on(document.body, "mouseover", function(e) {
         if (!window.codeColaTurnOn) {
-            return
+            return;
         }
         Z.setStyle(NODE_mask, 'pointer-events', 'none');
         var target = e.target,
@@ -1948,7 +2198,8 @@
             p = Z.getXY(target),
             x = p.x,
             y = p.y;
-
+        
+        NODE_tempNode = target;
         Z.setStyle(NODE_mask, 'left', x + "px");
         Z.setStyle(NODE_mask, 'top', y + "px");
         Z.setStyle(NODE_mask, 'width', width + "px");
@@ -1956,21 +2207,31 @@
     });
     Z.on(document.body, "mouseout", function(e) {
         if (!window.codeColaTurnOn) {
-            return
+            return;
         }
-        var target = e.target;
         Z.setStyle(NODE_mask, 'left', "-2000px");
+    });
+    //when click fast, NODE_mask can't stop click event
+    Z.on(document.body, "click", function(e) {
+        if (!window.codeColaTurnOn) {
+            return;
+        }
+        e.preventDefault();
     });
     //select nodes
     Z.on(document.body, "mousedown", function(e) {
-        NODE_tempNode = e.target;
+        if (!window.codeColaTurnOn || e.button == 2) {
+            return;
+        }
+        e.preventDefault();
         Z.setStyle(NODE_mask, 'pointer-events', 'auto');
     });
     Z.on(document.body, "mouseup", function(e) {
         if (!window.codeColaTurnOn || e.button == 2) {
             return;
         }
-        //e.preventDefault();
+        e.preventDefault();
+        Z.setStyle(NODE_mask, 'pointer-events', 'none');
         var target = NODE_tempNode;
         //mac command key: e.metaKey
         if (e.ctrlKey == 1 || e.metaKey) {
@@ -1994,7 +2255,6 @@
             mutilNodes = [];
             initTab([target], target.nodeName);
         }
-        Z.setStyle(NODE_mask, 'pointer-events', 'none');
     });
     Z.on(document.body, "keyup", function(e) {
         if (!window.codeColaTurnOn) {
@@ -2315,7 +2575,6 @@
     });
 
     //add note		
-
     function updateNotes() {
         if (!window.codeColaTurnOn || !codeColaCurrentNode) {
             return;
@@ -2406,12 +2665,11 @@
                 NODE_getHtmlContent.value = "loadding...";
             },
             success: function(o) {
-                var r = o.responseText.replace(/<\/head>/i, "<style>" + STYLE_codeCola + "</style></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML)
-                        .replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig,function(url){
-                            var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i,"").replace(/("|')$/,"");
-                            return url.replace(rUrl, getAbsolutePath(rUrl));
-                        });
-                
+                var r = o.responseText.replace(/<\/head>/i, "<style>" + STYLE_codeCola + "</style></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                    var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, "").replace(/("|')$/, "");
+                    return url.replace(rUrl, getAbsolutePath(rUrl));
+                });
+
                 if (NODE_notesWrap.innerHTML != "") {
                     r = r.replace(/<\/html>/i, NODE_notesWrap.innerHTML + SCRIPT_codeCola + "</html>");
                 }
@@ -2441,11 +2699,10 @@
                     NODE_getLinkContent.value = "loadding...";
                 },
                 success: function(o) {
-                    var r = o.responseText.replace(/<\/head>/i, "<link rel='stylesheet' href='" + css + "'></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML)
-                            .replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig,function(url){
-                                var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i,"").replace(/("|')$/,"");
-                                return url.replace(rUrl, getAbsolutePath(rUrl));
-                            });
+                    var r = o.responseText.replace(/<\/head>/i, "<link rel='stylesheet' href='" + css + "'></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                        var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, "").replace(/("|')$/, "");
+                        return url.replace(rUrl, getAbsolutePath(rUrl));
+                    });
                     if (NODE_notesWrap.innerHTML != "") {
                         r = r.replace(/<\/html>/i, NODE_notesWrap.innerHTML + SCRIPT_codeCola + "</html>");
                     }
