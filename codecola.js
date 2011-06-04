@@ -389,6 +389,11 @@
         }
         xmlhttp.send(data);
     };
+    Z.getAbsolutePath = function(url) {
+        var a = document.createElement('a');
+        a.href = url;
+        return a.href;
+    };
     /**
      *@name:form Degree
      *@author:zhouqicf@gmail.com
@@ -420,12 +425,12 @@
             _label = _val.label,
             _input = _val.input;
 
-        _DegreeWrap.className = "form-Degree-wrap";
-        _Degree.className = "form-Degree";
-        _line.className = "form-Degree-line";
-        _dot.className = "form-Degree-dot";
-        _label.className = "form-Degree-label";
-        _input.className = "form-Degree-input";
+        _DegreeWrap.className = "codecola-degree-wrap";
+        _Degree.className = "codecola-degree";
+        _line.className = "codecola-degree-line";
+        _dot.className = "codecola-degree-dot";
+        _label.className = "codecola-degree-label";
+        _input.className = "codecola-degree-input";
 
         _input.setAttribute("max", 180);
         _input.setAttribute("min", -180);
@@ -535,43 +540,60 @@
         that.config = {
             "hsba": param.color ? that.changeColor(param.color, "hsba") : "transparent",
             "name": param.name ? param.name : "color-picker",
-            "afterChange": param.afterChange ? param.afterChange : function() {}
+            "afterChange": param.afterChange ? param.afterChange : function() {
+            }
         };
-        that.supportRGBA = (function() {
-            var a = document.createElement("i");
-            a.style.color = "rgba(0,0,0,0.1)";
-            return /^rgba/.test(a.style.color);
-        })();
         var idRandom = Math.ceil(Math.random() * 100000000000),
-            html = '<input type="text" id="form-color-input-' + idRandom + '" class="form-color-input" name="' + that.config.name + '">' + '<ol class="form-color-picker" id="form-color-picker-' + idRandom + '">' + '    <li class="form-color-hsb form-color-hsbH">' + '		    <div class="form-color-current"><label for="form-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="text" id="form-color-hsbH-current-' + idRandom + '" min="0" max="360"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="360" id="form-color-hsbH-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbS">' + '		    <div class="form-color-current"><label for="form-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="text" id="form-color-hsbS-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbS-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbB">' + '		    <div class="form-color-current"><label for="form-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="text" id="form-color-hsbB-current-' + idRandom + '" min="0" max="100"/></div>' + '		    <div class="form-color-hsb-img"></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="100" id="form-color-hsbB-' + idRandom + '"/></div>' + '	  </li>' + '    <li class="form-color-hsb form-color-hsbA">' + '		    <div class="form-color-current"><label for="form-color-hsbA-curren-' + idRandom + '">Aphla:</label><input type="text" id="form-color-hsbA-current-' + idRandom + '" min="0" max="1"/></div>' + '		    <div class="form-color-hsb-range"><input type="range" min="0" max="1" id="form-color-hsbA-' + idRandom + '" step="0.01"/></div>' + '	  </li>' + '</ol>';
+            html = '<span class="codecola-color-transparent"><input type="text" id="codecola-color-input-' + idRandom + '" class="codecola-color-input" name="' + that.config.name + '"></span>' +
+                   '<ol class="codecola-color-picker" id="codecola-color-picker-' + idRandom + '">' + '    ' +
+                   '<li class="codecola-color-hsb codecola-color-hsbH">' +
+                   '    <div class="codecola-color-current"><label for="codecola-color-hsbH-curren-' + idRandom + '">Hue:</label><input type="text" id="codecola-color-hsbH-current-' + idRandom + '" min="0" max="360"/></div>' +
+                   '    <div class="codecola-color-hsb-img"></div>' +
+                   '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="360" id="codecola-color-hsbH-' + idRandom + '"/></div>' +
+                   '</li>' +
+                   '<li class="codecola-color-hsb codecola-color-hsbS">' +
+                   '    <div class="codecola-color-current"><label for="codecola-color-hsbS-curren-' + idRandom + '">Saturation:</label><input type="text" id="codecola-color-hsbS-current-' + idRandom + '" min="0" max="100"/></div>' +
+                   '    <div class="codecola-color-hsb-img"></div>' +
+                   '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="100" id="codecola-color-hsbS-' + idRandom + '"/></div>' +
+                   '</li>' +
+                   '<li class="codecola-color-hsb codecola-color-hsbB">' +
+                   '    <div class="codecola-color-current"><label for="codecola-color-hsbB-curren-' + idRandom + '">Lightness:</label><input type="text" id="codecola-color-hsbB-current-' + idRandom + '" min="0" max="100"/></div>' +
+                   '    <div class="codecola-color-hsb-img"></div>' +
+                   '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="100" id="codecola-color-hsbB-' + idRandom + '"/></div>' +
+                   '</li>' +
+                   '<li class="codecola-color-hsb codecola-color-hsbA">' +
+                   '    <div class="codecola-color-current"><label for="codecola-color-hsbA-curren-' + idRandom + '">Aphla:</label><input type="text" id="codecola-color-hsbA-current-' + idRandom + '" min="0" max="1"/></div>' +
+                   '    <div class="codecola-color-hsb-range"><input type="range" min="0" max="1" id="codecola-color-hsbA-' + idRandom + '" step="0.01"/></div>' +
+                   '</li>' +
+                   '</ol>';
 
         var editorWrap = document.createElement("div");
-        editorWrap.id = "form-color-editorWrap-" + idRandom;
-        editorWrap.className = "form-color-editorWrap";
+        editorWrap.id = "codecola-color-editorWrap-" + idRandom;
+        editorWrap.className = "codecola-color-editorWrap";
         editorWrap.innerHTML = html;
         Z.get(wrap).appendChild(editorWrap);
 
         that.vars = {
-            "picker": Z.get("form-color-picker-" + idRandom),
-            "hsbInput": Z.get("form-color-input-" + idRandom),
-            "hCurren": Z.get("form-color-hsbH-current-" + idRandom),
-            "sCurren": Z.get("form-color-hsbS-current-" + idRandom),
-            "bCurren": Z.get("form-color-hsbB-current-" + idRandom),
-            "aCurren": Z.get("form-color-hsbA-current-" + idRandom),
-            "hRange": Z.get("form-color-hsbH-" + idRandom),
-            "sRange": Z.get("form-color-hsbS-" + idRandom),
-            "bRange": Z.get("form-color-hsbB-" + idRandom),
-            "aRange": Z.get("form-color-hsbA-" + idRandom)
+            "picker": Z.get("codecola-color-picker-" + idRandom),
+            "hsbInput": Z.get("codecola-color-input-" + idRandom),
+            "hCurren": Z.get("codecola-color-hsbH-current-" + idRandom),
+            "sCurren": Z.get("codecola-color-hsbS-current-" + idRandom),
+            "bCurren": Z.get("codecola-color-hsbB-current-" + idRandom),
+            "aCurren": Z.get("codecola-color-hsbA-current-" + idRandom),
+            "hRange": Z.get("codecola-color-hsbH-" + idRandom),
+            "sRange": Z.get("codecola-color-hsbS-" + idRandom),
+            "bRange": Z.get("codecola-color-hsbB-" + idRandom),
+            "aRange": Z.get("codecola-color-hsbA-" + idRandom)
         }
 
         var currentRanges = [that.vars.hCurren, that.vars.sCurren, that.vars.bCurren, that.vars.aCurren],
-            colorRanges = [that.vars.hRange, that.vars.sRange, that.vars.bRange, that.vars.aRange];
+                colorRanges = [that.vars.hRange, that.vars.sRange, that.vars.bRange, that.vars.aRange];
 
         for (var i = 0; i < 4; i++) {
             (function(index) {
                 Z.on(currentRanges[index], "change", function() {
                     var maxNum = parseInt(this.getAttribute("max"), 10),
-                        value = this.value;
+                            value = this.value;
                     if (value > maxNum) {
                         this.value = maxNum;
                     } else if (value < 0) {
@@ -583,7 +605,7 @@
                         "b": currentRanges[2].value,
                         "a": currentRanges[3].value
                     },
-                        initRangeHSB = ["initRangeH", "initRangeS", "initRangeB", "initRangeA"];
+                            initRangeHSB = ["initRangeH", "initRangeS", "initRangeB", "initRangeA"];
                     that.setColor({
                         "color": hsba,
                         "oType": "hsba",
@@ -597,7 +619,7 @@
                         "b": colorRanges[2].value,
                         "a": colorRanges[3].value
                     },
-                        initCurrentHSB = ["initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA"];
+                            initCurrentHSB = ["initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA"];
                     that.setColor({
                         "color": hsba,
                         "oType": "hsba",
@@ -614,7 +636,7 @@
             });
         });
         Z.on(that.vars.hsbInput, "focus", function() {
-            Z.each(Z.getElementsByClassName("form-color-picker"), function(node) {
+            Z.each(Z.getElementsByClassName("codecola-color-picker"), function(node) {
                 Z.setStyle(node, "display", "none");
             });
             Z.setStyle(that.vars.picker, "display", "block");
@@ -624,7 +646,11 @@
             "oType": "hsba"
         });
     }
-
+    ColorControl.prototype.isSupportRGBA = (function() {
+        var a = document.createElement("i");
+        a.style.color = "rgba(0,0,0,0.1)";
+        return /^rgba/.test(a.style.color);
+    })();
     ColorControl.prototype.initInput = function(color) {
         var input = this.vars.hsbInput;
         input.value = input.style.backgroundColor = color;
@@ -655,10 +681,10 @@
     }
     ColorControl.prototype.setColor = function(parms) {
         var that = this,
-            hsba = typeof parms.color == "string" ? parms.color.replace(/\s/g, "") : parms.color,
-            oType = parms.oType ? parms.oType : "",
-            callback = parms.callback != undefined ? parms.callback : true,
-            initControls = parms.initControls ? parms.initControls : ["initRangeH", "initRangeS", "initRangeB", "initRangeA", "initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA", "initInput"];
+                hsba = typeof parms.color == "string" ? parms.color.replace(/\s/g, "") : parms.color,
+                oType = parms.oType ? parms.oType : "",
+                callback = parms.callback != undefined ? parms.callback : true,
+                initControls = parms.initControls ? parms.initControls : ["initRangeH", "initRangeS", "initRangeB", "initRangeA", "initCurrentH", "initCurrentS", "initCurrentB", "initCurrentA", "initInput"];
         if (oType != "hsba") {
             hsba = that.changeColor(hsba, "hsba");
         }
@@ -699,7 +725,7 @@
     }
     ColorControl.prototype.getColor = function() {
         var rgba = this.config.rgba;
-        if (this.supportRGBA) {
+        if (this.isSupportRGBA) {
             rgba = "rgba(" + rgba.r + "," + rgba.g + "," + rgba.b + "," + rgba.a + ")";
         } else {
             rgba = "rgb(" + rgba.r + "," + rgba.g + "," + rgba.b + ")";
@@ -720,37 +746,37 @@
         }
         oType = oType ? oType : that.getColorType(color);
         switch (oType) {
-        case "hsba":
-            if (nType == "hex") {
-                return Z.color.rgbToHex(Z.color.hsbToRgb(color));
-            } else if (nType == "rgba") {
-                return Z.color.hsbToRgb(color);
-            }
-            break;
-        case "hex":
-            if (nType == "hsba") {
-                return Z.color.rgbToHsb(Z.color.hexToRgb(Z.color.hexToComplate(color)));
-            } else if (nType == "rgba") {
-                return Z.color.hexToRgb(Z.color.hexToComplate(color));
-            }
-            break;
-        case "rgb":
-            if (nType == "hsba") {
-                return Z.color.rgbToHsb(color);
-            } else if (nType == "hex") {
-                return Z.color.rgbToHex(color);
-            }
-            break;
-        case "rgba":
-            if (nType == "hsba") {
-                return Z.color.rgbToHsb(color);
-            } else if (nType == "hex") {
-                return Z.color.rgbToHex(color);
-            }
-            break;
-        default:
-            return "error"
-            break;
+            case "hsba":
+                if (nType == "hex") {
+                    return Z.color.rgbToHex(Z.color.hsbToRgb(color));
+                } else if (nType == "rgba") {
+                    return Z.color.hsbToRgb(color);
+                }
+                break;
+            case "hex":
+                if (nType == "hsba") {
+                    return Z.color.rgbToHsb(Z.color.hexToRgb(Z.color.hexToComplate(color)));
+                } else if (nType == "rgba") {
+                    return Z.color.hexToRgb(Z.color.hexToComplate(color));
+                }
+                break;
+            case "rgb":
+                if (nType == "hsba") {
+                    return Z.color.rgbToHsb(color);
+                } else if (nType == "hex") {
+                    return Z.color.rgbToHex(color);
+                }
+                break;
+            case "rgba":
+                if (nType == "hsba") {
+                    return Z.color.rgbToHsb(color);
+                } else if (nType == "hex") {
+                    return Z.color.rgbToHex(color);
+                }
+                break;
+            default:
+                return "error"
+                break;
         }
         return color;
     }
@@ -967,44 +993,32 @@
      */
 
     function GradientControl(wrap, param) {
-        var that = this,
-            defaultGradient;
-
-        if (Z.browser.webkit) {
-            that.defaultGradient = "-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))";
-        } else if (Z.browser.gecko) {
-            that.defaultGradient = "-moz-linear-gradient(left , #000 0%, #fff 100%)";
-        } else if (Z.browser.opera) {
-            that.defaultGradient = "-o-linear-gradient(left , #000 0%, #fff 100%)";
-        } else if (Z.browser.ie) {
-            that.defaultGradient = "-ms-linear-gradient(left , #000 0%, #fff 100%)";
-        }
-
+        var that = this;
         that.config = {
             "gradient": param.gradient ? param.gradient : that.defaultGradient,
             "panelWidth": param.panelWidth,
             "afterChange": param.afterChange ? param.afterChange : function() {},
             "isAll": param.isAll ? true : false,
-            "stopClassName": "form-gradient-stop"
+            "stopClassName": "codecola-gradient-stop"
         };
 
         var randomNum = Math.ceil(Math.random() * 100000000000),
             ids = {
-                panel: "form-gradient-panel-" + randomNum,
-                panelWrap: "form-gradient-panel-wrap" + randomNum,
-                stops: "form-gradient-stops-" + randomNum,
-                color: "form-gradient-color-" + randomNum,
-                location: "form-gradient-location-" + randomNum,
-                button: "form-gradient-stop-delete-button-" + randomNum,
-                orientation: "form-gradient-orientation-" + randomNum,
-                stopDetail: "form-gradient-stop-detail" + randomNum
+                panel: "codecola-gradient-panel-" + randomNum,
+                panelWrap: "codecola-gradient-panel-wrap" + randomNum,
+                stops: "codecola-gradient-stops-" + randomNum,
+                color: "codecola-gradient-color-" + randomNum,
+                location: "codecola-gradient-location-" + randomNum,
+                button: "codecola-gradient-stop-delete-button-" + randomNum,
+                orientation: "codecola-gradient-orientation-" + randomNum,
+                stopDetail: "codecola-gradient-stop-detail" + randomNum
             };
 
-        var html = '<div class="form-gradient-panel-wrap" id="' + ids.panelWrap + '"><div class="form-gradient-panel" id="' + ids.panel + '"></div></div>' + '<div class="form-gradient-stops" id="' + ids.stops + '"></div>' + '<div class="form-gradient-orientation-wrap">' + '	<label class="form-gradient-label" for="' + ids.orientation + '">Orientation:</label>' + '	<select class="form-gradient-orientation" id="' + ids.orientation + '">' + '		<option value="horizontal">horizontal</option>' + '		<option value="vertical">vertical</option>' + '	</select>' + '</div>' + '<div class="form-gradient-stop-detail" id="' + ids.stopDetail + '">' + '	<div class="form-gradient-color-wrap">' + '		<label class="form-gradient-label">Color:</label>' + '		<div class="form-gradient-color" id="' + ids.color + '"></div>' + '	</div>' + '	<div class="form-gradient-location-wrap">' + '		<label for="' + ids.location + '" class="form-gradient-label">Location:</label>' + '		<input type="text" class="form-gradient-location" id="' + ids.location + '"> %' + '	</div>' + '	<div class="form-gradient-stop-delete">' + '		<button class="form-gradient-stop-delete-button" id="' + ids.button + '">delete</button>' + '	</div>' + '</div>';
+        var html = '<div class="codecola-gradient-panel-wrap" id="' + ids.panelWrap + '"><div class="codecola-gradient-panel" id="' + ids.panel + '"></div></div>' + '<div class="codecola-gradient-stops" id="' + ids.stops + '"></div>' + '<div class="codecola-gradient-orientation-wrap">' + '	<label class="codecola-gradient-label" for="' + ids.orientation + '">Orientation:</label>' + '	<select class="codecola-gradient-orientation" id="' + ids.orientation + '">' + '		<option value="horizontal">horizontal</option>' + '		<option value="vertical">vertical</option>' + '	</select>' + '</div>' + '<div class="codecola-gradient-stop-detail" id="' + ids.stopDetail + '">' + '	<div class="codecola-gradient-color-wrap">' + '		<label class="codecola-gradient-label">Color:</label>' + '		<div class="codecola-gradient-color" id="' + ids.color + '"></div>' + '	</div>' + '	<div class="codecola-gradient-location-wrap">' + '		<label for="' + ids.location + '" class="codecola-gradient-label">Location:</label>' + '		<input type="text" class="codecola-gradient-location" id="' + ids.location + '"> %' + '	</div>' + '	<div class="codecola-gradient-stop-delete">' + '		<button class="codecola-gradient-stop-delete-button" id="' + ids.button + '">delete</button>' + '	</div>' + '</div>';
 
         //create nodes
         var gradientWrap = document.createElement("div");
-        gradientWrap.className = "form-gradient-wrap";
+        gradientWrap.className = "codecola-gradient-wrap";
         gradientWrap.innerHTML = html;
         Z.get(wrap).appendChild(gradientWrap);
 
@@ -1092,6 +1106,17 @@
             that.updatePanel();
         });
     }
+    GradientControl.prototype.defaultGradient = (function() {
+        if (Z.browser.webkit) {
+            return "-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))";
+        } else if (Z.browser.gecko) {
+            return "-moz-linear-gradient(left , #000 0%, #fff 100%)";
+        } else if (Z.browser.opera) {
+            return "-o-linear-gradient(left , #000 0%, #fff 100%)";
+        } else if (Z.browser.ie) {
+            return "-ms-linear-gradient(left , #000 0%, #fff 100%)";
+        }
+    })();
     GradientControl.prototype.init = function() {
         this.updateRule();
         this.updateContorls();
@@ -1216,7 +1241,7 @@
     GradientControl.prototype.changeCurrentStop = function(s, ifCallback) {
         var that = this,
             preStop = that.vars.currentStop,
-            selectClassName = "form-gradient-stop-select",
+            selectClassName = "codecola-gradient-stop-select",
             cStop = that.rule.stops[s.getAttribute("index")];
         if (preStop) {
             Z.removeClass(preStop, selectClassName);
@@ -1335,63 +1360,57 @@
         vars.colorControl.able();
         vars.orientation.disabled = vars.location.disabled = vars.button.disabled = vars.disable = false;
     }
-    //common function
 
+    //common function
     function $(id) {
         return Z.get(id);
     }
 
-    function getComputedStyle(node, property) {
-        return window.getComputedStyle(node, null)[property];
-    }
+    var CODECOLA = {};
 
-    function getStyle(node, property) {
+    CODECOLA.getStyle = function(node, property) {
         if (node.length) {
             node = node[0];
         }
-        if (property) {
-            property = Z.cssExtension(property);
-            switch (property) {
-            case "borderTop":
-                property = ["borderTopWidth", "borderTopStyle", "borderTopColor"];
-                break;
-            case "borderRight":
-                property = ["borderRightWidth", "borderRightColor", "borderRightStyle"];
-                break;
-            case "borderBottom":
-                property = ["borderBottomWidth", "borderBottomColor", "borderBottomStyle"];
-                break;
-            case "borderLeft":
-                property = ["borderLeftWidth", "borderLeftColor", "borderLeftStyle"];
-                break;
-            case "borderRadius":
-                property = ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"];
-                break;
-            case "padding":
-                property = ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"];
-                break;
-            case "margin":
-                property = ["marginTop", "marginRight", "marginBottom", "marginLeft"];
-                break;
-            case "listStyle":
-                property = ["listStylePosition", "listStyleType"];
-                break;
-            }
-            if (typeof property == "string") {
-                return getComputedStyle(node, property);
-            } else {
-                var value = [];
-                for (var i = 0, j = property.length; i < j; i++) {
-                    value[i] = getComputedStyle(node, property[i]);
-                }
-                return value.join(" ");
-            }
-        } else {
-            return node.getAttribute("style");
+        property = Z.cssExtension(property);
+        switch (property) {
+        case "borderTop":
+            property = ["borderTopWidth", "borderTopStyle", "borderTopColor"];
+            break;
+        case "borderRight":
+            property = ["borderRightWidth", "borderRightColor", "borderRightStyle"];
+            break;
+        case "borderBottom":
+            property = ["borderBottomWidth", "borderBottomColor", "borderBottomStyle"];
+            break;
+        case "borderLeft":
+            property = ["borderLeftWidth", "borderLeftColor", "borderLeftStyle"];
+            break;
+        case "borderRadius":
+            property = ["borderTopLeftRadius", "borderTopRightRadius", "borderBottomRightRadius", "borderBottomLeftRadius"];
+            break;
+        case "padding":
+            property = ["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"];
+            break;
+        case "margin":
+            property = ["marginTop", "marginRight", "marginBottom", "marginLeft"];
+            break;
+        case "listStyle":
+            property = ["listStylePosition", "listStyleType"];
+            break;
         }
-    }
+        if (typeof property == "string") {
+            return Z.getStyle(node, property);
+        } else {
+            var value = [];
+            for (var i = 0, j = property.length; i < j; i++) {
+                value[i] = Z.getStyle(node, property[i]);
+            }
+            return value.join(" ");
+        }
+    };
 
-    function getCombinedStyle(style) {
+    CODECOLA.getCombinedStyle = function(style) {
         var styles = Z.trim(style).split(";"),
             cssRules = {},
             styleProperty = "",
@@ -1426,7 +1445,7 @@
                 //url(http://xxx)
                 s0 = Z.trim(s[0]),
                 s1 = Z.trim(s[1]);
-            /*
+/*
             cssRules[s0] = s1.replace(/rgb\([^\)]+\)/g, function(color) {
                 return Z.color.rgbToHex(color);
             });
@@ -1451,12 +1470,7 @@
             } else {
                 cssRules["border"] = cssRules[borderTop[0]] + " " + cssRules[borderTop[1]] + " " + cssRules[borderTop[2]];
             }
-            for (var i in borders) {
-                var b = borders[i];
-                for (var j = 0; j < 3; j++) {
-                    delete cssRules[b[j]];
-                }
-            }
+            deleteFun(borderTop.concat(borderRight.concat(borderBottom.concat(borderLeft))));
         } else {
             for (var i in borders) {
                 var b = borders[i];
@@ -1487,30 +1501,84 @@
             } else if (i == "background-image") {
                 var _gradients = CONTROLS.backgroundImage.getGradient(false, true);
                 styleProperty += ("background-image:" + cssRules[i] + ";background-image:" + _gradients.moz + ";background-image:" + _gradients.o + ";background-image:" + _gradients.ms + ";");
+            /*
+            } else if (i == "-webkit-mask-image") {
+                var _gradients = CONTROLS.webkitMaskImage.getGradient(false, true);
+                styleProperty += ("-webkit-mask-image:" + cssRules[i] + ";");
+            */
             } else {
                 styleProperty += i + ":" + cssRules[i] + ";";
             }
         }
         return styleProperty;
-    }
+    };
 
-    function setStyle(nodes, property, value) {
+    CODECOLA.setStyle = function(nodes, property, value) {
         Z.setStyle(nodes, property, value);
-        updateStyles();
-    }
+        CODECOLA.updateStyle();
+    };
 
-    function getAttr(nodes, property) {
+    //TODO:当前选择元素有多个时的处理应该由一个方法统一处理
+    CODECOLA.getAttr = function(nodes, property) {
         if (nodes.length) {
             nodes = nodes[0];
         }
         return Z.getAttr(nodes, property);
-    }
+    };
 
-    function getAbsolutePath(url) {
-        var a = document.createElement('a');
-        a.href = url;
-        return a.href;
-    }
+    CODECOLA.updateStyle = function() {
+        if (!codeColaCurrentNode || ccdrag || !window.codeColaTurnOn) {
+            return;
+        } //fix -webkit-user-select
+        var style = CODECOLA.getAttr(codeColaCurrentNode, 'style');
+        if (!style) {
+            NODE_cStyle.value = "";
+        } else {
+            NODE_cStyle.value = CODECOLA.getCombinedStyle(style);
+        }
+    };
+
+    CODECOLA.updateNote = function() {
+        if (!window.codeColaTurnOn || !codeColaCurrentNode) {
+            return;
+        }
+        var iconId = CODECOLA.getAttr(codeColaCurrentNode, "codeColaNoteIcon");
+        if (iconId) {
+            NODE_cNote.value = $(iconId).innerHTML.replace(/<br>/g, "\n").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'");
+        } else {
+            NODE_cNote.value = "";
+        }
+    };
+
+    CODECOLA.updateCurrentNode = function(nodes, selector) {
+        NODE_currentNode.title = selector;
+        NODE_currentNode.firstChild.nodeValue = selector.length > 15 ? selector.substring(0, 12) + "..." : selector;
+        NODE_cNodeCount.firstChild.nodeValue = nodes.length ? nodes.length : 0;
+    };
+
+    CODECOLA.miniOptin = {
+        "close": function() {
+            var that = $("codeCola-fold");
+            that.className = "";
+            that.title = getMSG("opt_unfold");
+        },
+        "open": function() {
+            var that = $("codeCola-fold");
+            that.className = "cc-close";
+            that.title = getMSG("opt_fold");
+        }
+    };
+
+    CODECOLA.initControls = function(control){
+        if(!control){
+            var items = LOADER["all"];
+            Z.each(items, function(n) {
+                SHOW[n]();
+            });
+        }else{
+            SHOW[control]();
+        }
+    };
 
     //vars
     var codeColaCurrentNode = "",
@@ -1521,7 +1589,7 @@
         SCRIPT_codeCola = '<script>' + '	var getElementsByClassName = function(className,tagName){' + '			if(typeof document.getElementsByClassName == "function"){' + '					return document.getElementsByClassName(className);' + '			}else{' + '					var allNodes = document.getElementsByTagName(tagName?tagName:"*"),' + '							nodes = [];' + '					for(var i=0,j=allNodes.length;i<j;i++){' + '							var c = allNodes[i];' + '							if(c.className.indexOf(className) != -1){' + '									nodes.push(c);' + '							}' + '					}' + '					return nodes;' + '			}' + '	};' + '	var codeColaNotes = getElementsByClassName("codeCola-note","span");' + '	for(var i=0,j=codeColaNotes.length;i<j;i++){' + '			codeColaNotes[i].onmouseover = function(){' + '					var targets = getElementsByClassName(this.id);' + '					for(var k=0,l=targets.length;k<l;k++){' + '						targets[k].className+=" codeCola-selecting";' + '					}' + '			};' + '			codeColaNotes[i].onmouseout = function(){' + '					var targets = getElementsByClassName(this.id);' + '					for(var k=0,l=targets.length;k<l;k++){' + '						targets[k].className = targets[k].className.replace(" codeCola-selecting","");' + '					}' + '			}' + '	}' + '</script>';
 
     //create nodes
-    var HTML_editItems = '<div id="codeCola" class="codeCola-wrap">' + '  <div id="codeCola-option"><div id="codeCola-drag"></div><div id="codeCola-fold" title="' + getMSG("opt_fold") + '"><ccs></ccs><ccb></ccb></div><cci id="codeCola-show-about" title="' + getMSG("opt_about") + '">!</cci></div>' + '  <div id="codeCola-current-info"><cccode id="codeCola-current-node">none</cccode> x <cccode id="codeCola-current-node-count">0</cccode><vabbr id="codeCola-show-currentNode" title="' + getMSG("opt_cNode") + '">?</vabbr><cci id="codeCola-open-all" title="' + getMSG("opt_unfoldAll") + '"><ccb></ccb><ccu></ccu></cci><cci id="codeCola-getNote" title="' + getMSG("opt_showNote") + '" class="codeCola-opt-button"></cci><cci id="codeCola-getStyles" title="' + getMSG("opt_showStyle") + '" class="codeCola-opt-button">{}</cci><cci id="codeCola-getHTML" title="' + getMSG("opt_html") + '" class="codeCola-opt-button">&lt;&gt;</cci><cci id="codeCola-getLink" title="' + getMSG("opt_link") + '" class="codeCola-opt-button"></cci><cci id="codeCola-switch" title="' + getMSG("opt_turnOff") + '" class="codeCola-opt-button cc-open"></cci></div>' + '  <textarea id="codeCola-styles"></textarea>' + '  <textarea id="codeCola-note"></textarea>' + '  <ul id="codeCola-controls" class="cc-close">' + '  </ul>' + '</div>' + '<div id="codeCola-selectors" class="codeCola-wrap"></div>' + '<div id="codeCola-notes-wrap"></div>' + '<div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span><cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <textarea id="codeCola-getHTML-content"></textarea>' + '</div>' + '<div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span><cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <input id="codeCola-getLink-content">' + '</div>' + '<div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-about-title" class="codeCola-pop-title">About</span><cci id="codeCola-about-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <div id="codeCola-about-content">' + '    <div id="codeCola-about-global" style="background-image:url(' + chrome.extension.getURL('128.png') + ')">' + '      <cctitle id="codeCola-about-name">Code Cola</cctitle>' + '      <p id="codeCola-about-version">v2.3.0</p>' + '    </div>' + '    <div id="codeCola-about-detail">' + '      <p id="codeCola-about-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>' + '      <p id="codeCola-about-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>' + '    </div>' + '  </div>' + '</div>';
+    var HTML_editItems = '<div id="codeCola" class="codeCola-wrap">' + '  <div id="codeCola-option"><div id="codeCola-drag"></div><div id="codeCola-fold" title="' + getMSG("opt_fold") + '"><ccs></ccs><ccb></ccb></div><cci id="codeCola-show-about" title="' + getMSG("opt_about") + '">!</cci></div>' + '  <div id="codeCola-current-info"><cccode id="codeCola-current-node">none</cccode> x <cccode id="codeCola-current-node-count">0</cccode><vabbr id="codeCola-show-currentNode" title="' + getMSG("opt_cNode") + '">?</vabbr><cci id="codeCola-open-all" title="' + getMSG("opt_unfoldAll") + '"><ccb></ccb><ccu></ccu></cci><cci id="codeCola-getNote" title="' + getMSG("opt_showNote") + '" class="codeCola-opt-button"></cci><cci id="codeCola-getStyles" title="' + getMSG("opt_showStyle") + '" class="codeCola-opt-button">{}</cci><cci id="codeCola-getHTML" title="' + getMSG("opt_html") + '" class="codeCola-opt-button">&lt;&gt;</cci><cci id="codeCola-getLink" title="' + getMSG("opt_link") + '" class="codeCola-opt-button"></cci><cci id="codeCola-switch" title="' + getMSG("opt_turnOff") + '" class="codeCola-opt-button cc-open"></cci></div>' + '  <textarea id="codeCola-styles"></textarea>' + '  <textarea id="codeCola-note"></textarea>' + '  <ul id="codeCola-controls" class="cc-close">' + '  </ul>' + '</div>' + '<div id="codeCola-selectors" class="codeCola-wrap"></div>' + '<div id="codeCola-notes-wrap"></div>' + '<div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span><cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <textarea id="codeCola-getHTML-content"></textarea>' + '</div>' + '<div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span><cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <input id="codeCola-getLink-content">' + '</div>' + '<div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">' + '  <span id="codeCola-about-title" class="codeCola-pop-title">About</span><cci id="codeCola-about-close" class="codeCola-pop-close" title="' + getMSG("opt_close") + '">×</cci>' + '  <div id="codeCola-about-content">' + '    <div id="codeCola-about-global" style="background-image:url(' + chrome.extension.getURL('128.png') + ')">' + '      <cctitle id="codeCola-about-name">Code Cola</cctitle>' + '      <p id="codeCola-about-version">v2.4.0</p>' + '    </div>' + '    <div id="codeCola-about-detail">' + '      <p id="codeCola-about-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>' + '      <p id="codeCola-about-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>' + '    </div>' + '  </div>' + '</div>';
     var editWrap = document.createElement("div");
     editWrap.innerHTML = HTML_editItems;
     document.getElementsByTagName("html")[0].appendChild(editWrap);
@@ -1551,7 +1619,7 @@
         NODE_notesWrap = $("codeCola-notes-wrap");
 
     //html
-    var HTMLS = {
+    var HTML = {
         "fontSize": '<cctitle><label for="codeCola-fontSize">' + getMSG("style_fz") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="fontSize"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="fontSize"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="10" max="100" id="codeCola-fontSize"/><input type="text" class="codeCola-currentStyle" name="fontSize" min="10"/> (px)</div>',
         "lineHeight": '<cctitle><label for="codeCola-lineHeight">' + getMSG("style_lh") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="lineHeight"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="lineHeight"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="1" max="10" id="codeCola-lineHeight" step="0.1"/><input type="text" class="codeCola-currentStyle" name="lineHeight" min="10"/></div>',
         "fontFamily": '<cctitle><label for="codeCola-fontFamily">' + getMSG("style_ff") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="fontFamily"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="fontFamily"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '  <select id="codeCola-fontFamily">' + '	   <optgroup label="Chinese">' + '	   <option selected="seleted" value="\u5B8B\u4F53,Serif">' + getMSG("style_ff_simsun") + '</option>' + '      <option value="\u5FAE\u8F6F\u96C5\u9ED1,\u9ED1\u4F53,Sans-Serif">' + getMSG("style_ff_MSYH") + '</option>' + '      <option value="\u9ED1\u4F53,Sans-Serif">' + getMSG("style_ff_simhei") + '</option>' + '      <option value="\u5E7C\u5706,Sans-Serif">' + getMSG("style_ff_youyuan") + '</option>' + '    </optgroup>' + '    <optgroup label="English">' + '      <option value="Helvetica,tahoma,Arial,Sans-Serif">Helvetica</option>' + '      <option value="Arial,Helvetica,tahoma,Sans-Serif">Arial</option>' + '      <option value="tahoma,Helvetica,Arial,Sans-Serif">tahoma</option>' + '      <option value="\'Lucida Grande\', Helvetica,Arial,Sans-Serif">Lucida Grande</option>' + '      <option value="Georgia,Serif">Georgia</option>' + '    </optgroup>' + '  </select>' + '</div>',
@@ -1561,6 +1629,28 @@
         "textShadow": '<cctitle><label>' + getMSG("style_ts") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="textShadow"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="textShadow"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '		<ccfieldset id="codeCola-textShadowWrap">' + '			<ol>' + '				<li><label>Degree:</label><div id="codeCola-textShadowDegree"></div></li>' + '				<li><label for="codeCola-textShadowDistance">Distance:</label><input type="range" min="0" max="100" id="codeCola-textShadowDistance" name="textShadowDistance"/><input type="text" class="codeCola-currentStyle" name="textShadowDistance"/> (px)</li>' + '				<li><label for="codeCola-textShadowSize">Size:</label><input type="range" min="0" max="100" id="codeCola-textShadowSize" name="textShadowSize"/><input type="text" class="codeCola-currentStyle" name="textShadowSize" min="0"/> (px)</li>' + '				<li><label for="codeCola-textShadowColor">Color:</label><div id="codeCola-textShadowColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
         "backgroundColor": '<cctitle><label for="codeCola-backgroundColor">' + getMSG("style_bc") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="backgroundColor"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="backgroundColor"></cci></cctitle>' + '<div class="codeCola-editorWrap" id="codeCola-backgroundColor"></div>',
         "backgroundImage": '<cctitle><label>' + getMSG("style_lg") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="backgroundImage"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="backgroundImage"></cci></cctitle>' + '<div class="codeCola-editorWrap" id="codeCola-backgroundImage"></div>',
+        "webkitMaskImage": '<cctitle><label>' + getMSG("style_wmi") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="webkitMaskImage"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="webkitMaskImage"></cci></cctitle>' + '<div class="codeCola-editorWrap" id="codeCola-webkitMaskImage"></div>',
+        "webkitBoxReflect":
+        '<cctitle><label>' + getMSG("style_wbr") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="webkitBoxReflect"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="webkitBoxReflect"></cci></cctitle>' +
+        '<div class="codeCola-editorWrap codeCola-editor-multi">'+
+        '				<ccfieldset>'+
+        '           <cclegend>' + getMSG("style_wbr_d") + '</cclegend>'+
+        '           <select id="codeCola-webkitBoxReflectDirection">'+
+        '               <option value="above">above</option>'+
+        '               <option value="below">below</option>'+
+        '               <option value="left">left</option>'+
+        '               <option value="right">right</option>'+
+        '           </select>'+
+        '       </ccfieldset>'+
+        '				<ccfieldset>'+
+        '           <cclegend>' + getMSG("style_wbr_o") + '</cclegend>'+
+        '           <input type="range" min="-900" max="900" id="codeCola-webkitBoxReflectOffset"/><input type="text" class="codeCola-currentStyle"/> (px)'+
+        '       </ccfieldset>'+
+        '				<ccfieldset>'+
+        '           <cclegend>' + getMSG("style_wbr_g") + '</cclegend>'+
+        '           <div id="codeCola-webkitBoxReflectGradient"></div>'+
+        '       </ccfieldset>'+
+        '</div>',
         "opacity": '<cctitle><label for="codeCola-opacity">' + getMSG("style_op") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="opacity"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="opacity"></cci></cctitle>' + '<div class="codeCola-editorWrap"><input type="range" min="0" max="1" id="codeCola-opacity" step="0.01"/><input type="text" class="codeCola-currentStyle" name="fontSize" min="0" max="1"/></div>',
         "boxShadow": '<cctitle><label>' + getMSG("style_bs") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="boxShadow"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="boxShadow"></cci></cctitle>' + '<div class="codeCola-editorWrap">' + '		<ccfieldset id="codeCola-boxShadowWrap">' + '			<ol>' + '				<li><label>Inset:</label><label><input type="radio" value="inset" name="boxShadowInset" id="codeCola-boxShadowInset"> ' + getMSG("style_bs_inset") + '</label> <label><input type="radio" value="outset" name="boxShadowInset" id="codeCola-boxShadowOutset"> ' + getMSG("style_bs_outset") + '</label></li>' + '				<li><label>Degree:</label><div id="codeCola-boxShadowDegree"></div></li>' + '				<li><label for="codeCola-boxShadowDistance">Distance:</label><input type="range" min="0" max="100" id="codeCola-boxShadowDistance" name="boxShadowDistance"/><input type="text" class="codeCola-currentStyle" name="boxShadowDistance"/> (px)</li>' + '				<li><label for="codeCola-boxShadowSize">Size:</label><input type="range" min="0" max="100" id="codeCola-boxShadowSize" name="boxShadowSize"/><input type="text" class="codeCola-currentStyle" name="boxShadowSize" min="0"/> (px)</li>' + '				<li><label for="codeCola-boxShadowSpread">Spread:</label><input type="range" min="-100" max="100" id="codeCola-boxShadowSpread" name="boxShadowSpread"/><input type="text" class="codeCola-currentStyle" name="boxShadowSpread" min="0"/> (px)</li>' + '				<li><label for="codeCola-boxShadowColor">Color:</label><div id="codeCola-boxShadowColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
         "border": '<cctitle><label>' + getMSG("style_b") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + getMSG("opt_hide") + '" data="borderTop,borderRight,borderBottom,borderLeft,borderRadius" mutil="border"></cci><cci class="codeCola-cancel" title="' + getMSG("opt_undo") + '" data="border,borderRadius" mutil="border"></cci></cctitle>' + '<div class="codeCola-editorWrap codeCola-editor-multi">' + '		<ccfieldset id="codeCola-borderWidthWrap">' + '			<cclegend>' + getMSG("style_b_width") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderWidth" id="codeCola-sameBorderWidth"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderTopWidth">Top:</label><input type="range" min="0" max="100" id="codeCola-borderTopWidth" name="borderTopWidth"/><input type="text" class="codeCola-currentStyle" name="borderTopWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRightWidth">Right:</label><input type="range" min="0" max="100" id="codeCola-borderRightWidth" name="borderRightWidth"/><input type="text" class="codeCola-currentStyle" name="borderRightWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderBottomWidth">Bottom:</label><input type="range" min="0" max="100" id="codeCola-borderBottomWidth" name="borderBottomWidth"/><input type="text" class="codeCola-currentStyle" name="borderBottomWidth" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderLeftWidth">Left:</label><input type="range" min="0" max="100" id="codeCola-borderLeftWidth" name="borderLeftWidth"/><input type="text" class="codeCola-currentStyle" name="borderLeftWidth" min="0"/> (px)</li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderStyleWrap">' + '			<cclegend>' + getMSG("style_b_style") + '</cclegend>' + '			<label><input type="checkbox" class="set-same selects" name="borderStyle" id="codeCola-sameBorderStyle"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li>' + '					<label for="codeCola-borderTopStyle">Top:</label>' + '  				<select id="codeCola-borderTopStyle" name="borderTopStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderRightStyle">Right:</label>' + '  				<select id="codeCola-borderRightStyle" name="borderRightStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderBottomStyle">Bottom:</label>' + '  				<select id="codeCola-borderBottomStyle" name="borderBottomStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '				<li>' + '					<label for="codeCola-borderLeftStyle">Left:</label>' + '  				<select id="codeCola-borderLeftStyle" name="borderLeftStyle">' + '      			<option selected="seleted" value="none">none</option>' + '      			<option value="solid">solid</option>' + '      			<option value="dashed">dashed</option>' + '      			<option value="dotted">dotted</option>' + '      			<option value="double">double</option>' + '      			<option value="groove">groove</option>' + '      			<option value="inset">inset</option>' + '      			<option value="outset">outset</option>' + '      			<option value="ridge">ridge</option>' + '  				</select>' + '				</li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderColorWrap">' + '			<cclegend>' + getMSG("style_b_color") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderColor" id="codeCola-sameBorderColor"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderTopColor">Top:</label><div id="codeCola-borderTopColor"></div></li>' + '				<li><label for="codeCola-borderRightColor">Right:</label><div id="codeCola-borderRightColor"></div></li>' + '				<li><label for="codeCola-borderBottomColor">Bottom:</label><div id="codeCola-borderBottomColor"></div></li>' + '				<li><label for="codeCola-borderLeftColor">Left:</label><div id="codeCola-borderLeftColor"></div></li>' + '			</ol>' + '		</ccfieldset>' + '		<ccfieldset id="codeCola-borderRadiusWrap">' + '			<cclegend>' + getMSG("style_b_radius") + '</cclegend>' + '			<label><input type="checkbox" class="set-same inputs" name="borderRadius" id="codeCola-sameBorderRadius"/> ' + getMSG("opt_same") + '</label>' + '			<ol>' + '				<li><label for="codeCola-borderRadiusTopLeft">TL:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusTopLeft" name="borderTopLeftRadius"/><input type="text" class="codeCola-currentStyle" name="borderTopLeftRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusTopRight">TR:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusTopRight" name="borderTopRightRadius"/><input type="text" class="codeCola-currentStyle" name="borderTopRightRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusBottomRight">BR:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusBottomRight" name="borderBottomRightRadius"/><input type="text" class="codeCola-currentStyle" name="borderBottomRightRadius" min="0"/> (px)</li>' + '				<li><label for="codeCola-borderRadiusBottomLeft">BL:</label><input type="range" min="0" max="100" id="codeCola-borderRadiusBottomLeft" name="borderBottomLeftRadius"/><input type="text" class="codeCola-currentStyle" name="borderBottomLeftRadius" min="0"/> (px)</li>' + '			</ol>' + '		</ccfieldset>' + '</div>',
@@ -1571,10 +1661,10 @@
 
     //modules
     var LOADER = {
-        "all": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
-        "normal": ["fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
-        "list": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "opacity", "boxShadow", "border", "layout", "size"],
-        "img": ["size", "backgroundColor", "backgroundImage", "opacity", "border", "boxShadow", "layout"]
+        "all": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "webkitMaskImage", "webkitBoxReflect", "opacity", "boxShadow", "border", "layout", "size"],
+        "normal": ["fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "webkitMaskImage", "webkitBoxReflect", "opacity", "boxShadow", "border", "layout", "size"],
+        "list": ["listStyle", "fontSize", "lineHeight", "fontFamily", "fontOther", "color", "textAlign", "textShadow", "backgroundColor", "backgroundImage", "webkitMaskImage", "webkitBoxReflect", "opacity", "boxShadow", "border", "layout", "size"],
+        "img": ["size", "backgroundColor", "backgroundImage", "webkitMaskImage", "webkitBoxReflect", "opacity", "border", "boxShadow", "layout"]
     };
     LOADER["li"] = LOADER["ol"] = LOADER["ul"] = LOADER.list;
 
@@ -1597,7 +1687,7 @@
                         }
                     }
                     that[pOrN].value = value;
-                    setStyle(codeColaCurrentNode, property, value + "px");
+                    CODECOLA.setStyle(codeColaCurrentNode, property, value + "px");
                 });
             },
             "cAccountChange": function(item, callback) {
@@ -1610,7 +1700,7 @@
                     if (callback) {
                         callback();
                     } else {
-                        setStyle(codeColaCurrentNode, property, value + "px");
+                        CODECOLA.setStyle(codeColaCurrentNode, property, value + "px");
                     }
                 });
             },
@@ -1634,7 +1724,7 @@
                             cItem.disabled = true;
                         }
                         value = !isNaN(value) ? value + "px" : value;
-                        setStyle(codeColaCurrentNode, name, value);
+                        CODECOLA.setStyle(codeColaCurrentNode, name, value);
                         firstItem.focus();
                     }
                 });
@@ -1644,51 +1734,51 @@
             this.common.cAccountChange("fontSize", function() {
                 var fontSize = $("codeCola-fontSize").value;
                 if (fontSize < 12) {
-                    setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "none");
+                    CODECOLA.setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "none");
                 } else {
-                    setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "");
+                    CODECOLA.setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "");
                 }
-                setStyle(codeColaCurrentNode, "fontSize", fontSize + "px");
+                CODECOLA.setStyle(codeColaCurrentNode, "fontSize", fontSize + "px");
             });
             Z.on("codeCola-fontSize", "change", function(e) {
                 var value = this.value;
                 if (value < 12) {
-                    setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "none");
+                    CODECOLA.setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "none");
                 } else {
-                    setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "");
+                    CODECOLA.setStyle(codeColaCurrentNode, "webkitTextSizeAdjust", "");
                 }
-                setStyle(codeColaCurrentNode, "fontSize", value + "px");
+                CODECOLA.setStyle(codeColaCurrentNode, "fontSize", value + "px");
                 this.nextSibling.value = value;
             });
         },
         "lineHeight": function() {
             Z.on("codeCola-lineHeight", "change", function(e) {
                 var lineHeight = this.value;
-                setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
+                CODECOLA.setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
                 this.nextSibling.value = lineHeight;
             });
 
             Z.on($("codeCola-item-lineHeight").getElementsByClassName("codeCola-currentStyle")[0], "change", function() {
                 var lineHeight = this.value;
-                setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
+                CODECOLA.setStyle(codeColaCurrentNode, "lineHeight", lineHeight);
                 this.previousSibling.value = lineHeight;
             });
         },
         "fontFamily": function() {
             Z.on("codeCola-fontFamily", "change", function(e) {
-                setStyle(codeColaCurrentNode, "fontFamily", this.value);
+                CODECOLA.setStyle(codeColaCurrentNode, "fontFamily", this.value);
             });
         },
         "fontOther": function() {
             Z.on([$("codeCola-fontWeight"), $("codeCola-fontStyle"), $("codeCola-textDecoration")], "click", function(e) {
                 var that = this,
                     v = that.checked ? that.value : "";
-                setStyle(codeColaCurrentNode, that.name, v);
+                CODECOLA.setStyle(codeColaCurrentNode, that.name, v);
             });
         },
         "textAlign": function() {
             Z.on([$("codeCola-textAlignLeft"), $("codeCola-textAlignCenter"), $("codeCola-textAlignRight")], "click", function(e) {
-                setStyle(codeColaCurrentNode, "textAlign", this.value);
+                CODECOLA.setStyle(codeColaCurrentNode, "textAlign", this.value);
             });
         },
         "color": function() {
@@ -1699,7 +1789,7 @@
                         if (!codeColaCurrentNode) {
                             return
                         };
-                        setStyle(codeColaCurrentNode, "color", hex);
+                        CODECOLA.setStyle(codeColaCurrentNode, "color", hex);
                     }
                 });
             });
@@ -1714,7 +1804,7 @@
                     hex = CONTROLS.textShadowColor.getColor(),
                     x = 0 - Math.round(d * Math.cos(Degree * 0.017453293)),
                     y = Math.round(d * Math.sin(Degree * 0.017453293));
-                setStyle(codeColaCurrentNode, "textShadow", x + "px " + y + "px " + size.value + "px " + hex);
+                CODECOLA.setStyle(codeColaCurrentNode, "textShadow", x + "px " + y + "px " + size.value + "px " + hex);
             }
             Z.loader("color", function() {
                 CONTROLS.textShadowColor = new ColorControl("codeCola-textShadowColor", {
@@ -1755,7 +1845,7 @@
                         if (!codeColaCurrentNode) {
                             return
                         };
-                        setStyle(codeColaCurrentNode, "backgroundColor", hex);
+                        CODECOLA.setStyle(codeColaCurrentNode, "backgroundColor", hex);
                     }
                 });
             });
@@ -1768,9 +1858,53 @@
                         if (!codeColaCurrentNode) {
                             return
                         };
-                        setStyle(codeColaCurrentNode, "backgroundImage", gradient);
+                        CODECOLA.setStyle(codeColaCurrentNode, "backgroundImage", gradient);
                     }
                 });
+            });
+        },
+        "webkitMaskImage": function() {
+            Z.loader("gradient", function() {
+                CONTROLS.webkitMaskImage = new GradientControl("codeCola-webkitMaskImage", {
+                    "panelWidth": 255,
+                    "afterChange": function(gradient) {
+                        if (!codeColaCurrentNode) {
+                            return
+                        };
+                        CODECOLA.setStyle(codeColaCurrentNode, "webkitMaskImage", gradient);
+                    }
+                });
+            });
+        },
+        "webkitBoxReflect": function() {
+            var direction = $("codeCola-webkitBoxReflectDirection"),
+                offset = $("codeCola-webkitBoxReflectOffset");
+            Z.loader("gradient", function() {
+                CONTROLS.webkitBoxReflectGradient = new GradientControl("codeCola-webkitBoxReflectGradient", {
+                    "panelWidth": 255,
+                    "afterChange": function(gradient) {
+                        if (!codeColaCurrentNode) {
+                            return
+                        }
+                        CODECOLA.setStyle(codeColaCurrentNode, "webkitBoxReflect", direction.value + " " + offset.value + "px " + gradient);
+                    }
+                });
+            });
+            Z.on(offset.nextSibling, "change", function(e) {
+                var gradient = CONTROLS.webkitBoxReflectGradient.getGradient(),
+                    value = this.value;
+                CODECOLA.setStyle(codeColaCurrentNode, "webkitBoxReflect", direction.value + " " + value + "px " + gradient);
+                offset.value = value;
+            });
+            Z.on(offset, "change", function(e) {
+                var gradient = CONTROLS.webkitBoxReflectGradient.getGradient(),
+                    value = offset.value;
+                CODECOLA.setStyle(codeColaCurrentNode, "webkitBoxReflect", direction.value + " " + value + "px " + gradient);
+                offset.nextSibling.value = value;
+            });
+            Z.on(direction, "change", function(e) {
+                var gradient = CONTROLS.webkitBoxReflectGradient.getGradient();
+                CODECOLA.setStyle(codeColaCurrentNode, "webkitBoxReflect", direction.value + " " + offset.value + "px " + gradient);
             });
         },
         "opacity": function() {
@@ -1781,11 +1915,11 @@
                 } else if (opacity > 1) {
                     opacity = 1;
                 }
-                setStyle(codeColaCurrentNode, "opacity", opacity + "px");
+                CODECOLA.setStyle(codeColaCurrentNode, "opacity", opacity + "px");
             });
             Z.on("codeCola-opacity", "change", function(e) {
                 var value = this.value;
-                setStyle(codeColaCurrentNode, "opacity", value);
+                CODECOLA.setStyle(codeColaCurrentNode, "opacity", value);
                 this.nextSibling.value = value;
             });
         },
@@ -1804,7 +1938,7 @@
                     hex = CONTROLS.boxShadowColor.getColor(),
                     x = 0 - Math.round(d * Math.cos(Degree * 0.017453293)),
                     y = Math.round(d * Math.sin(Degree * 0.017453293));
-                setStyle(codeColaCurrentNode, "boxShadow", optinal + " " + x + "px " + y + "px " + size.value + "px " + spread.value + "px " + hex);
+                CODECOLA.setStyle(codeColaCurrentNode, "boxShadow", optinal + " " + x + "px " + y + "px " + size.value + "px " + spread.value + "px " + hex);
             }
 
             Z.loader("color", function() {
@@ -1847,10 +1981,10 @@
         },
         "listStyle": function() {
             Z.on("codeCola-listStyleType", "change", function(e) {
-                setStyle(codeColaCurrentNode, "listStyleType", this.value);
+                CODECOLA.setStyle(codeColaCurrentNode, "listStyleType", this.value);
             });
             Z.on("codeCola-listStylePosition", "change", function(e) {
-                setStyle(codeColaCurrentNode, "listStylePosition", this.value);
+                CODECOLA.setStyle(codeColaCurrentNode, "listStylePosition", this.value);
             });
         },
         "border": function() {
@@ -1873,7 +2007,7 @@
                         styles[k].value = style;
                     }
                 }
-                setStyle(codeColaCurrentNode, type, style);
+                CODECOLA.setStyle(codeColaCurrentNode, type, style);
             });
 
             var nodes = $("codeCola-borderColorWrap").getElementsByTagName("ol")[0].getElementsByTagName("input");
@@ -1887,11 +2021,11 @@
                                     return
                                 };
                                 if ($("codeCola-sameBorderColor").checked) {
-                                    setStyle(codeColaCurrentNode, "borderColor", color);
-                                    setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
+                                    CODECOLA.setStyle(codeColaCurrentNode, "borderColor", color);
+                                    CODECOLA.setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
                                     nodes[9].value = nodes[18].value = nodes[27].value = color;
                                 } else {
-                                    setStyle(codeColaCurrentNode, n, color);
+                                    CODECOLA.setStyle(codeColaCurrentNode, n, color);
                                 }
                             }
                         });
@@ -1904,8 +2038,8 @@
                     nodes[0].focus();
                     var color = nodes[0].value;
                     nodes[9].value = nodes[18].value = nodes[27].value = color;
-                    setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
-                    setStyle(codeColaCurrentNode, "borderColor", color);
+                    CODECOLA.setStyle([nodes[9], nodes[18], nodes[27]], "backgroundColor", color);
+                    CODECOLA.setStyle(codeColaCurrentNode, "borderColor", color);
                     nodes[9].disabled = nodes[18].disabled = nodes[27].disabled = true;
                 } else {
                     nodes[9].disabled = nodes[18].disabled = nodes[27].disabled = false;
@@ -1925,58 +2059,41 @@
             Z.on([width, height], "change", function(e) {
                 var that = this,
                     value = that.value;
-                setStyle(codeColaCurrentNode, that.name, value + "px");
+                CODECOLA.setStyle(codeColaCurrentNode, that.name, value + "px");
                 that.nextSibling.value = value;
             });
         }
     };
 
-    //init style
-    var showCurrentStyle = {
-        "colorNormal": function(editor, node, style) {
-            var rgb = getStyle(node, style);
-            setStyle(editor, "backgroundColor", rgb);
-            editor.value = Z.color.rgbToHex(rgb);
-        },
-        "fontSize": function(node) {
-            var value = getStyle(node, "fontSize").replace(/px/g, ""),
+    //init controls
+    var SHOW = {
+        "fontSize": function() {
+            var value = CODECOLA.getStyle(codeColaCurrentNode, "fontSize").replace(/px/g, ""),
                 editor = $("codeCola-fontSize");
             editor.value = editor.nextSibling.value = value;
         },
-        "lineHeight": function(node) {
-            var lineHeight = getStyle(node, "lineHeight");
-            //can't calculate a number value when line-height:normal
-            if(lineHeight == "normal"){
+        "lineHeight": function() {
+            var lineHeight = CODECOLA.getStyle(codeColaCurrentNode, "lineHeight");
+            //TODO:can't calculate a number value when line-height:normal
+            if (lineHeight == "normal") {
                 return;
             }
-            var value = lineHeight.replace(/px/g, "") / getStyle(node, "fontSize").replace(/px/g, ""),
+            var value = lineHeight.replace(/px/g, "") / CODECOLA.getStyle(codeColaCurrentNode, "fontSize").replace(/px/g, ""),
                 editor = $("codeCola-lineHeight");
             editor.value = value;
             editor.nextSibling.value = value;
         },
-        "fontFamily": function(node) {
-            //difficult
-            //$("codeCola-fontFamily").value = getStyle(node, "fontFamily");
+        "fontFamily": function() {
+            //TODO:无法获得生效字体
+            //$("codeCola-fontFamily").value = CODECOLA.getStyle(node, "fontFamily");
         },
-        "fontOther": function(node) {
-            if (getStyle(node, "fontWeight") == "bold") {
-                $("codeCola-fontWeight").checked = true;
-            } else {
-                $("codeCola-fontWeight").checked = false;
-            }
-            if (getStyle(node, "fontStyle") == "italic") {
-                $("codeCola-fontStyle").checked = true;
-            } else {
-                $("codeCola-fontStyle").checked = false;
-            }
-            if (getStyle(node, "textDecoration") == "underline") {
-                $("codeCola-textDecoration").checked = true;
-            } else {
-                $("codeCola-textDecoration").checked = false;
-            }
+        "fontOther": function() {
+            $("codeCola-fontWeight").checked = (CODECOLA.getStyle(codeColaCurrentNode, "fontWeight") == "bold");
+            $("codeCola-fontStyle").checked = (CODECOLA.getStyle(codeColaCurrentNode, "fontStyle") == "italic");
+            $("codeCola-textDecoration").checked = (CODECOLA.getStyle(codeColaCurrentNode, "textDecoration") == "underline");
         },
-        "textAlign": function(node) {
-            var align = getStyle(node, "textAlign"),
+        "textAlign": function() {
+            var align = CODECOLA.getStyle(codeColaCurrentNode, "textAlign"),
                 styles = [$("codeCola-textAlignLeft"), $("codeCola-textAlignCenter"), $("codeCola-textAlignRight")];
             for (var i = 0; i < 3; i++) {
                 var that = styles[i];
@@ -1986,14 +2103,14 @@
                 }
             }
         },
-        "color": function(node) {
+        "color": function() {
             CONTROLS.color.setColor({
-                "color": getStyle(node, "color"),
+                "color": CODECOLA.getStyle(codeColaCurrentNode, "color"),
                 "callback": false
             });
         },
-        "textShadow": function(node) {
-            var textShadow = getStyle(node, "textShadow"),
+        "textShadow": function() {
+            var textShadow = CODECOLA.getStyle(codeColaCurrentNode, "textShadow"),
                 value = [],
                 d = $("codeCola-textShadowDistance"),
                 size = $("codeCola-textShadowSize");
@@ -2023,16 +2140,16 @@
             d.value = d.nextSibling.value = value[1];
             size.value = size.nextSibling.value = value[2];
         },
-        "backgroundColor": function(node) {
-            var bgc = getStyle(node, "backgroundColor");
-            bgc = bgc == "rgba(0, 0, 0, 0)" ? "transparent" : bgc;
+        "backgroundColor": function() {
+            var bgc = CODECOLA.getStyle(codeColaCurrentNode, "backgroundColor");
+            //bgc = bgc == "rgba(0, 0, 0, 0)" ? "transparent" : bgc;
             CONTROLS.backgroundColor.setColor({
                 "color": bgc,
                 "callback": false
             });
         },
-        "backgroundImage": function(node) {
-            var gradient = getStyle(node, "backgroundImage");
+        "backgroundImage": function() {
+            var gradient = CODECOLA.getStyle(codeColaCurrentNode, "backgroundImage");
             if (!/linear/.test(gradient)) {
                 gradient = "";
             }
@@ -2041,13 +2158,42 @@
                 "callback": false
             });
         },
-        "opacity": function(node) {
-            var value = getStyle(node, "opacity"),
+        "webkitMaskImage": function() {
+            var v = CODECOLA.getStyle(codeColaCurrentNode, "webkitMaskImage");
+            if (!/linear/.test(v)) {
+                v = "";
+            }
+            CONTROLS.webkitMaskImage.setGradient({
+                "gradient": v,
+                "callback": false
+            });
+        },
+        "webkitBoxReflect": function() {
+            var v = CODECOLA.getStyle(codeColaCurrentNode, "webkitBoxReflect"),
+                controlOffset = $("codeCola-webkitBoxReflectOffset"),
+                g = '',
+                d = 'above',
+                o = 0;
+            if (v != 'none') {
+                g = v.match(/\-.+\)\)\)/)[0];
+                v = v.split(' ');
+                d = v[0];
+                o = v[1];
+            }
+            $("codeCola-webkitBoxReflectDirection").value = d;
+            controlOffset.value = controlOffset.nextSibling.value = o;
+            CONTROLS.webkitBoxReflectGradient.setGradient({
+                "gradient": g,
+                "callback": false
+            });
+        },
+        "opacity": function() {
+            var value = CODECOLA.getStyle(codeColaCurrentNode, "opacity"),
                 editor = $("codeCola-opacity");
             editor.value = editor.nextSibling.value = value;
         },
-        "boxShadow": function(node) {
-            var boxShadow = getStyle(node, "boxShadow"),
+        "boxShadow": function() {
+            var boxShadow = CODECOLA.getStyle(codeColaCurrentNode, "boxShadow"),
                 value = [],
                 inset = $("codeCola-boxShadowInset"),
                 outset = $("codeCola-boxShadowOutset"),
@@ -2087,24 +2233,22 @@
                 outset.checked = true;
             }
         },
-        "border": function(node) {
+        "border": function() {
             Z.each(["borderTopColor", "borderRightColor", "borderBottomColor", "borderLeftColor"], function(n) {
-                (function(n) {
-                    CONTROLS[n].setColor({
-                        "color": getStyle(node, n),
-                        "callback": false
-                    });
-                })(n);
+                CONTROLS[n].setColor({
+                    "color": CODECOLA.getStyle(codeColaCurrentNode, n),
+                    "callback": false
+                });
             });
             Z.each(["borderTopWidth", "borderRightWidth", "borderBottomWidth", "borderLeftWidth"], function(n) {
                 var widthEditor = $("codeCola-" + n);
-                widthEditor.value = widthEditor.nextSibling.value = getStyle(node, n).replace(/px/g, "");
+                widthEditor.value = widthEditor.nextSibling.value = CODECOLA.getStyle(codeColaCurrentNode, n).replace(/px/g, "");
             });
             Z.each(["borderTopStyle", "borderRightStyle", "borderBottomStyle", "borderLeftStyle"], function(n) {
-                $("codeCola-" + n).value = getStyle(node, n);
+                $("codeCola-" + n).value = CODECOLA.getStyle(codeColaCurrentNode, n);
             });
             Z.each(["borderRadiusTopLeft", "borderRadiusTopRight", "borderRadiusBottomLeft", "borderRadiusBottomRight"], function(n) {
-                var cRadius = getStyle(node, n),
+                var cRadius = CODECOLA.getStyle(codeColaCurrentNode, n),
                     radiusEditor = $("codeCola-" + n);
                 if (!cRadius) {
                     radiusEditor.value = radiusEditor.nextSibling.value = 0;
@@ -2113,25 +2257,25 @@
                 }
             });
         },
-        "listStyle": function(node) {
-            $("codeCola-listStyleType").value = getStyle(node, "listStyleType");
-            $("codeCola-listStylePosition").value = getStyle(node, "listStylePosition");
+        "listStyle": function() {
+            $("codeCola-listStyleType").value = CODECOLA.getStyle(codeColaCurrentNode, "listStyleType");
+            $("codeCola-listStylePosition").value = CODECOLA.getStyle(codeColaCurrentNode, "listStylePosition");
         },
-        "layout": function(node) {
+        "layout": function() {
             Z.each(["paddingTop", "paddingRight", "paddingBottom", "paddingLeft"], function(n) {
                 var paddingEditor = $("codeCola-" + n);
-                paddingEditor.value = paddingEditor.nextSibling.value = getStyle(node, n).replace(/px/g, "");
+                paddingEditor.value = paddingEditor.nextSibling.value = CODECOLA.getStyle(codeColaCurrentNode, n).replace(/px/g, "");
             });
             Z.each(["marginTop", "marginRight", "marginBottom", "marginLeft"], function(n) {
                 var marginEditor = $("codeCola-" + n);
-                marginEditor.value = marginEditor.nextSibling.value = getStyle(node, n).replace(/px/g, "");
+                marginEditor.value = marginEditor.nextSibling.value = CODECOLA.getStyle(codeColaCurrentNode, n).replace(/px/g, "");
             });
         },
-        "size": function(node) {
+        "size": function() {
             var width = $("codeCola-width"),
                 height = $("codeCola-height"),
-                cWidth = getStyle(node, "width"),
-                cHeight = getStyle(node, "height");
+                cWidth = CODECOLA.getStyle(codeColaCurrentNode, "width"),
+                cHeight = CODECOLA.getStyle(codeColaCurrentNode, "height");
             if (cWidth != "auto") {
                 width.value = width.nextSibling.value = cWidth.replace(/px/g, "");
             }
@@ -2141,48 +2285,18 @@
         }
     };
 
-    function showCurrentStyleFun(items) {
-        if (!items) {
-            items = LOADER["all"];
-        }
-        if (typeof items == "string") {
-            showCurrentStyle[items](codeColaCurrentNode);
-            return;
-        }
-        Z.each(items, function(n) {
-            showCurrentStyle[n](codeColaCurrentNode);
-        });
-    }
-
-    function updateStyles() {
-        if (!codeColaCurrentNode || ccdrag || !window.codeColaTurnOn) {
-            return;
-        } //fix -webkit-user-select
-        var style = getStyle(codeColaCurrentNode);
-        if (!style) {
-            NODE_cStyle.value = "";
-        } else {
-            NODE_cStyle.value = getCombinedStyle(style);
-        }
-    }
-
-    function updateCurrentNode(nodes, selector) {
-        NODE_currentNode.title = selector;
-        NODE_currentNode.firstChild.nodeValue = selector.length > 15 ? selector.substring(0, 12) + "..." : selector;
-        NODE_cNodeCount.firstChild.nodeValue = nodes.length ? nodes.length : 0;
-    }
-
-    //init EVENTS
+    //init controls
     Z.each(LOADER.all, function(citem) {
         var li = document.createElement("li");
-        li.innerHTML = HTMLS[citem];
-        NODE_itemsWrap.appendChild(li);
+        li.innerHTML = HTML[citem];
         Z.addClass(li, "codeCola-item");
         li.id = "codeCola-item-" + citem;
+        NODE_itemsWrap.appendChild(li);
         EVENTS[citem]();
     });
 
     //show current node
+    //TODO: can't stop event sametimes
     var NODE_mask = document.createElement("ccmask"),
         NODE_tempNode, NODE_tempNode2;
     NODE_mask.id = "codeCola-mask";
@@ -2198,12 +2312,9 @@
             p = Z.getXY(target),
             x = p.x,
             y = p.y;
-        
+
         NODE_tempNode = target;
-        Z.setStyle(NODE_mask, 'left', x + "px");
-        Z.setStyle(NODE_mask, 'top', y + "px");
-        Z.setStyle(NODE_mask, 'width', width + "px");
-        Z.setStyle(NODE_mask, 'height', height + "px");
+        NODE_mask.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + width + 'px;height:' + height + 'px;pointer-events:none;';
     });
     Z.on(document.body, "mouseout", function(e) {
         if (!window.codeColaTurnOn) {
@@ -2249,7 +2360,7 @@
                 mutilNodes.push(target);
                 Z.addClass(target, CLASS_selecting);
             }
-            updateCurrentNode(mutilNodes, "mix");
+            CODECOLA.updateCurrentNode(mutilNodes, "mix");
         } else {
             mutilStart = false;
             mutilNodes = [];
@@ -2386,24 +2497,24 @@
             n.disabled = false;
         });
         Z.each(LOADER.all, function(n) {
-            setStyle($("codeCola-item-" + n), "display", "");
+            Z.setStyle($("codeCola-item-" + n), "display", "");
         });
         codeColaCurrentNode = node;
         var isShow = Z.hasClass(NODE_codecola, "codeCola-allOpen");
         Z.each(items, function(n) {
             var li = $("codeCola-item-" + n);
             li.style.display = "block";
-            showCurrentStyleFun(n);
+            CODECOLA.initControls(n);
             if (isShow && !Z.hasClass(li, "codeCola-item-open")) {
                 Z.addClass(li, "codeCola-item-open");
             }
         });
 
-        miniOptin.open();
+        CODECOLA.miniOptin.open();
         NODE_itemsWrap.className = "";
-        updateCurrentNode(codeColaCurrentNode, selector);
-        updateStyles();
-        updateNotes();
+        CODECOLA.updateCurrentNode(codeColaCurrentNode, selector);
+        CODECOLA.updateStyle();
+        CODECOLA.updateNote();
     }
 
     //open or close controls
@@ -2425,14 +2536,14 @@
             propertys = data.split(","),
             mutil = that.getAttribute("mutil");
         Z.each(propertys, function(n) {
-            setStyle(codeColaCurrentNode, n, "");
+            CODECOLA.setStyle(codeColaCurrentNode, n, "");
             cssStuff[n] = "";
             if (!mutil) {
-                showCurrentStyle[n](codeColaCurrentNode);
+                CODECOLA.initControls(n);
             }
         });
         if (mutil) {
-            showCurrentStyle[mutil](codeColaCurrentNode);
+            CODECOLA.initControls(mutil);
         }
     });
 
@@ -2448,7 +2559,7 @@
             selects = divWrap.getElementsByTagName("select");
         if (/cc-close/.test(className)) {
             Z.each(propertys, function(n) {
-                setStyle(codeColaCurrentNode, n, cssStuff[n]);
+                CODECOLA.setStyle(codeColaCurrentNode, n, cssStuff[n]);
             });
             if (data != "backgroundImage") {
                 Z.each(inputs, function(c) {
@@ -2464,8 +2575,8 @@
             that.title = getMSG("opt_hide");
         } else {
             Z.each(propertys, function(n) {
-                cssStuff[n] = getStyle(codeColaCurrentNode, n);
-                setStyle(codeColaCurrentNode, n, "");
+                cssStuff[n] = CODECOLA.getStyle(codeColaCurrentNode, n);
+                CODECOLA.setStyle(codeColaCurrentNode, n, "");
             });
             if (data != "backgroundImage") {
                 Z.each(inputs, function(c) {
@@ -2483,17 +2594,16 @@
     });
 
     //open all controls
-    var openAll = $("codeCola-open-all");
-    Z.on(openAll, "click", function(e) {
+    Z.on($("codeCola-open-all"), "click", function(e) {
         var lis = Z.getElementsByClassName("codeCola-item");
         if (Z.hasClass(NODE_codecola, "codeCola-allOpen")) {
-            openAll.title = getMSG("opt_unfoldAll");
+            this.title = getMSG("opt_unfoldAll");
             Z.removeClass(NODE_codecola, "codeCola-allOpen");
             Z.each(lis, function(n) {
                 Z.removeClass(n, "codeCola-item-open");
             });
         } else {
-            openAll.title = getMSG("opt_foldAll");
+            this.title = getMSG("opt_foldAll");
             Z.addClass(NODE_codecola, "codeCola-allOpen");
             Z.each(lis, function(n) {
                 Z.addClass(n, "codeCola-item-open");
@@ -2502,33 +2612,20 @@
     });
 
     //min
-    var miniOptin = {
-        "node": $("codeCola-fold"),
-        "close": function() {
-            var that = this.node;
-            that.className = "";
-            that.title = getMSG("opt_unfold");
-        },
-        "open": function() {
-            var that = this.node;
-            that.className = "cc-close";
-            that.title = getMSG("opt_fold");
-        }
-    };
     Z.on("codeCola-fold", "click", function(e) {
         var that = this;
         if (that.className == "cc-close") {
-            miniOptin.close();
+            CODECOLA.miniOptin.close();
             NODE_itemsWrap.className = "cc-close";
         } else {
-            miniOptin.open();
+            CODECOLA.miniOptin.open();
             NODE_itemsWrap.className = "";
         }
     });
 
     //show current node
     Z.on(NODE_showCurrentNode, "mouseover", function(e) {
-        if (!window.codeColaTurnOn || !codeColaCurrentNode || mutilStart) {
+        if (!codeColaCurrentNode || mutilStart) {
             return
         }
         Z.each(codeColaCurrentNode, function(n) {
@@ -2536,7 +2633,7 @@
         });
     });
     Z.on(NODE_showCurrentNode, "mouseout", function(e) {
-        if (!window.codeColaTurnOn || !codeColaCurrentNode || mutilStart) {
+        if (!codeColaCurrentNode || mutilStart) {
             return
         }
         Z.each(codeColaCurrentNode, function(n) {
@@ -2574,18 +2671,7 @@
         }
     });
 
-    //add note		
-    function updateNotes() {
-        if (!window.codeColaTurnOn || !codeColaCurrentNode) {
-            return;
-        }
-        var iconId = getAttr(codeColaCurrentNode, "codeColaNoteIcon");
-        if (iconId) {
-            NODE_cNote.value = $(iconId).innerHTML.replace(/<br>/g, "\n").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, "\"").replace(/&apos;/g, "'");
-        } else {
-            NODE_cNote.value = "";
-        }
-    }
+    //add note
     Z.on("codeCola-getNote", "click", function(e) {
         var that = this;
         if (Z.hasClass(that, "cc-open")) {
@@ -2619,8 +2705,8 @@
                     Z.addClass(node, s);
                     i.className = "codeCola-note";
                     i.innerHTML = filter(value);
-                    setStyle(i, "top", xy.y + node.clientHeight - 2 + "px");
-                    setStyle(i, "left", xy.x + "px");
+                    Z.setStyle(i, "top", xy.y + node.clientHeight - 2 + "px");
+                    Z.setStyle(i, "left", xy.x + "px");
                     node.setAttribute("codeColaNoteIcon", s);
                     Z.on(i, "mouseover", function(e) {
                         Z.addClass(node, "codeCola-selecting");
@@ -2654,7 +2740,7 @@
         if (!window.codeColaTurnOn || !codeColaCurrentNode || mutilStart) {
             return
         }
-        showCurrentStyleFun();
+        CODECOLA.initControls();
     });
 
     //get HTML
@@ -2667,7 +2753,7 @@
             success: function(o) {
                 var r = o.responseText.replace(/<\/head>/i, "<style>" + STYLE_codeCola + "</style></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                     var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, "").replace(/("|')$/, "");
-                    return url.replace(rUrl, getAbsolutePath(rUrl));
+                    return url.replace(rUrl, Z.getAbsolutePath(rUrl));
                 });
 
                 if (NODE_notesWrap.innerHTML != "") {
@@ -2701,7 +2787,7 @@
                 success: function(o) {
                     var r = o.responseText.replace(/<\/head>/i, "<link rel='stylesheet' href='" + css + "'></head>").replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                         var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, "").replace(/("|')$/, "");
-                        return url.replace(rUrl, getAbsolutePath(rUrl));
+                        return url.replace(rUrl, Z.getAbsolutePath(rUrl));
                     });
                     if (NODE_notesWrap.innerHTML != "") {
                         r = r.replace(/<\/html>/i, NODE_notesWrap.innerHTML + SCRIPT_codeCola + "</html>");
@@ -2755,8 +2841,8 @@
         Z.setStyle(document.documentElement, "webkitUserSelect", "none");
         ccdrag = true;
         //NODE_codecola.style.opacity = 0.8;
-        preXY.x = e.pageX + (getStyle(NODE_codecola, "right").replace("px", "") - 0);
-        preXY.y = e.pageY - (getStyle(NODE_codecola, "top").replace("px", "") - 0);
+        preXY.x = e.pageX + (Z.getStyle(NODE_codecola, "right").replace("px", "") - 0);
+        preXY.y = e.pageY - (Z.getStyle(NODE_codecola, "top").replace("px", "") - 0);
     });
     Z.on(document, "mouseup", function(e) {
         if (ccdrag) {
@@ -2766,12 +2852,10 @@
         }
     });
     Z.on(document, "mousemove", function(e) {
-        //need test
         if (!ccdrag || e.clientY < 10) {
             return;
         }
-        setStyle(NODE_codecola, "top", (e.pageY - preXY.y) + "px");
-        setStyle(NODE_codecola, "right", (preXY.x - e.pageX) + "px");
+        NODE_codecola.style.cssText = 'top:' + (e.pageY - preXY.y) + 'px;right:' + (preXY.x - e.pageX) + 'px;';
     });
 
     //unload when editor

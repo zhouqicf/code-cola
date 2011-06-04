@@ -74,6 +74,9 @@
   "opt_hideNote": {
   	"message": "hide note"
   },
+	"style_pattern": {
+		"message": "css3 patterns"
+	},
   "style_fz": {
   	"message": "Font Size"
   },
@@ -128,6 +131,21 @@
   "style_bc": {
   	"message": "Background Color"
   },
+	"style_wmi": {
+  	"message": "Mask"
+  },
+	"style_wbr": {
+  	"message": "Reflections"
+  },
+	"style_wbr_d": {
+  	"message": "direction"
+  },
+	"style_wbr_o": {
+  	"message": "offset"
+  },
+	"style_wbr_g": {
+  	"message": "gradient"
+  },
   "style_lg": {
   	"message": "Linear Gradient"
   },
@@ -180,4 +198,3 @@
   	"message": "Code Cola: The modification hasn't been saved."
   }
 }
-

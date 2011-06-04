@@ -5,19 +5,16 @@
 <script>
 var isOn = {};
 chrome.browserAction.onClicked.addListener(function(tab) {
-		var error = null,id = tab.id;
+		var id = tab.id;
 		if(tab.url.indexOf("https://chrome.google.com") == 0 || tab.url.indexOf("chrome://") == 0 || tab.url.indexOf("googleusercontent.com") == 0){
-        	error = chrome.i18n.getMessage("error_google");
+        	alert(chrome.i18n.getMessage("error_google"));
+            return;
 		}else if(tab.url.indexOf("file:///") == 0){
-			error = chrome.i18n.getMessage("error_local");
+			alert(chrome.i18n.getMessage("error_local"));
+            return;
 		}
-		if(error){
-			alert(error);
-			return;
-		}
-		chrome.tabs.executeScript(id, {file: "codecola.js"},function(){
-			chrome.tabs.insertCSS(id, {file: "codecola.css"});
-		});
+        chrome.tabs.insertCSS(id, {file: "codecola.css"});
+		chrome.tabs.executeScript(id, {file: "codecola.js"});
 		if(!isOn[id]){
 			chrome.browserAction.setTitle({"tabId":id,"title":"code cola(on)"});
 			chrome.browserAction.setIcon({"tabId":id,"path":"cc-on.png"});

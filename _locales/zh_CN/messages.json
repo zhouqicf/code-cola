@@ -74,6 +74,9 @@
   "opt_hideNote": {
   	"message": "隐藏注释"
   },
+	"style_pattern": {
+		"message": "模式库"
+	},
   "style_fz": {
   	"message": "字号"
   },
@@ -130,6 +133,21 @@
   },
   "style_lg": {
   	"message": "线性渐变"
+  },
+	"style_wmi": {
+  	"message": "遮罩"
+  },
+	"style_wbr": {
+  	"message": "反射"
+  },
+	"style_wbr_d": {
+  	"message": "方向"
+  },
+	"style_wbr_o": {
+  	"message": "距离"
+  },
+	"style_wbr_g": {
+  	"message": "渐变"
   },
   "style_op": {
   	"message": "透明度"
