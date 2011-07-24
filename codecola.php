@@ -5,7 +5,7 @@
  */
 //Cross domain: http://www.w3.org/TR/cors/#access-control-allow-origin-response-hea
 //It's very dangerous, anyone can send any content to your server, make sure only someone you trust have access to visit this action page.
-header("Access-Control-Allow-Headers: Content-type");
+header("Access-Control-Allow-Headers: Content-type, x-requested-with");
 header("Access-Control-Allow-Origin: *");
 header("Content-type: text/html; charset: utf-8");
 

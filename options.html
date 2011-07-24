@@ -109,7 +109,7 @@ footer{
 </head>
 <body>
 <header>
-  <h1>Code Cola<sup class="version">V2.4.0</sup></h1>
+  <h1>Code Cola<sup class="version">V3.0.0</sup></h1>
 </header>
 <section id="main">
 	<aside>
@@ -131,7 +131,7 @@ $fileName = <span class="keyword">time</span>();</code></pre>
     <div class="item">
         <h2>3. Set Action Url</h2>
         <form id="form">
-          <input type="url" id="action" required autofocus placeholder="For example: http://kxt.koubei.com/codecola/action.php" pattern="^(http|https):\/\/\w+\.(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$">
+          <input type="url" id="action" required autofocus placeholder="For example: http://kxt.koubei.com/codecola/action.php" pattern="^([^:]+):\/\/(?:([^:@]+):?([^@]*)@)?(?:([^/?#:]+):?(\d*))([^?#]*)(?:\?([^#]+))?(?:#(.+))?$">
           <input type="submit" value="save">
           <span id="info"></span>
         </form>
@@ -140,7 +140,7 @@ $fileName = <span class="keyword">time</span>();</code></pre>
 </section>
 <footer>
     <p id="codeCola-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>
-    <p id="codeCola-author">© 2010 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>
+    <p id="codeCola-author">© 2010-2011 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>
 </footer>
 <script>
 var info = document.getElementById("info");
@@ -148,7 +148,7 @@ document.getElementById("form").addEventListener("submit",
 function(e) {
   e.preventDefault();
   var action = document.getElementById("action").value;
-  if (/^(http|https):\/\/\w+(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?$/.test(action)) {
+  if (/^([^:]+):\/\/(?:([^:@]+):?([^@]*)@)?(?:([^/?#:]+):?(\d*))([^?#]*)(?:\?([^#]+))?(?:#(.+))?$/.test(action)) {
     localStorage["codecola_getLink_action"] = action;
     localStorage["codecola_stylesheet"] = action.replace(/\/\w+\.\w+$/, "/codecola.css");
     info.innerHTML = "Options Saved.";

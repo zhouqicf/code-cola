@@ -1,0 +1,76 @@
+.codecola-gradient-wrap{
+  font:12px/1.5 Arial,sans-serif;
+}
+.codecola-gradient-panel{
+	height:40px;
+	border:1px solid #999;
+}
+.codecola-gradient-panel-wrap{
+	background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRF1tbW19fX////Y8ywewAAADxJREFUeNp8jUEKACAIwGb/f7RJKmnhQA9jKMuRDTa3MJMCOdSiCRgL/OpbxMoy0v6+CLr4FgwFVagAAwDFWQFzWaf+pQAAAABJRU5ErkJggg==) repeat 0 0;	
+}
+.codecola-gradient-stops{
+	height:20px;
+	position:relative;
+	margin-bottom:10px;
+  cursor:pointer;
+}
+.codecola-gradient-stop{
+  height:7px;
+  width:7px;
+  padding:1px;
+  border:1px solid #666;
+  top:6px;
+  position:absolute;
+  cursor:default;
+}
+.codecola-gradient-stop.codecola-gradient-stop-select{
+  border-color:#000;
+}
+.codecola-gradient-stop:before{
+  content:"\20";
+  width:0;
+  height:0;
+  border:5px solid rgba(0,0,0,0);
+  border-bottom-color:#666;
+  position:absolute;
+  top:-11px;
+  left:-1px;
+}
+.codecola-gradient-stop.codecola-gradient-stop-select:before{
+  border-bottom-color:#000;
+}
+.codecola-gradient-stop:after{
+  content:"\20";
+  width:7px;
+  height:7px;
+  border:1px solid #fff;
+  position:absolute;
+  top:0;
+  left:0;
+}
+.codecola-gradient-location{
+	width:45px;
+}
+.codecola-gradient-label{
+  width:55px;
+  display:inline-block;
+  font-size:11px;
+  -webkit-text-size-adjust:none;
+}
+.codecola-gradient-wrap .codecola-gradient-color{
+  padding-left:58px;
+  margin-top:-18px;
+}
+.codecola-gradient-stop-delete{
+  padding-left:55px;
+}
+.codecola-gradient-orientation-wrap{
+  padding-bottom:10px;
+  border-bottom:1px solid #999;
+}
+.codecola-gradient-stop-detail{
+  padding-top:10px;
+}
+.codecola-gradient-location-wrap{
+	margin:5px 0;
+}
