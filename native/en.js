@@ -11,7 +11,7 @@ codecola.i18n =
     "message": "code cola"
   },
   "description": {
-    "message": "code cola is a chrome extension for editing online pages. It enables visual desigers, interactive designer, operators and others to modify online pages' css style visually."
+    "message": "code cola is a chrome extension for editing online pages' css style visually."
   },
   "error_google": {
     "message": "For security reasons,code cola cannot run content scripts at some pages of google."

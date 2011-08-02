@@ -3,7 +3,7 @@
     "message": "code cola"
   },
   "description": {
-    "message": "code cola是一个编辑在线页面样式的chrome插件。它的产生是为了让一些不会使用firebug的视觉、交互、运营等同学能够快速、方便地修改在线页面。"
+    "message": "code cola是一个可视化编辑在线页面css样式的chrome插件。"
   },
   "error_google": {
     "message": "由于安全限制，code cola无法在一些google的页面上运行。"
