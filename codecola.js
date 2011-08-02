@@ -175,7 +175,7 @@ YUI().add('codecola', function(Y) {
                 mutilNodes = Y.all('codecola-nodelist'),
                 mutilStart = false;
 
-            Y.one('body').append(NODE_mask);
+            Y.one('html').append(NODE_mask);
 
             Y.on('mouseover', function(e) {
                 var target = e.target;
@@ -187,7 +187,7 @@ YUI().add('codecola', function(Y) {
                     height = target.get('offsetHeight') - 2,
                     p = target.getXY();
                 NODE_tempNode = e.target;
-                NODE_mask.setAttribute('style', 'left:' + p[0] + 'px;top:' + p[1] + 'px;width:' + width + 'px;height:' + height + 'px;pointer-events:none;');
+                NODE_mask.setAttribute('style', 'left:' + p[0] + 'px;top:' + p[1] + 'px;width:' + width + 'px;height:' + height + 'px;');
             }, 'body');
             Y.on('mouseout', function(e) {
                 if (!window.codeColaTurnOn) {
@@ -195,26 +195,14 @@ YUI().add('codecola', function(Y) {
                 }
                 NODE_mask.setStyle('left', '-2000px');
             }, 'body');
-            Y.on('click', function(e) {
+            //TODO: yui3 support event capture?
+            document.body.addEventListener('click', function(e) {
                 if (!window.codeColaTurnOn) {
                     return;
                 }
                 e.preventDefault();
-            }, 'body');
-            Y.on('mousedown', function(e) {
-                //pc mouse is 2; mac touch pad is 3;
-                if (!window.codeColaTurnOn || e.button == 3 || e.button == 2) {
-                    return;
-                }
-                e.preventDefault();
-                NODE_mask.setStyle('pointer-events', 'auto');
-            }, 'body');
-            Y.on('mouseup', function(e) {
-                if (!window.codeColaTurnOn || e.button == 3 || e.button == 2) {
-                    return;
-                }
-                e.preventDefault();
-                NODE_mask.setStyle('pointer-events', 'none');
+                e.stopPropagation();
+                NODE_tempNode = Y.one(e.target);
                 //mac command key: e.metaKey
                 if (e.ctrlKey == 1 || e.metaKey) {
                     mutilStart = true;
@@ -238,7 +226,7 @@ YUI().add('codecola', function(Y) {
                     mutilStart = false;
                     mutilNodes = Y.all('codecola-nodelist');
                 }
-            }, 'body');
+            }, true);
             Y.on('keyup', function(e) {
                 if (window.codeColaTurnOn && (e.keyCode == 17 || e.keyCode == 224 || e.keyCode == 91) && !mutilNodes.isEmpty()) {
                     mutilNodes.removeClass(CLASS_selecting);
@@ -634,7 +622,7 @@ YUI().add('codecola', function(Y) {
                             NODE_getHtmlContent.set('value', 'loadding...');
                         },
                         success: function(id, o) {
-                            var r = o.responseText.replace(/<\/head>/i, '<style>' + Y.codecola.STYLE_codeCola + '</style></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/<ccmask.+\/ccmask>/, '').replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                            var r = o.responseText.replace(/<\/head>/i, '<style>' + Y.codecola.STYLE_codeCola + '</style></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                                 var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, '').replace(/("|')$/, '');
                                 return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                             });
@@ -675,7 +663,7 @@ YUI().add('codecola', function(Y) {
                                 NODE_getLinkContent.set('value', 'loadding...');
                             },
                             success: function(id, o) {
-                                var r = o.responseText.replace(/<\/head>/i, '<link rel="stylesheet" href="' + css + '"></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/<ccmask.+\/ccmask>/, '').replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                                var r = o.responseText.replace(/<\/head>/i, '<link rel="stylesheet" href="' + css + '"></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                                     var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, '').replace(/("|')$/, '');
                                     return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                                 });

@@ -659,6 +659,7 @@ codeCola-current-info:after {
 	left:-100px;
 	border:1px solid blue;
 	background-color:rgba(0,0,150,0.2);
+    pointer-events:none;
 }
 /*.codeCola-pattern{*/
 	/*height:50px;*/
