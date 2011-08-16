@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
-version: 3.0.1
+version: 3.1.0
 */
 (function(){
 
@@ -138,7 +138,7 @@ YUI().add('codecola', function(Y) {
                 '   <div id="codeCola-about-content">'+
                 '       <div id="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
                 '           <cctitle id="codeCola-about-name">Code Cola</cctitle>'+
-                '           <p id="codeCola-about-version">v3.0.1</p>'+
+                '           <p id="codeCola-about-version">v3.1.0</p>'+
                 '       </div>'+
                 '       <div id="codeCola-about-detail">'+
                 '           <p id="codeCola-about-doc">Code Cola'+
@@ -825,6 +825,7 @@ YUI().add('codecola', function(Y) {
                         r = cssRules[list[1]],
                         b = cssRules[list[2]],
                         l = cssRules[list[3]];
+                    space = space?space:' ';
                     if (t || r || b || l) {
                         t = t ? t : defaultValue;
                         r = r ? r : defaultValue;
@@ -844,13 +845,8 @@ YUI().add('codecola', function(Y) {
                 }
                 var s = styles[i].split(/:(?!\/\/)/),
                     //url(http://xxx)
-                    s0 = Y.Lang.trim(s[0]),
+                    s0 = Y.Lang.trim(s[0]).replace(/-webkit-|-o-|-ms-|-moz-/, ''),
                     s1 = Y.Lang.trim(s[1]);
-                /*
-                cssRules[s0] = s1.replace(/rgb\([^\)]+\)/g, function(color) {
-                    return Z.color.rgbToHex(color);
-                });
-                */
                 cssRules[s0] = s1;
             }
             //combine border
@@ -864,8 +860,7 @@ YUI().add('codecola', function(Y) {
                     'border-bottom': borderBottom,
                     'border-left': borderLeft
                 };
-            if (
-            typeof cssRules[borderTop[0]] != 'undefined' && typeof cssRules[borderTop[1]] != 'undefined' && typeof cssRules[borderTop[2]] != 'undefined' && cssRules[borderTop[0]] == cssRules[borderRight[0]] && cssRules[borderTop[0]] == cssRules[borderBottom[0]] && cssRules[borderTop[0]] == cssRules[borderLeft[0]] && cssRules[borderTop[1]] == cssRules[borderRight[1]] && cssRules[borderTop[1]] == cssRules[borderBottom[1]] && cssRules[borderTop[1]] == cssRules[borderLeft[1]] && cssRules[borderTop[2]] == cssRules[borderRight[2]] && cssRules[borderTop[2]] == cssRules[borderBottom[2]] && cssRules[borderTop[2]] == cssRules[borderLeft[2]]) {
+            if (typeof cssRules[borderTop[0]] != 'undefined' && typeof cssRules[borderTop[1]] != 'undefined' && typeof cssRules[borderTop[2]] != 'undefined' && cssRules[borderTop[0]] == cssRules[borderRight[0]] && cssRules[borderTop[0]] == cssRules[borderBottom[0]] && cssRules[borderTop[0]] == cssRules[borderLeft[0]] && cssRules[borderTop[1]] == cssRules[borderRight[1]] && cssRules[borderTop[1]] == cssRules[borderBottom[1]] && cssRules[borderTop[1]] == cssRules[borderLeft[1]] && cssRules[borderTop[2]] == cssRules[borderRight[2]] && cssRules[borderTop[2]] == cssRules[borderBottom[2]] && cssRules[borderTop[2]] == cssRules[borderLeft[2]]) {
                 if (cssRules[borderTop[1]] == 'none' || cssRules[borderTop[0]] == '0px') {
                     cssRules['border'] = 'none';
                 } else {
@@ -886,22 +881,35 @@ YUI().add('codecola', function(Y) {
                 }
             }
             //combine padding
-            layoutFun(['padding-top', 'padding-right', 'padding-bottom', 'padding-left'], 'padding', '0px', ' ');
+            layoutFun(['padding-top', 'padding-right', 'padding-bottom', 'padding-left'], 'padding', '0px');
             //combine margin
-            layoutFun(['margin-top', 'margin-right', 'margin-bottom', 'margin-left'], 'margin', '0px', ' ');
+            layoutFun(['margin-top', 'margin-right', 'margin-bottom', 'margin-left'], 'margin', '0px');
             //combine border-radius
             layoutFun(['border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius'], 'border-radius', '0px 0px', ',');
 
+            //webkit only
+            if(i == 'mask-image' || i == 'box-reflect'){
+                i = '-webkit-' + i;
+            }
 
             for (var i in cssRules) {
-                //css3
-                if (i == '-webkit-box-shadow') {
+                if (i == 'font-family') {
+                    styleProperty += 'font-family:' + escape(cssRules[i].replace(/\s*,\s*/g, ',')).replace(/%/g, '\\').replace(/\\2C/g, ',').replace(/\\20/g, ' ').replace(/\\27/g, '"') + ';';
+                }else if (i == 'box-shadow') {
                     styleProperty += ('-webkit-box-shadow:' + cssRules[i] + ';-moz-box-shadow:' + cssRules[i] + ';box-shadow:' + cssRules[i] + ';');
                 } else if (i == 'border-radius') {
-                    styleProperty += ('-moz-border-radius:' + cssRules[i] + ';border-radius:' + cssRules[i] + ';');
+                    styleProperty += ('-webkit-border-radius:' + cssRules[i] + ';-moz-border-radius:' + cssRules[i] + ';border-radius:' + cssRules[i] + ';');
                 } else if (i == 'background-image') {
                     var _gradients = this.backgroundImage.gradient.getGradient(true);
                     styleProperty += ('background-image:' + _gradients.webkit + ';background-image:' + _gradients.moz + ';background-image:' + _gradients.o + ';background-image:' + _gradients.ms + ';');
+                } else if (i == 'transform') {
+                    styleProperty += ('-webkit-transform:' + cssRules[i] + ';-moz-transform:' + cssRules[i] + ';-o-transform:' + cssRules[i] + ';-ms-transform:' + cssRules[i] + ';transform:' + cssRules[i] + ';');
+                } else if (/transform-origin/.test(i)) {
+                    cssRules['transform-origin-x'] = cssRules['transform-origin-x']?cssRules['transform-origin-x']:'50%';
+                    cssRules['transform-origin-y'] = cssRules['transform-origin-y']?cssRules['transform-origin-y']:'50%';
+                    cssRules['transform-origin'] = cssRules['transform-origin-x'] == cssRules['transform-origin-y']?cssRules['transform-origin-x']:cssRules['transform-origin-x'] + ' ' + cssRules['transform-origin-y'];
+                    deleteFun(['transform-origin-x', 'transform-origin-y']);
+                    styleProperty += ('-webkit-transform-origin:' + cssRules['transform-origin'] + ';-moz-transform-origin:' + cssRules['transform-origin'] + ';-o-transform-origin:' + cssRules['transform-origin'] + ';-ms-transform-origin:' + cssRules['transform-origin'] + ';transform-origin:' + cssRules['transform-origin'] + ';');
                 } else {
                     styleProperty += i + ':' + cssRules[i] + ';';
                 }
@@ -1125,13 +1133,13 @@ YUI().add('codecola', function(Y) {
 
         ATTRS:{
             plugs: {
-                value: (function(){
+                value: function(){
                     var LOADER = {
                         webkit: ['webkitMaskImage', 'webkitBoxReflect'],
-                        all: ['listStyle', 'fontSize', 'lineHeight', 'fontFamily', 'fontOther', 'color', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'border', 'layout', 'size'],
-                        normal: ['fontSize', 'lineHeight', 'fontFamily', 'fontOther', 'color', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'border', 'layout', 'size'],
-                        list: ['listStyle', 'fontSize', 'lineHeight', 'fontFamily', 'fontOther', 'color', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'border', 'layout', 'size'],
-                        img: ['size', 'backgroundColor', 'backgroundImage', 'opacity', 'border', 'boxShadow', 'layout']
+                        all: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
+                        normal: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
+                        list: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
+                        img: ['size', 'border', 'boxShadow', 'transform', 'opacity', 'backgroundColor', 'backgroundImage', 'layout']
                     };
                     if(Y.UA.webkit){
                         LOADER.all = LOADER.all.concat(LOADER.webkit);
@@ -1141,7 +1149,7 @@ YUI().add('codecola', function(Y) {
                     }
                     LOADER['li'] = LOADER['ol'] = LOADER['ul'] = LOADER.list;
                     return LOADER;
-                })()
+                }()
             },
             getLinkAction: {
                 validator: function(val){
@@ -1150,7 +1158,7 @@ YUI().add('codecola', function(Y) {
             }
         }
     });
-}, '3.0.1', {requires:['codecola-i18n', 'codecola-color', 'codecola-plugs', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
+}, '3.1.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
 
 YUI().use('codecola', function(Y){
     var _codeCola = new Y.codecola({
@@ -1159,7 +1167,7 @@ YUI().use('codecola', function(Y){
     });
 
     var plugs = window.codecola.plug;
-    Y.each([plugs.listStyle, plugs.fontSize, plugs.lineHeight, plugs.fontFamily, plugs.fontOther, plugs.color, plugs.textAlign, plugs.textShadow, plugs.backgroundColor, plugs.backgroundImage, plugs.opacity, plugs.boxShadow, plugs.border, plugs.layout, plugs.size, plugs.webkitMaskImage, plugs.webkitBoxReflect], function(plug){
+    Y.each([plugs.listStyle, plugs.fontSize, plugs.lineHeight, plugs.fontFamily, plugs.fontOther, plugs.color, plugs.textAlign, plugs.textShadow, plugs.backgroundColor, plugs.backgroundImage, plugs.opacity, plugs.boxShadow, plugs.border, plugs.layout, plugs.size, plugs.webkitMaskImage, plugs.webkitBoxReflect, plugs.transform], function(plug){
         _codeCola.plug(plug);
     });
 

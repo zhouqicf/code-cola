@@ -74,23 +74,93 @@ codecola.plug.lineHeight.prototype.sync = function(CODECOLA, Y){
 codecola.plug.fontFamily = function(config) {};
 codecola.plug.fontFamily.NS = "fontFamily";
 codecola.plug.fontFamily.prototype.render = function(CODECOLA){
+    //TODO android and ios typeface
     CODECOLA.renderPlug(
         '<li id="codeCola-item-fontFamily">'+
         '   <cctitle><label for="codeCola-fontFamily">' + CODECOLA.chromeGetMSG("style_ff") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="fontFamily"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="fontFamily"></cci></cctitle>' +
         '   <div class="codeCola-editorWrap">' +
         '       <select id="codeCola-fontFamily" name="fontFamily">' +
-        '	        <optgroup label="Chinese">' +
-        '	            <option selected="seleted" value="\u5B8B\u4F53,Serif">' + CODECOLA.chromeGetMSG("style_ff_simsun") + '</option>' +
-        '               <option value="\u5FAE\u8F6F\u96C5\u9ED1,\u9ED1\u4F53,Sans-Serif">' + CODECOLA.chromeGetMSG("style_ff_MSYH") + '</option>' +
-        '               <option value="\u9ED1\u4F53,Sans-Serif">' + CODECOLA.chromeGetMSG("style_ff_simhei") + '</option>' +
-        '               <option value="\u5E7C\u5706,Sans-Serif">' + CODECOLA.chromeGetMSG("style_ff_youyuan") + '</option>' +
+        '           <optgroup label="Safe List">' +
+        '	            <option selected="seleted" value="\u5B8B\u4F53,serif">' + CODECOLA.chromeGetMSG("style_ff_simsun") + '</option>' +
+        '               <option value="\u9ED1\u4F53,sans-serif">' + CODECOLA.chromeGetMSG("style_ff_simhei") + '</option>' +
+        '               <option value="Arial,sans-serif">Arial</option>' +
+        '               <option value="Arial Black,sans-serif">Arial Black</option>' +
+        '               <option value="Impact,sans-serif">Impact</option>' +
+        '               <option value="Verdana,sans-serif">Verdana</option>' +
+        '               <option value="Comic Sans MS,sans-serif">Comic Sans MS</option>' +
+        '               <option value="Lucida Grande,sans-serif">Lucida Grande</option>' +
+        '               <option value="Trebuchet MS,sans-serif">Trebuchet MS</option>' +
+        '               <option value="Georgia,serif">Georgia</option>' +
+        '               <option value="Courier New,serif">Courier New</option>' +
+        '               <option value="Times New Roman,serif">Times New Roman</option>' +
         '           </optgroup>' +
-        '           <optgroup label="English">' +
-        '               <option value="Helvetica,tahoma,Arial,Sans-Serif">Helvetica</option>' +
-        '               <option value="Arial,Helvetica,tahoma,Sans-Serif">Arial</option>' +
-        '               <option value="tahoma,Helvetica,Arial,Sans-Serif">tahoma</option>' +
-        '               <option value="\'Lucida Grande\', Helvetica,Arial,Sans-Serif">Lucida Grande</option>' +
-        '               <option value="Georgia,Serif">Georgia</option>' +
+        '	        <optgroup label="Windows Default">' +
+        '               <option value="\u5FAE\u8F6F\u96C5\u9ED1,\u9ED1\u4F53,sans-serif">' + CODECOLA.chromeGetMSG("style_ff_MSYH") + '</option>' +
+        '               <option value="\u5E7C\u5706,sans-serif">' + CODECOLA.chromeGetMSG("style_ff_youyuan") + '</option>' +
+        '               <option value="Arial,sans-serif">Arial</option>'+
+        '               <option value="Arial Black,sans-serif">Arial Black</option>'+
+        '               <option value="Comic Sans MS,sans-serif">Comic Sans MS</option>'+
+        '               <option value="Courier New,serif">Courier New</option>'+
+        '               <option value="Georgia,serif">Georgia</option>'+
+        '               <option value="Impact,sans-serif">Impact</option>'+
+        '               <option value="Lucida Console,sans-serif">Lucida Console</option>'+
+        '               <option value="Lucida Sans Unicode,sans-serif">Lucida Sans Unicode</option>'+
+        '               <option value="Microsoft Sans Serif,sans-serif">Microsoft Sans Serif</option>'+
+        '               <option value="MS Mincho,serif">MS Mincho</option>'+
+        '               <option value="Palatino Linotype,sans-serif">Palatino Linotype</option>'+
+        '               <option value="Symbol,sans-serif">Symbol</option>'+
+        '               <option value="tahoma,Helvetica,Arial,sans-serif">Tahoma</option>'+
+        '               <option value="Times New Roman,serif">Times New Roman</option>'+
+        '               <option value="Trebuchet MS,sans-serif">Trebuchet MS</option>'+
+        '               <option value="Verdana,sans-serif">Verdana</option>'+
+        '           </optgroup>' +
+        '           <optgroup label="Mac Default">' +
+        '               <option value="\u534E\u6587\u4EFF\u5B8B,\u4EFF\u5B8B,\u5B8B\u4F53,serif">' + CODECOLA.chromeGetMSG("style_ff_STFangsong") + '</option>'+
+        '               <option value="\u534E\u6587\u9ED1\u4F53,\u9ED1\u4F53,sans-serif">' + CODECOLA.chromeGetMSG("style_ff_STHeiti") + '</option>'+
+        '               <option value="\u534E\u6587\u6977\u4F53,\u6977\u4F53,serif">' + CODECOLA.chromeGetMSG("style_ff_STKaiti") + '</option>'+
+        '               <option value="\u534E\u6587\u5B8B\u4F53,\u5B8B\u4F53,serif">' + CODECOLA.chromeGetMSG("style_ff_STSong") + '</option>'+
+        '               <option value="American Typewriter,serif">American Typewriter</option>'+
+        '               <option value="Andale Mono,sans-serif">Andale Mono</option>'+
+        '               <option value="Arial,sans-serif">Arial</option>'+
+        '               <option value="Arial Black,sans-serif">Arial Black</option>'+
+        '               <option value="Arial Narrow,sans-serif">Arial Narrow</option>'+
+        '               <option value="Brush Script MT,sans-serif">Brush Script MT</option>'+
+        '               <option value="Capitals,serif">Capitals</option>'+
+        '               <option value="Apple Chancery,sans-serif">Apple Chancery</option>'+
+        '               <option value="Baskerville,serif">Baskerville</option>'+
+        '               <option value="Big Caslon,serif">Big Caslon</option>'+
+        '               <option value="Charcoal,sans-serif">Charcoal</option>'+
+        '               <option value="Chicago,sans-serif">Chicago</option>'+
+        '               <option value="Comic Sans MS,sans-serif">Comic Sans MS</option>'+
+        '               <option value="Copperplate,serif">Copperplate</option>'+
+        '               <option value="Courier,serif">Courier</option>'+
+        '               <option value="Courier New,serif">Courier New</option>'+
+        '               <option value="Didot,serif">Didot</option>'+
+        '               <option value="Gadget,sans-serif">Gadget</option>'+
+        '               <option value="Georgia,serif">Georgia</option>'+
+        '               <option value="Geneva,sans-serif">Geneva</option>'+
+        '               <option value="Gill Sans,sans-serif">Gill Sans</option>'+
+        '               <option value="Futura,sans-serif">Futura</option>'+
+        '               <option value="Helvetica,sans-serif">Helvetica</option>'+
+        '               <option value="Helvetica Neue,sans-serif">Helvetica Neue</option>'+
+        '               <option value="Herculanum,sans-serif">Herculanum</option>'+
+        '               <option value="Hoefler Text,serif">Hoefler Text</option>'+
+        '               <option value="Impact,sans-serif">Impact</option>'+
+        '               <option value="Lucida Grande,sans-serif">Lucida Grande</option>'+
+        '               <option value="Marker Felt,serif">Marker Felt</option>'+
+        '               <option value="Monaco,sans-serif">Monaco</option>'+
+        '               <option value="New York,sans-serif">New York</option>'+
+        '               <option value="Optima,sans-serif">Optima</option>'+
+        '               <option value="Papyrus,sans-serif">Papyrus</option>'+
+        '               <option value="Sand,sans-serif">Sand</option>'+
+        '               <option value="Skia,sans-serif">Skia</option>'+
+        '               <option value="Techno,sans-serif">Techno</option>'+
+        '               <option value="Textile,sans-serif">Textile</option>'+
+        '               <option value="Times,serif">Times</option>'+
+        '               <option value="Times New Roman,serif">Times New Roman</option>'+
+        '               <option value="Trebuchet MS,sans-serif">Trebuchet MS</option>'+
+        '               <option value="Verdana,sans-serif">Verdana</option>'+
+        '               <option value="Zapfino,sans-serif">Zapfino</option>'+
         '           </optgroup>' +
         '       </select>' +
         '   </div>' +
@@ -913,4 +983,152 @@ codecola.plug.size.prototype.bind = function(CODECOLA, Y){
 codecola.plug.size.prototype.sync = function(CODECOLA, Y){
     CODECOLA.initRange('#codeCola-width', /auto/);
     CODECOLA.initRange('#codeCola-height', /auto/);
+};
+
+codecola.plug.transform = function(config) {};
+codecola.plug.transform.NS = "transform";
+codecola.plug.transform.prototype.transformOrigin = function(){
+    var s = document.body.style;
+    if('webkitTransformOrigin' in s){
+        return 'webkitTransformOrigin';
+    }else if('MozTransformOrigin' in s){
+        return 'MozTransformOrigin';
+    }else if('oTransformOrigin' in s){
+        return 'oTransformOrigin';
+    }else if('msTransformOrigin' in s){
+        return 'msTransformOrigin';
+    }else{
+        return 'transformOrigin';
+    }
+}();
+codecola.plug.transform.prototype.render = function(CODECOLA){
+    CODECOLA.renderPlug(
+    '<li id="codeCola-item-transform">'+
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_transform") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci></cctitle>' +
+    '<div class="codeCola-editorWrap codeCola-editor-multi">' +
+    '	<ccfieldset id="codeCola-transform-origin">' +
+    '		<ol>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-originX">OriginX:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-transform-originX" name="transformOriginX"/>'+
+    '               <input type="number" id="codeCola-transform-originX-c" class="codeCola-currentStyle" min="0" max="100" name="transformOriginX"/>(%)'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-originY">OriginY:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-transform-originY" name="transformOriginY"/>'+
+    '               <input type="number" id="codeCola-transform-originY-c" class="codeCola-currentStyle" min="0" max="100" name="transformOriginY"/>(%)'+
+    '           </li>' +
+    '		</ol>' +
+    '	</ccfieldset>' +
+    '	<ccfieldset id="codeCola-transform">' +
+    '		<ol>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m11">M11:</label>'+
+    '               <input type="range" min="-100" max="100" id="codeCola-transform-m11" name="m11" step="0.1"/>'+
+    '               <input type="number" id="codeCola-transform-m11-c" class="codeCola-currentStyle" name="m11" step="0.1"/>'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m12">M12:</label>'+
+    '               <input type="range" min="-50" max="50" id="codeCola-transform-m12" name="m12" step="0.1"/>'+
+    '               <input type="number" id="codeCola-transform-m12-c" class="codeCola-currentStyle" name="m12" step="0.1"/>'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m21">M21:</label>'+
+    '               <input type="range" min="-50" max="50" id="codeCola-transform-m21" name="m21" step="0.1"/>'+
+    '               <input type="number" id="codeCola-transform-m21-c" class="codeCola-currentStyle" name="m21" step="0.1"/>'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m22">M22:</label>'+
+    '               <input type="range" min="-100" max="100" id="codeCola-transform-m22" name="m22" step="0.1"/>'+
+    '               <input type="number" id="codeCola-transform-m22-c" class="codeCola-currentStyle" name="m22" step="0.1"/>'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m13">M13:</label>'+
+    '               <input type="range" min="-1440" max="1440" id="codeCola-transform-m13" name="m13"/>'+
+    '               <input type="number" id="codeCola-transform-m13-c" class="codeCola-currentStyle" min="0" name="m13"/>'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-transform-m23">M23:</label>'+
+    '               <input type="range" min="-1440" max="1440" id="codeCola-transform-m23" name="m23"/>'+
+    '               <input type="number" id="codeCola-transform-m23-c" class="codeCola-currentStyle" min="0" name="m23"/>'+
+    '           </li>' +
+    '		</ol>' +
+    '	</ccfieldset>' +
+    '</div>'+
+    '</li>'
+    )
+};
+codecola.plug.transform.prototype.bind = function(CODECOLA, Y){
+    var that = this;
+    var setTransform = function(){
+        var v = [
+            parseFloat(document.getElementById('codeCola-transform-m11').value).toFixed(1),
+            parseFloat(document.getElementById('codeCola-transform-m12').value).toFixed(1),
+            parseFloat(document.getElementById('codeCola-transform-m21').value).toFixed(1),
+            parseFloat(document.getElementById('codeCola-transform-m22').value).toFixed(1),
+            document.getElementById('codeCola-transform-m13').value,
+            document.getElementById('codeCola-transform-m23').value
+        ];
+        CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'transform', 'matrix(' + v.join(',') + ')');
+    };
+    Y.on('change', function(e) {
+        this.next().set('value', this.get('value'));
+        setTransform();
+    }, '#codeCola-transform-m11,#codeCola-transform-m12,#codeCola-transform-m21,#codeCola-transform-m22,#codeCola-transform-m13,#codeCola-transform-m23');
+    Y.on('change', function(e) {
+        this.previous().set('value', this.get('value'));
+        setTransform();
+    }, '#codeCola-transform-m11-c,#codeCola-transform-m12-c,#codeCola-transform-m21-c,#codeCola-transform-m22-c,#codeCola-transform-m13-c,#codeCola-transform-m23-c');
+
+    //origin
+    var setOrigin = function(){
+        x = document.getElementById('codeCola-transform-originX').value;
+        y = document.getElementById('codeCola-transform-originY').value;
+        CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), that.transformOrigin, x+'% '+y+'%');
+    };
+    Y.on('change', function(e) {
+        this.next().set('value', this.get('value'));
+        setOrigin();
+    }, '#codeCola-transform-originX,#codeCola-transform-originY');
+    Y.on('change', function(e) {
+        this.previous().set('value', this.get('value'));
+        setOrigin();
+    }, '#codeCola-transform-originX-c,#codeCola-transform-originY-c');
+};
+codecola.plug.transform.prototype.sync = function(CODECOLA, Y){
+    var node = CODECOLA.get('codeColaCurrentNode').item(0),
+        transform = CODECOLA.getStyle(node, 'transform'),
+        origin = CODECOLA.getStyle(node, this.transformOrigin);
+
+    if (transform == 'none') {
+        var value = [1, 0, 0, 1, 0, 0];
+    } else {
+        var value = transform.replace(/\s*\,\s*/g, ',').replace('matrix(','').replace(')','').split(',');
+    }
+
+    Y.one('#codeCola-transform-m11').set('value', value[0]).next().set('value', value[0]);
+    Y.one('#codeCola-transform-m12').set('value', value[1]).next().set('value', value[1]);
+    Y.one('#codeCola-transform-m21').set('value', value[2]).next().set('value', value[2]);
+    Y.one('#codeCola-transform-m22').set('value', value[3]).next().set('value', value[3]);
+    Y.one('#codeCola-transform-m13').set('value', value[4]).next().set('value', value[4]);
+    Y.one('#codeCola-transform-m23').set('value', value[5]).next().set('value', value[5]);
+
+    if(/px/.test(origin)){
+        if(origin == '0px 0px'){
+            origin = [0, 0];
+        }else{
+            var h = parseInt(node.getStyle('height'), 10),
+                w = parseInt(node.getStyle('width'), 10);
+
+            origin = origin.replace(/px/g, '').split(' ');
+            origin = [
+                Math.round(origin[0]/w*100),
+                Math.round(origin[1]/h*100)
+            ];
+        }
+    }else{
+        origin = origin.replace(/%/g, '').split(' ');
+    }
+    Y.one('#codeCola-transform-originX').set('value', origin[0]).next().set('value', origin[0]);
+    Y.one('#codeCola-transform-originY').set('value', origin[1]).next().set('value', origin[1]);
 };

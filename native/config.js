@@ -44,7 +44,7 @@ YUI_config.groups['codecola'] = {
         },
         'codecola': {
             fullpath: '/codecola/codecola.js',
-            requires: ['codecola-i18n', 'codecola-color', 'codecola-plugs', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']
+            requires: ['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']
         }
     }
 };

@@ -106,6 +106,18 @@ codecola.i18n =
   "style_ff_youyuan": {
   	"message": "幼圆"
   },
+  "style_ff_STFangsong": {
+  	"message": "华文仿宋"
+  },
+  "style_ff_STHeiti": {
+  	"message": "华文黑体"
+  },
+  "style_ff_STKaiti": {
+  	"message": "华文楷体"
+  },
+  "style_ff_STSong": {
+  	"message": "华文宋体"
+  },
   "style_fs": {
   	"message": "字型"
   },
@@ -201,6 +213,9 @@ codecola.i18n =
   },
   "style_s": {
   	"message": "宽高"
+  },
+  "style_transform": {
+  	"message": "变形"
   },
   "confirm_unload": {
   	"message": "CodeCola的修改结果还没有保存，确定要离开吗？"

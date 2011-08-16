@@ -106,6 +106,18 @@ codecola.i18n =
   "style_ff_youyuan": {
   	"message": "YouYuan"
   },
+  "style_ff_STFangsong": {
+  	"message": "STFangsong"
+  },
+  "style_ff_STHeiti": {
+  	"message": "STHeiti"
+  },
+  "style_ff_STKaiti": {
+  	"message": "STKaiti"
+  },
+  "style_ff_STSong": {
+  	"message": "STSong"
+  },
   "style_fs": {
   	"message": "Font Other"
   },
@@ -201,6 +213,9 @@ codecola.i18n =
   },
   "style_s": {
   	"message": "Size"
+  },
+  "style_transform": {
+  	"message": "Transform"
   },
   "confirm_unload": {
   	"message": "Code Cola: The modification hasn't been saved."
