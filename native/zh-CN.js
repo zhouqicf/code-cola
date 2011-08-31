@@ -25,6 +25,9 @@ codecola.i18n =
   "error_server_fail": {
     "message": "服务器处理失败"
   },
+  "error_find_none": {
+    "message": "CodeCola没有找到任何匹配的元素"
+  },
   "opt_fold": {
     "message": "收缩"
   },
@@ -82,9 +85,6 @@ codecola.i18n =
   "opt_hideNote": {
   	"message": "隐藏注释"
   },
-	"style_pattern": {
-		"message": "模式库"
-	},
   "style_fz": {
   	"message": "字号"
   },
@@ -217,8 +217,14 @@ codecola.i18n =
   "style_transform": {
   	"message": "变形"
   },
+  "style_webkitTextStroke": {
+  	"message": "文字描边"
+  },
   "confirm_unload": {
   	"message": "CodeCola的修改结果还没有保存，确定要离开吗？"
+  },
+  "opt_finder": {
+  	"message": "CSS选择器："
   }
 }
 

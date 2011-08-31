@@ -7,7 +7,7 @@ License
 -------
 Copyright (c) 2011 http://zhouqicf.com
 author: zhouqicf@gmail.com
-version: 3.1.0
+version: 3.2.0
 license: Released under the MIT License.
 
 Powered by YUI3

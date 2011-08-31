@@ -290,16 +290,15 @@ codecola.plug.textShadow.prototype.render = function(CODECOLA){
 };
 codecola.plug.textShadow.prototype.bind = function(CODECOLA, Y){
     var distance = Y.one('#codeCola-textShadowDistance'),
-        size = Y.one('#codeCola-textShadowSize');
-
-    function setTextShadow(color, degree) {
-        var d = distance.get('value'),
-            degree = degree || CODECOLA.textShadow.degree.getDegree(),
-            color = color || CODECOLA.textShadow.color.getColor(),
-            x = 0 - Math.round(d * Math.cos(degree * 0.017453293)),
-            y = Math.round(d * Math.sin(degree * 0.017453293));
-        CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'textShadow', x + 'px ' + y + 'px ' + size.get('value') + 'px ' + color);
-    }
+        size = Y.one('#codeCola-textShadowSize'),
+        setTextShadow = function(color, degree) {
+            var d = distance.get('value'),
+                degree = degree || CODECOLA.textShadow.degree.getDegree(),
+                color = color || CODECOLA.textShadow.color.getColor(),
+                x = 0 - Math.round(d * Math.cos(degree * 0.017453293)),
+                y = Math.round(d * Math.sin(degree * 0.017453293));
+            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'textShadow', x + 'px ' + y + 'px ' + size.get('value') + 'px ' + color);
+        };
     CODECOLA.textShadow.color = new Y.codecolaColor({
         wrap: '#codeCola-textShadowColor',
         onChange: function(color) {
@@ -560,17 +559,16 @@ codecola.plug.boxShadow.prototype.bind = function(CODECOLA, Y){
         outset = Y.one('#codeCola-boxShadowOutset'),
         distance = Y.one('#codeCola-boxShadowDistance'),
         size = Y.one('#codeCola-boxShadowSize'),
-        spread = Y.one('#codeCola-boxShadowSpread');
-
-    function setBoxShadow(color, degree) {
-        var optinal = inset.get('checked') ? 'inset' : '',
-            d = distance.get('value'),
-            degree = degree || CODECOLA.boxShadow.degree.getDegree(),
-            color = color || CODECOLA.boxShadow.color.getColor(),
-            x = 0 - Math.round(d * Math.cos(degree * 0.017453293)),
-            y = Math.round(d * Math.sin(degree * 0.017453293));
-        CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'boxShadow', optinal + ' ' + x + 'px ' + y + 'px ' + size.get('value') + 'px ' + spread.get('value') + 'px ' + color);
-    }
+        spread = Y.one('#codeCola-boxShadowSpread'),
+        setBoxShadow = function(color, degree){
+            var optinal = inset.get('checked') ? 'inset' : '',
+                d = distance.get('value'),
+                degree = degree || CODECOLA.boxShadow.degree.getDegree(),
+                color = color || CODECOLA.boxShadow.color.getColor(),
+                x = 0 - Math.round(d * Math.cos(degree * 0.017453293)),
+                y = Math.round(d * Math.sin(degree * 0.017453293));
+            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'boxShadow', optinal + ' ' + x + 'px ' + y + 'px ' + size.get('value') + 'px ' + spread.get('value') + 'px ' + color);
+        };
 
     CODECOLA.boxShadow.color = new Y.codecolaColor({
         wrap: '#codeCola-boxShadowColor',
@@ -1132,3 +1130,57 @@ codecola.plug.transform.prototype.sync = function(CODECOLA, Y){
     Y.one('#codeCola-transform-originX').set('value', origin[0]).next().set('value', origin[0]);
     Y.one('#codeCola-transform-originY').set('value', origin[1]).next().set('value', origin[1]);
 };
+
+
+codecola.plug.webkitTextStroke = function(config) {};
+codecola.plug.webkitTextStroke.NS = "webkitTextStroke";
+codecola.plug.webkitTextStroke.prototype.render = function(CODECOLA){
+    CODECOLA.renderPlug(
+    '<li id="codeCola-item-webkitTextStroke">'+
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_webkitTextStroke") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci></cctitle>' +
+    '<div class="codeCola-editorWrap">' +
+    '<ccfieldset>'+
+    '	<ol>' +
+    '	    <li id="codeCola-webkitTextStrokeWidth-wrap">'+
+    '           <label for="codeCola-webkitTextStrokeWidth">Width:</label>'+
+    '           <input type="range" min="0" max="100" id="codeCola-webkitTextStrokeWidth" name="webkitTextStrokeWidth"/>'+
+    '           <input type="number" id="codeCola-webkitTextStrokeWidth-c" class="codeCola-currentStyle" min="0" name="webkitTextStrokeWidth"/>(px)'+
+    '       </li>' +
+    '		<li><label for="codeCola-webkitTextStrokeColor">Color:</label><div id="codeCola-webkitTextStrokeColor"></div></li>' +
+    '		<li><label for="codeCola-webkitTextStrokeFill">Fill Color:</label><div id="codeCola-webkitTextStrokeFill"></div></li>' +
+    '   </ol>' +
+    '</ccfieldset>'+
+    '</div>'+
+    '</li>'
+    )
+};
+codecola.plug.webkitTextStroke.prototype.bind = function(CODECOLA, Y){
+    CODECOLA.webkitTextStroke.color = new Y.codecolaColor({
+        wrap: '#codeCola-webkitTextStrokeColor',
+        onChange: function(color) {
+            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'webkitTextStrokeColor', color);
+        }
+    }).render();
+
+    CODECOLA.webkitTextStroke.fill = new Y.codecolaColor({
+        wrap: '#codeCola-webkitTextStrokeFill',
+        onChange: function(color) {
+            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'webkitTextFillColor', color);
+        }
+    }).render();
+
+    CODECOLA.bindRange('#codeCola-webkitTextStrokeWidth-wrap', function(v){
+        return v +'px';
+    });
+};
+codecola.plug.webkitTextStroke.prototype.sync = function(CODECOLA, Y){
+    var node = CODECOLA.get('codeColaCurrentNode').item(0),
+        width = parseInt(CODECOLA.getStyle(node, 'webkitTextStrokeWidth'),10),
+        color = CODECOLA.getStyle(node, 'webkitTextStrokeColor'),
+        fill = CODECOLA.getStyle(node, 'webkitTextFillColor');
+    
+    CODECOLA.webkitTextStroke.color.set('color', color).syncUI();
+    Y.one('#codeCola-webkitTextStrokeWidth').set('value', width).next().set('value', width);
+    CODECOLA.webkitTextStroke.fill.set('color', fill).syncUI();
+};
+

@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
-version: 3.1.0
+version: 3.2.0
 */
 (function(){
 
@@ -119,40 +119,45 @@ YUI().add('codecola', function(Y) {
                 '   <textarea id="codeCola-styles"></textarea>'+
                 '   <textarea id="codeCola-note"></textarea>'+
                 '   <ul id="codeCola-controls" class="cc-close"></ul>'+
-                '</div>'+
-                '<ol id="codeCola-selectors" class="codeCola-wrap"></ol>'+
-                '<div id="codeCola-notes-wrap"></div>'+
-                '<div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">'+
-                '   <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span>'+
-                '   <cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
-                '   <textarea id="codeCola-getHTML-content"></textarea>'+
-                '</div>'+
-                '<div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">'+
-                '   <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span>'+
-                '   <cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
-                '   <input id="codeCola-getLink-content">'+
-                '</div>'+
-                '<div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">'+
-                '   <span id="codeCola-about-title" class="codeCola-pop-title">About</span>'+
-                '   <cci id="codeCola-about-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
-                '   <div id="codeCola-about-content">'+
-                '       <div id="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
-                '           <cctitle id="codeCola-about-name">Code Cola</cctitle>'+
-                '           <p id="codeCola-about-version">v3.1.0</p>'+
-                '       </div>'+
-                '       <div id="codeCola-about-detail">'+
-                '           <p id="codeCola-about-doc">Code Cola'+
-                '               <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>,'+
-                '               <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>,'+
-                '               <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a>'+
-                '           </p>'+
-                '           <p id="codeCola-about-author">© 2010-2011'+
-                '               <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> - '+
-                '               <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> created by '+
-                '               <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a>'+
-                '           </p>'+
+                '   <ol id="codeCola-selectors" class="codeCola-wrap"></ol>'+
+                '   <div id="codeCola-getHTML-wrap" class="codeCola-pop codeCola-wrap">'+
+                '       <span id="codeCola-getHTML-title" class="codeCola-pop-title">HTML</span>'+
+                '       <cci id="codeCola-getHTML-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
+                '       <textarea id="codeCola-getHTML-content"></textarea>'+
+                '   </div>'+
+                '   <div id="codeCola-getLink-wrap" class="codeCola-pop codeCola-wrap">'+
+                '       <span id="codeCola-getLink-title" class="codeCola-pop-title">URL</span>'+
+                '       <cci id="codeCola-getLink-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
+                '       <input id="codeCola-getLink-content">'+
+                '   </div>'+
+                '   <div id="codeCola-finder-wrap" class="codeCola-pop codeCola-wrap">'+
+                '       <span id="codeCola-finder-title" class="codeCola-pop-title">' + _this.chromeGetMSG("opt_finder") + '</span>'+
+                '       <cci id="codeCola-finder-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
+                '       <input id="codeCola-finder-content">'+
+                '   </div>'+
+                '   <div id="codeCola-about-wrap" class="codeCola-pop codeCola-wrap">'+
+                '       <span class="codeCola-about-title codeCola-pop-title">About</span>'+
+                '       <cci id="codeCola-about-close" class="codeCola-pop-close" title="' + _this.chromeGetMSG("opt_close") + '">×</cci>'+
+                '       <div class="codeCola-about-content">'+
+                '           <div class="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
+                '               <cctitle class="codeCola-about-name">Code Cola</cctitle>'+
+                '               <p class="codeCola-about-version">v3.2.0</p>'+
+                '           </div>'+
+                '           <div class="codeCola-about-detail">'+
+                '               <p class="codeCola-about-doc">Code Cola'+
+                '                   <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>,'+
+                '                   <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>,'+
+                '                   <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a>'+
+                '               </p>'+
+                '               <p class="codeCola-about-author">© 2010-2011'+
+                '                   <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> - '+
+                '                   <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> created by '+
+                '                   <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a>'+
+                '               </p>'+
+                '           </div>'+
                 '       </div>'+
                 '   </div>'+
+                '   <div id="codeCola-notes-wrap"></div>'+
                 '</div>'
             ));
         },
@@ -169,16 +174,15 @@ YUI().add('codecola', function(Y) {
             //TODO: can't stop event sametimes
             //TODO: window.codeColaTurnOn
             var _this = this,
-                NODE_mask = Y.Node.create('<ccmask id="codeCola-mask"></ccmask>'),
+                mask = Y.Node.create('<ccmask id="codeCola-mask"></ccmask>'),
                 NODE_tempNode,
                 CLASS_selecting = 'codeCola-selecting',
                 mutilNodes = Y.all('codecola-nodelist'),
                 mutilStart = false;
 
-            Y.one('html').append(NODE_mask);
+            Y.one('#codeCola').append(mask);
 
             Y.on('mouseover', function(e) {
-                var target = e.target;
                 if (!window.codeColaTurnOn) {
                     return;
                 }
@@ -186,14 +190,15 @@ YUI().add('codecola', function(Y) {
                     width = target.get('offsetWidth') - 2,
                     height = target.get('offsetHeight') - 2,
                     p = target.getXY();
-                NODE_tempNode = e.target;
-                NODE_mask.setAttribute('style', 'left:' + p[0] + 'px;top:' + p[1] + 'px;width:' + width + 'px;height:' + height + 'px;');
+                NODE_tempNode = target;
+                //TODO:ie not support window.pageXOffset
+                mask.setAttribute('style', 'left:' + (p[0] - window.pageXOffset) + 'px;top:' + (p[1] - window.pageYOffset) + 'px;width:' + width + 'px;height:' + height + 'px;');
             }, 'body');
             Y.on('mouseout', function(e) {
                 if (!window.codeColaTurnOn) {
                     return;
                 }
-                NODE_mask.setStyle('left', '-2000px');
+                mask.setStyle('left', '-4000px');
             }, 'body');
             //TODO: yui3 support event capture?
             document.body.addEventListener('click', function(e) {
@@ -219,10 +224,10 @@ YUI().add('codecola', function(Y) {
                         mutilNodes.push(NODE_tempNode);
                         NODE_tempNode.addClass(CLASS_selecting);
                     }
-                    _this.updateCurrentNode(mutilNodes, 'mix');
+                    _this.updateCurrentNode(mutilNodes.size(), 'mix');
                 } else {
                     mutilNodes.push(NODE_tempNode);
-                    initTab(mutilNodes, NODE_tempNode.get('nodeName'));
+                    _this.initTab(mutilNodes, NODE_tempNode.get('nodeName'));
                     mutilStart = false;
                     mutilNodes = Y.all('codecola-nodelist');
                 }
@@ -230,20 +235,21 @@ YUI().add('codecola', function(Y) {
             Y.on('keyup', function(e) {
                 if (window.codeColaTurnOn && (e.keyCode == 17 || e.keyCode == 224 || e.keyCode == 91) && !mutilNodes.isEmpty()) {
                     mutilNodes.removeClass(CLASS_selecting);
-                    initTab(mutilNodes, 'mix');
+                    _this.initTab(mutilNodes, 'mix');
                     mutilStart = false;
                     mutilNodes = Y.all('codecola-nodelist');
                 }
             });
 
             var hideTimeout = null,
+                selectorPanel = Y.one('#codeCola-selectors'),
                 addLi = function(text, className, target) {
                     var li = Y.Node.create('<li class="'+className+'">'+text+'</li>');
-                    Y.one('#codeCola-selectors').append(li);
+                    selectorPanel.append(li);
                     attacthFindNode(li, target);
                 },
                 getNode = function(li, target) {
-                    if (li.get('className') == 'tag-selector') {
+                    if (li.hasClass('tag-selector')) {
                         var pTag, tag = target.get('nodeName');
                         if (tag == 'LI') {
                             pTag = /^OL$|^UL$/;
@@ -273,12 +279,12 @@ YUI().add('codecola', function(Y) {
                             opacity: 0,
                             top: '-9999px'
                         });
-                        initTab(nodes, li.get('firstChild').get('text'));
+                        _this.initTab(nodes, li.get('firstChild').get('text'));
                     });
                 },
                 hideMenu = function(){
                     hideTimeout = setTimeout(function(e) {
-                        Y.one('#codeCola-selectors').setStyles({
+                        selectorPanel.setStyles({
                             opacity: 0,
                             top: '-9999px'
                         });
@@ -290,13 +296,12 @@ YUI().add('codecola', function(Y) {
                 }
                 e.preventDefault();
 
-                var NODE_selectorWrap = Y.one('#codeCola-selectors');
                 clearTimeout(hideTimeout);
 
-                NODE_selectorWrap.empty().setStyles({
+                selectorPanel.empty().setStyles({
                     opacity: 1,
-                    top: e.pageY + 'px',
-                    left: e.pageX + 'px'
+                    top: e.pageY - window.pageYOffset,
+                    left: e.pageX - window.pageXOffset
                 });
 
                 var classes = Y.Lang.trim(NODE_tempNode.get('className').replace(CLASS_selecting, '')),
@@ -316,74 +321,123 @@ YUI().add('codecola', function(Y) {
                     }
                 }
 
-                if (!NODE_selectorWrap.get('firstChild')) {
-                    NODE_selectorWrap.append(Y.Node.create('<li class="no-selector">no selector</li>'));
+                if (!selectorPanel.get('firstChild')) {
+                    selectorPanel.append(Y.Node.create('<li class="no-selector">no selector</li>'));
                 }
 
                 hideMenu();
             }, 'body');
 
-            //init tab
-            var NODE_inputs = Y.one('#codeCola-controls').all('input'),
-                NODE_selects = Y.one('#codeCola-controls').all('select'),
-                NODE_eyes = Y.all('.codeCola-eye');
-
-            function initTab(node, selector) {
-                var items = [],
-                    nodeType = node.get('nodeName')[0].toLowerCase(),
-                    plugs = _this.get('plugs');
-                if (!/\.|^mix$/.test(selector) && plugs[nodeType]) {
-                    items = plugs[nodeType];
-                } else {
-                    items = plugs['normal'];
-                }
-                NODE_inputs.each(function(n) {
-                    n.set('disabled', false);
-                    if (n.get('type') == 'checkbox') {
-                        n.set('checked', false);
-                    }
-                });
-                NODE_selects.set('disabled', false);
-                NODE_eyes.each(function(n) {
-                    if(n.hasClass('cc-close')){
-                        n.removeClass('cc-close').set('title', _this.chromeGetMSG('opt_show'));
-                    }
-                });
-                Y.each(plugs.all, function(n) {
-                    Y.one('#codeCola-item-'+n).setStyle('display', '');
-                });
-                _this.set('codeColaCurrentNode', node);
-                var isShow = Y.one('#codeCola').hasClass('codeCola-allOpen');
-                Y.each(items, function(n) {
-                    var li = Y.one('#codeCola-item-' + n);
-                    li.setStyle('display', 'block');
-                    if (isShow && !li.hasClass('codeCola-item-open')) {
-                        li.addClass('codeCola-item-open');
-                    }
-                    _this.initControls(n);
-                });
-
-                _this._toggleMini('open');
-                Y.one('#codeCola-controls').set('className', '');
-                _this.updateCurrentNode(node, selector);
-                _this.updateStyle();
-                _this.updateNote();
-            }
+            _this._bindInspectByFinder();
         },
 
-        updateCurrentNode: function(nodes, selector) {
+        _bindInspectByFinder: function(){
+            var _this = this, isType = false, codecola = document.getElementById('codeCola');
+            Y.on('keypress', function(e){
+                if(!window.codeColaTurnOn || isType || e.keyCode != 102){
+                    return;
+                }
+                e.preventDefault();
+                Y.one('#codeCola-finder-wrap').addClass('cc-open');
+                Y.one('#codeCola-finder-content').focus();
+            });
+            Y.on('keypress', function(e){
+                if(!window.codeColaTurnOn || e.keyCode != 13){
+                    isType = true;
+                    return;
+                }
+                var selector = this.get('value'),
+                    allNodes = Y.all(selector)._nodes,
+                    dropNodes = codecola.getElementsByTagName('*'),
+                    nodes = Y.all('codecola-nodelist');
+                dropNodes[dropNodes.length] = codecola;
+                for(var i = allNodes.length;i>-1;i--){
+                    var use = true, node = allNodes[i];
+                    for(var j = dropNodes.length;j>-1;j--){
+                        if(node == dropNodes[j]){
+                            use = false;
+                            j = 0;
+                        }
+                    }
+                    if(use){
+                        nodes.push(node);
+                    }
+                }
+                if(nodes.size() == 0){
+                    alert(_this.chromeGetMSG('error_find_none'));
+                    this.select();
+                    return;
+                }
+                _this.initTab(nodes, selector);
+                Y.one('#codeCola-finder-wrap').removeClass('cc-open');
+                this.blur();
+                isType = false;
+            }, '#codeCola-finder-content');
+            Y.on('click', function(e){
+                Y.one('#codeCola-finder-wrap').removeClass('cc-open');
+                isType = false;
+            }, '#codeCola-finder-close');
+        },
+
+        initTab: function(node, selector){
+            var _this = this,
+                wrap = Y.one('#codeCola-controls'),
+                inputs = wrap.all('input'),
+                selects = wrap.all('select'),
+                eyes = Y.all('.cc-close'),
+                items = [],
+                nodeType = node._nodes[0].nodeName.toLowerCase(),
+                plugs = _this.get('plugs'),
+                isClassOrMix = /\.|^mix$/.test(selector);
+            
+            if (!isClassOrMix && plugs[nodeType]) {
+                items = plugs[nodeType];
+            } else if(isClassOrMix){
+                items = plugs['all'];
+            } else{
+                items = plugs['normal'];
+            }
+
+            inputs.each(function(n) {
+                n.set('disabled', false);
+                if (n.get('type') == 'checkbox') {
+                    n.set('checked', false);
+                }
+            });
+            selects.set('disabled', false);
+            eyes.removeClass('cc-close').set('title', _this.chromeGetMSG('opt_hide'));
+
+            Y.each(plugs.all, function(n) {
+                Y.one('#codeCola-item-'+n).setStyle('display', '');
+            });
+            _this.set('codeColaCurrentNode', node);
+            var isShow = Y.one('#codeCola').hasClass('codeCola-allOpen');
+            Y.each(items, function(n) {
+                var li = Y.one('#codeCola-item-' + n);
+                li.setStyle('display', 'block');
+                if (isShow) {
+                    li.addClass('codeCola-item-open');
+                }
+                _this.initControls(n);
+                //sort
+                wrap.append(li);
+            });
+
+            _this._toggleMini('open');
+            wrap.set('className', '');
+            _this.updateCurrentNode(node.size(), selector);
+            _this.updateStyle();
+            _this.updateNote();
+        },
+
+        updateCurrentNode: function(len, selector) {
             Y.one('#codeCola-current-node').set('title', selector).set('text', selector.length > 15 ? selector.substring(0, 12) + '...' : selector);
-            Y.one('#codeCola-current-node-count').set('text', nodes.size());
+            Y.one('#codeCola-current-node-count').set('text', len);
         },
 
         _bindOpenControl: function(){
             Y.on('click', function(e) {
-                var li = this.get('parentNode');
-                if (/codeCola-item-open/.test(li.get('className'))) {
-                    li.removeClass('codeCola-item-open');
-                } else {
-                    li.addClass('codeCola-item-open');
-                }
+                this.get('parentNode').toggleClass('codeCola-item-open');
             }, 'cctitle');
         },
 
@@ -461,17 +515,17 @@ YUI().add('codecola', function(Y) {
         },
 
         _bindOpenAll: function(){
-            var NODE_codecola = Y.one('#codeCola'),
+            var codecola = Y.one('#codeCola'),
                 _this = this;
             Y.on('click', function(e) {
                 var lis = Y.all('.codeCola-item');
-                if (NODE_codecola.hasClass('codeCola-allOpen')) {
+                if (codecola.hasClass('codeCola-allOpen')) {
                     this.set('title', _this.chromeGetMSG('opt_unfoldAll'));
-                    NODE_codecola.removeClass('codeCola-allOpen');
+                    codecola.removeClass('codeCola-allOpen');
                     lis.removeClass('codeCola-item-open');
                 } else {
                     this.set('title', _this.chromeGetMSG('opt_foldAll'));
-                    NODE_codecola.addClass('codeCola-allOpen');
+                    codecola.addClass('codeCola-allOpen');
                     lis.addClass('codeCola-item-open');
                 }
             }, '#codeCola-open-all');
@@ -480,7 +534,7 @@ YUI().add('codecola', function(Y) {
         _bindMin: function(){
             var _this = this;
             Y.on('click', function(e) {
-                if (this.get('className') == 'cc-close') {
+                if (this.hasClass('cc-close')) {
                     _this._toggleMini('close');
                     Y.one('#codeCola-controls').set('className', 'cc-close');
                 } else {
@@ -491,23 +545,21 @@ YUI().add('codecola', function(Y) {
         },
 
         _bindShowCurrentNode: function(){
-            var _this = this,
-                CLASS_selecting = 'codeCola-selecting',
-                NODE_showCurrentNode = Y.one('#codeCola-show-currentNode');
-            NODE_showCurrentNode.on('mouseover', function(e) {
+            var _this = this;
+            Y.on('mouseover', function(e) {
                 var codeColaCurrentNode = _this.get('codeColaCurrentNode');
-                if (!codeColaCurrentNode) {
-                    return
+                if (codeColaCurrentNode) {
+                    codeColaCurrentNode.addClass('codeCola-selecting');
+                    Y.one('#codeCola').addClass('cc-fade');
                 }
-                codeColaCurrentNode.addClass(CLASS_selecting);
-            });
-            NODE_showCurrentNode.on('mouseout', function(e) {
+            }, '#codeCola-show-currentNode')
+            Y.on('mouseout', function(e) {
                 var codeColaCurrentNode = _this.get('codeColaCurrentNode');
-                if (!codeColaCurrentNode) {
-                    return
+                if (codeColaCurrentNode) {
+                    codeColaCurrentNode.removeClass('codeCola-selecting');
+                    Y.one('#codeCola').removeClass('cc-fade');
                 }
-                codeColaCurrentNode.removeClass(CLASS_selecting);
-            });
+            }, '#codeCola-show-currentNode');
         },
 
         _bindSwitch: function(){
@@ -537,8 +589,7 @@ YUI().add('codecola', function(Y) {
         },
 
         _bindNote: function(){
-            var NODE_notesWrap = Y.one('#codeCola-notes-wrap'),
-                _this = this;
+            var _this = this;
             Y.on('click', function(e) {
                 if (this.hasClass('cc-open')) {
                     this.removeClass('cc-open').set('title', _this.chromeGetMSG('opt_showNote'));
@@ -566,15 +617,14 @@ YUI().add('codecola', function(Y) {
                             var s = 'note-'+(new Date()).getTime(),
                                 xy = node.getXY(),
                                 i = Y.Node.create('<span class="codeCola-note" id="'+s+'" style="top:'+(xy[1] + node.get('clientHeight') - 2)+'px;left:'+xy[0]+'px;">'+filter(value)+'</span>');
-                            node.addClass(s);
-                            node.setAttribute('codeColaNoteIcon', s);
+                            node.addClass(s).setAttribute('codeColaNoteIcon', s);
                             i.on('mouseover', function(e) {
                                 node.addClass('codeCola-selecting');
                             });
                             i.on('mouseout', function(e) {
                                 node.removeClass('codeCola-selecting');
                             });
-                            NODE_notesWrap.append(i);
+                            i.appendTo(document.getElementById('codeCola-notes-wrap'));
                         }
                     });
                 } else {
@@ -609,17 +659,17 @@ YUI().add('codecola', function(Y) {
         },
 
         _bindGetHtml: function(){
-            var NODE_getHtmlWrap = Y.one('#codeCola-getHTML-wrap'),
-                NODE_getHtmlContent = Y.one('#codeCola-getHTML-content'),
-                NODE_notesWrap = Y.one('#codeCola-notes-wrap'),
+            var wrap = Y.one('#codeCola-getHTML-wrap'),
+                content = Y.one('#codeCola-getHTML-content'),
+                notes = Y.one('#codeCola-notes-wrap'),
                 _this = this;
             Y.on('click', function() {
                 Y.io(window.location.href, {
                     method: 'GET',
                     on: {
                         start: function() {
-                            NODE_getHtmlWrap.addClass('loadding');
-                            NODE_getHtmlContent.set('value', 'loadding...');
+                            wrap.addClass('loadding');
+                            content.set('value', 'loadding...');
                         },
                         success: function(id, o) {
                             var r = o.responseText.replace(/<\/head>/i, '<style>' + Y.codecola.STYLE_codeCola + '</style></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
@@ -627,24 +677,24 @@ YUI().add('codecola', function(Y) {
                                 return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                             });
 
-                            if (NODE_notesWrap.get('innerHTML') != '') {
-                                r = r.replace(/<\/html>/i, NODE_notesWrap.get('innerHTML') + Y.codecola.SCRIPT_codeCola + '</html>');
+                            if (notes.get('innerHTML') != '') {
+                                r = r.replace(/<\/html>/i, notes.get('innerHTML') + Y.codecola.SCRIPT_codeCola + '</html>');
                             }
-                            NODE_getHtmlContent.set('value', r);
-                            NODE_getHtmlWrap.addClass('cc-open');
+                            content.set('value', r);
+                            wrap.addClass('cc-open');
                         }
                     }
                 });
             }, '#codeCola-getHTML');
             Y.on('click', function() {
-                NODE_getHtmlWrap.removeClass('cc-open').removeClass('loadding');
+                wrap.removeClass('cc-open').removeClass('loadding');
             }, '#codeCola-getHTML-close');
         },
 
         _bindGetLink: function(){
-            var NODE_getLinkWrap = Y.one('#codeCola-getLink-wrap'),
-                NODE_getLinkContent = Y.one('#codeCola-getLink-content'),
-                NODE_notesWrap = Y.one('#codeCola-notes-wrap'),
+            var wrap = Y.one('#codeCola-getLink-wrap'),
+                content = Y.one('#codeCola-getLink-content'),
+                notes = Y.one('#codeCola-notes-wrap'),
                 _this = this;
             Y.on('click', function() {
                 var action,css,optionUrl = _this.chromeGetURL('options.html');
@@ -659,16 +709,16 @@ YUI().add('codecola', function(Y) {
                         method: 'GET',
                         on: {
                             start: function() {
-                                NODE_getLinkWrap.addClass('loadding');
-                                NODE_getLinkContent.set('value', 'loadding...');
+                                wrap.addClass('loadding');
+                                content.set('value', 'loadding...');
                             },
                             success: function(id, o) {
                                 var r = o.responseText.replace(/<\/head>/i, '<link rel="stylesheet" href="' + css + '"></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                                     var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, '').replace(/("|')$/, '');
                                     return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                                 });
-                                if (NODE_notesWrap.get('innerHTML') != '') {
-                                    r = r.replace(/<\/html>/i, NODE_notesWrap.get('innerHTML') + Y.codecola.SCRIPT_codeCola + '</html>');
+                                if (notes.get('innerHTML') != '') {
+                                    r = r.replace(/<\/html>/i, notes.get('innerHTML') + Y.codecola.SCRIPT_codeCola + '</html>');
                                 }
                                 try {
                                     Y.io(action, {
@@ -682,16 +732,16 @@ YUI().add('codecola', function(Y) {
                                                 try {
                                                     var json = JSON.parse(o.responseText);
                                                 } catch (ex) {
-                                                    NODE_getLinkWrap.removeClass('loadding');
+                                                    wrap.removeClass('loadding');
                                                     alert(_this.chromeGetMSG('error_server_fail'));
                                                 }
                                                 if (json.code == '200') {
-                                                    NODE_getLinkContent.set('value', json.url);
-                                                    NODE_getLinkWrap.addClass('cc-open');
-                                                    NODE_getLinkContent.select();
+                                                    content.set('value', json.url);
+                                                    wrap.addClass('cc-open');
+                                                    content.select();
                                                 } else if (json.code == '900') {
-                                                    NODE_getLinkContent.set('value', json.message);
-                                                    NODE_getLinkWrap.addClass('cc-open');
+                                                    content.set('value', json.message);
+                                                    wrap.addClass('cc-open');
                                                 }
                                             }
                                         }
@@ -707,7 +757,7 @@ YUI().add('codecola', function(Y) {
                 });
             }, '#codeCola-getLink');
             Y.on('click', function() {
-                NODE_getLinkWrap.removeClass('cc-open').removeClass('loadding');
+                wrap.removeClass('cc-open').removeClass('loadding');
             }, '#codeCola-getLink-close');
         },
 
@@ -728,9 +778,10 @@ YUI().add('codecola', function(Y) {
 
         _bindBeforeunload: function(){
             var _this = this;
-            Y.on('beforeunload', function(e) {
+            //TODO: yui3 event bug
+            window.onbeforeunload = function(){
                 return _this.chromeGetMSG('confirm_unload');
-            });
+            }
         },
 
         chromeGetURL: function(url){
@@ -845,8 +896,12 @@ YUI().add('codecola', function(Y) {
                 }
                 var s = styles[i].split(/:(?!\/\/)/),
                     //url(http://xxx)
-                    s0 = Y.Lang.trim(s[0]).replace(/-webkit-|-o-|-ms-|-moz-/, ''),
+                    s0 = Y.Lang.trim(s[0]),
                     s1 = Y.Lang.trim(s[1]);
+                //webkit only
+                if(s0 != '-webkit-mask-image' && s0 != '-webkit-box-reflect' && s0 != '-webkit-text-stroke' && s0 != '-webkit-text-stroke-width' && s0 != '-webkit-text-stroke-color' && s0 != '-webkit-text-fill-color'){
+                    s0 = s0.replace(/-webkit-|-o-|-ms-|-moz-/, '');
+                }
                 cssRules[s0] = s1;
             }
             //combine border
@@ -886,11 +941,6 @@ YUI().add('codecola', function(Y) {
             layoutFun(['margin-top', 'margin-right', 'margin-bottom', 'margin-left'], 'margin', '0px');
             //combine border-radius
             layoutFun(['border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius'], 'border-radius', '0px 0px', ',');
-
-            //webkit only
-            if(i == 'mask-image' || i == 'box-reflect'){
-                i = '-webkit-' + i;
-            }
 
             for (var i in cssRules) {
                 if (i == 'font-family') {
@@ -1104,6 +1154,7 @@ YUI().add('codecola', function(Y) {
                             '*/'+
                             '.codeCola-note{'+
                             '   position:absolute;'+
+                            '   position:fixed;'+
                             '   background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAWCAMAAAF1ZvcSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR1QTFRF//+c//+y//+5//+s//+1//+X//+p//+VLS0t//+h//+k//+T//+b//+QMzMz//+4//+R//+m//+x//+0//+U//+S//+u//+e//+Y//+aIyMjKysrGBgYFhYWHh4eGRkZDg4O//+oLy8v//+j//+W//+r//+g8LxX7Zso/7eVISEh/4Bl//+dHR0dHBwc00Au/9Bc/8hK6mIA1mYC8qUw/7xI9qYqERER/8BL/8pCoTUA/89X2WIA/3NR1WUC8apF//TOaG9v//+i/8s+cnFxAgIC77BJrFsz//+f/8RP24cnHx8f//+zFBQU/8NHExMTICAg//+va3Nz/5Bu+cha/9Zh3z8hzlwAGhoaycnJIiIi//+ZAAAA////////qFZ3sAAAAF90Uk5T/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wCTml8sAAABj0lEQVR42mKIjY2NY4hlNgASrHxxAAHEAOQyMDPHMgDZAAHEEMvExBTlGMsQy+kUExEHVBARAaTiAAIIpCY2LpaBn4mJnyOMQZWZ2d4mjkGNkzMWqEaFFagzjgGoMjIuDiCAGGKjoCBWWx9ojhAjCAiFeHKA7BQUjIkRjDU0jgWbycMAAjwycWCeqCg3N7e0dCSIBxBAYPvAIDI2kgFuYkxsDEMU0A1AV/DHcNjGMGiBjReKseSIiWTwBjqLmTnG1CQmMo5BF2hTTIy7WQzITRGcQADUDLZWBmwtDw+Y4wt0PND5fGCOOcgF3KKxYBdEgAGYHQcQYAhPwZ0SGQs0Hui2WDkF1xgEUAA60sVBMzgG6PUoYWEWGBAW9olR5+DgCALrCRATC4TpEItxs7B2NgKKgwJBTlGRDQpivPxCNezA4iAZPWVlLgiIiY21CoeKg2TkxcXFwUZ5gAgdeYibQTKyEtFAICkpCaIkJGQRMv4iIuxQoCQiogQzDCgjxQsEAiDAKyUFFwfJIAOEeFwcAAjkiPN/+5wYAAAAAElFTkSuQmCC) no-repeat 0 0;'+
                             '	*background-image:url(mhtml:STYLESHEETURL!comment.png);'+
                             '   width:0;'+
@@ -1113,6 +1164,7 @@ YUI().add('codecola', function(Y) {
                             '   z-index:2147483645;'+
                             '   color:#333;'+
                             '   font:12px/24px arial;'+
+                            '   text-shadow:none;'+
                             '}'+
                             '.codeCola-note:hover{'+
                             '   width:auto;'+
@@ -1135,17 +1187,19 @@ YUI().add('codecola', function(Y) {
             plugs: {
                 value: function(){
                     var LOADER = {
-                        webkit: ['webkitMaskImage', 'webkitBoxReflect'],
-                        all: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
-                        normal: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
-                        list: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'transform', 'border', 'layout', 'size'],
-                        img: ['size', 'border', 'boxShadow', 'transform', 'opacity', 'backgroundColor', 'backgroundImage', 'layout']
+                        all: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size', 'listStyle'],
+                        normal: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size'],
+                        list: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size'],
+                        img: ['size', 'border', 'boxShadow', 'transform', 'opacity', 'backgroundColor', 'backgroundImage', 'webkitMaskImage', 'webkitBoxReflect', 'layout']
                     };
-                    if(Y.UA.webkit){
-                        LOADER.all = LOADER.all.concat(LOADER.webkit);
-                        LOADER.normal = LOADER.normal.concat(LOADER.webkit);
-                        LOADER.list = LOADER.list.concat(LOADER.webkit);
-                        LOADER.img = LOADER.img.concat(LOADER.webkit);
+                    if(!Y.UA.webkit){
+                        Y.each(LOADER, function(i, key){
+                            Y.each(i, function(item, index){
+                                if(/webkit/.test(item)){
+                                    delete LOADER[key][index];
+                                }
+                            });
+                        });
                     }
                     LOADER['li'] = LOADER['ol'] = LOADER['ul'] = LOADER.list;
                     return LOADER;
@@ -1158,7 +1212,7 @@ YUI().add('codecola', function(Y) {
             }
         }
     });
-}, '3.1.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
+}, '3.2.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
 
 YUI().use('codecola', function(Y){
     var _codeCola = new Y.codecola({
@@ -1167,7 +1221,7 @@ YUI().use('codecola', function(Y){
     });
 
     var plugs = window.codecola.plug;
-    Y.each([plugs.listStyle, plugs.fontSize, plugs.lineHeight, plugs.fontFamily, plugs.fontOther, plugs.color, plugs.textAlign, plugs.textShadow, plugs.backgroundColor, plugs.backgroundImage, plugs.opacity, plugs.boxShadow, plugs.border, plugs.layout, plugs.size, plugs.webkitMaskImage, plugs.webkitBoxReflect, plugs.transform], function(plug){
+    Y.each(plugs, function(plug){
         _codeCola.plug(plug);
     });
 

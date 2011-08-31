@@ -120,7 +120,8 @@ YUI().add('codecola-gradient', function(Y) {
                     "color": vars.colorControl.getColor(),
                     "position": that._getFloatLeft(e.clientX - vars.panel.getX() - 5)
                 };
-                that._addStops([s])._initPanel()._fireCallback();
+                that.vars.rule.stops.push(s);
+                that._addStops([s], that.vars.rule.stops.length - 1)._initPanel()._fireCallback();
             });
             vars.location.on("change", function(e) {
                 var cStop = vars.currentStop;
@@ -168,9 +169,9 @@ YUI().add('codecola-gradient', function(Y) {
          */
         _initRule: function(){
             var
+            gradient = this.get('gradient'),
             rule = this.vars.rule,
-            stops = [],
-            gradient = this.get('gradient');
+            stops = [];
 
             if (/-webkit-gradient/.test(gradient)) {
                 gradient = gradient.replace(/\s*,\s*/g, ",").replace("-webkit-gradient(", "").replace(/\)$/, "").split(/,(?=[fct])/);
@@ -197,6 +198,7 @@ YUI().add('codecola-gradient', function(Y) {
                 rule.type = "linear";
                 rule.orientation = gradient[0];
                 rule.orientation = rule.orientation == "left" ? "horizontal" : "vertical";
+
                 for (var i = 1, j = gradient.length; i < j; i++) {
                     var c = gradient[i].split(" ");
                     stops.push({
@@ -207,7 +209,6 @@ YUI().add('codecola-gradient', function(Y) {
             }
             rule.stops = stops;
             return this;
-            //this._addStops(stops);
         },
 
         /**
@@ -270,22 +271,18 @@ YUI().add('codecola-gradient', function(Y) {
          * @private
          * @chainable
          */
-        _addStops: function(stops) {
+        _addStops: function(stops, id) {
             var that = this, i;
-            Y.each(stops, function(s) {
-                var id = that.vars.id,
-                    p = that._getPixLeft(s.position);
-
-                i = Y.Node.create('<i class="codecola-gradient-stop" index="'+id+'"></i>');
+            Y.each(stops, function(s, index) {
+                var p = that._getPixLeft(s.position);
+                index = id?id:index;
+                i = Y.Node.create('<i class="codecola-gradient-stop" index="'+index+'"></i>');
                 i.setStyles({
                     left: p,
                     backgroundColor: s.color
                 });
                 that.vars.stops.append(i);
-                that._initStopEvent(i, id);
-
-                that.vars.rule.stops[id] = s;
-                that.vars.id++;
+                that._initStopEvent(i, index);
             });
             that._changeCurrentStop(i);
             return that;
@@ -403,7 +400,7 @@ YUI().add('codecola-gradient', function(Y) {
                     continue;
                 }
                 var p = cStop.position,
-                        c = cStop.color;
+                    c = cStop.color;
                 if (p == 0) {
                     stops.webkit += ",from(" + c + ")";
                 } else if (p == 1) {
@@ -413,6 +410,7 @@ YUI().add('codecola-gradient', function(Y) {
                 }
                 stops.moz += "," + c + " " + this._floatToPercent(p);
             }
+
             webkit = "-webkit-gradient(" + rule.type + "," + orientation.webkit + stops.webkit + ")";
             moz = "-moz-linear-gradient(" + orientation.moz + stops.moz + ")";
             o = "-o-linear-gradient(" + orientation.moz + stops.moz + ")";
@@ -562,10 +560,10 @@ YUI().add('codecola-gradient', function(Y) {
              * @description gradient for init
              */
             gradient: {
-                value: "-o-linear-gradient(left , #000 0%, #fff 100%)",
+                value: "-webkit-linear-gradient(left , #000 0%, #fff 100%)",
                 setter: function(v){
                     if(!v){
-                        return "-o-linear-gradient(left , #000 0%, #fff 100%)"
+                        return "-webkit-linear-gradient(left , #000 0%, #fff 100%)"
                     }
                 }
             },

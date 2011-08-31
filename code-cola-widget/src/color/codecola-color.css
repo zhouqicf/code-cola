@@ -6,11 +6,15 @@
     display:none;
 }
 .codecola-color-transparent{
+    height:20px;
+    width:130px;
     display:inline-block;
     background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAAlQTFRF1tbW19fX////Y8ywewAAADxJREFUeNp8jUEKACAIwGb/f7RJKmnhQA9jKMuRDTa3MJMCOdSiCRgL/OpbxMoy0v6+CLr4FgwFVagAAwDFWQFzWaf+pQAAAABJRU5ErkJggg==) repeat 0 0;
 }
 .codecola-color-input{
     margin:0;
+    height:18px;
+    width:128px;
 }
 .codecola-color-current{
     overflow:hidden;

@@ -25,6 +25,9 @@ codecola.i18n =
   "error_server_fail": {
     "message": "Server error."
   },
+  "error_find_none": {
+    "message": "Code Cola can't find one."
+  },
   "opt_fold": {
     "message": "fold"
   },
@@ -82,9 +85,6 @@ codecola.i18n =
   "opt_hideNote": {
   	"message": "hide note"
   },
-	"style_pattern": {
-		"message": "css3 patterns"
-	},
   "style_fz": {
   	"message": "Font Size"
   },
@@ -217,7 +217,13 @@ codecola.i18n =
   "style_transform": {
   	"message": "Transform"
   },
+  "style_webkitTextStroke": {
+  	"message": "Text Stroke"
+  },
   "confirm_unload": {
   	"message": "Code Cola: The modification hasn't been saved."
+  },
+  "opt_finder": {
+  	"message": "Css Selector:"
   }
 }
