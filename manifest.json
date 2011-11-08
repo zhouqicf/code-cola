@@ -1,6 +1,6 @@
 {
 	"name": "__MSG_name__",
-	"version": "3.2.0",
+	"version": "3.3.0",
 	"default_locale": "en",
 	"description" : "__MSG_description__",
 	"icons": {
@@ -13,7 +13,7 @@
 	"options_page": "options.html",
 	"browser_action": {
 		"default_icon":"cc-off.png",
-		"default_title":"code cola(off)"
+		"default_title":"Code Cola(off)"
 	},
 	"permissions": [ "tabs","*://*/*"]
 }

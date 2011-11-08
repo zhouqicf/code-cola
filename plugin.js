@@ -437,8 +437,8 @@ codecola.plug.webkitBoxReflect.prototype.render = function(CODECOLA){
     '   <ccfieldset>'+
     '       <cclegend>' + CODECOLA.chromeGetMSG("style_wbr_d") + '</cclegend>'+
     '       <select id="codeCola-webkitBoxReflectDirection" name="webkitBoxReflect">'+
-    '           <option value="above">above</option>'+
     '           <option value="below">below</option>'+
+    '           <option value="above">above</option>'+
     '           <option value="left">left</option>'+
     '           <option value="right">right</option>'+
     '       </select>'+
@@ -471,6 +471,7 @@ codecola.plug.webkitBoxReflect.prototype.bind = function(CODECOLA, Y){
     }).render();
     offset.next().on('change', function(e) {
         var value = this.get('value');
+        console.log(value);
         CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'webkitBoxReflect', direction.get('value') + ' ' + value + 'px ' + getGradient());
         offset.set('value', value);
     });
@@ -486,7 +487,7 @@ codecola.plug.webkitBoxReflect.prototype.bind = function(CODECOLA, Y){
 codecola.plug.webkitBoxReflect.prototype.sync = function(CODECOLA, Y){
     var v = CODECOLA.getStyle(CODECOLA.get('codeColaCurrentNode'), 'webkitBoxReflect'),
         g = '',
-        d = 'above',
+        d = 'below',
         o = 0;
     if (v != 'none') {
         g = v.match(/\-.+\)\)\)/)[0];
@@ -530,7 +531,7 @@ codecola.plug.boxShadow.prototype.render = function(CODECOLA){
     '<div class="codeCola-editorWrap">' +
     '   <ccfieldset id="codeCola-boxShadowWrap">' +
     '	    <ol>' +
-    '			<li><label>Inset:</label><label><input type="radio" value="inset" id="codeCola-boxShadowInset" name="boxShadow"> ' + CODECOLA.chromeGetMSG("style_bs_inset") + '</label> <label><input type="radio" value="outset" id="codeCola-boxShadowOutset" name="boxShadow"> ' + CODECOLA.chromeGetMSG("style_bs_outset") + '</label></li>' +
+    '			<li><label>Inset:</label><label><input type="radio" value="inset" id="codeCola-boxShadowInset" name="boxShadow"> ' + CODECOLA.chromeGetMSG("style_bs_inset") + '</label>&nbsp;&nbsp;&nbsp;&nbsp;<label><input type="radio" value="outset" id="codeCola-boxShadowOutset" name="boxShadow"> ' + CODECOLA.chromeGetMSG("style_bs_outset") + '</label></li>' +
     '			<li><label>Degree:</label><div id="codeCola-boxShadowDegree"></div></li>' +
     '			<li>'+
     '               <label for="codeCola-boxShadowDistance">Distance:</label>'+
@@ -538,14 +539,14 @@ codecola.plug.boxShadow.prototype.render = function(CODECOLA){
     '               <input type="number" id="codeCola-boxShadowDistance-c" class="codeCola-currentStyle" min="0" name="boxShadow"/>(px)'+
     '           </li>' +
     '			<li>'+
-    '               <label for="codeCola-boxShadowSize">Size:</label>'+
-    '               <input type="range" min="0" max="100" id="codeCola-boxShadowSize" name="boxShadow"/>'+
-    '               <input type="number" id="codeCola-boxShadowSize-c" class="codeCola-currentStyle" min="0" name="boxShadow"/>(px)'+
-    '           </li>' +
-    '			<li>'+
     '               <label for="codeCola-boxShadowSpread">Spread:</label>'+
     '               <input type="range" min="-100" max="100" id="codeCola-boxShadowSpread" name="boxShadow"/>'+
     '               <input type="number" id="codeCola-boxShadowSpread-c" class="codeCola-currentStyle" min="0" name="boxShadow"/>(px)'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-boxShadowSize">Size:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-boxShadowSize" name="boxShadow"/>'+
+    '               <input type="number" id="codeCola-boxShadowSize-c" class="codeCola-currentStyle" min="0" name="boxShadow"/>(px)'+
     '           </li>' +
     '			<li><label for="codeCola-boxShadowColor">Color:</label><div id="codeCola-boxShadowColor"></div></li>' +
     '		</ol>' +

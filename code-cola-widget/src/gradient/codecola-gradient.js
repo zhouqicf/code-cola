@@ -560,10 +560,10 @@ YUI().add('codecola-gradient', function(Y) {
              * @description gradient for init
              */
             gradient: {
-                value: "-webkit-linear-gradient(left , #000 0%, #fff 100%)",
+                value: "-webkit-linear-gradient(top , #000 0%, #fff 100%)",
                 setter: function(v){
                     if(!v){
-                        return "-webkit-linear-gradient(left , #000 0%, #fff 100%)"
+                        return "-webkit-linear-gradient(top , #000 0%, #fff 100%)"
                     }
                 }
             },

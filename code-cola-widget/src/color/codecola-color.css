@@ -6,6 +6,8 @@
     display:none;
 }
 .codecola-color-transparent{
+    line-height: 0;
+    font-size: 0;
     height:20px;
     width:130px;
     display:inline-block;

@@ -1,15 +1,15 @@
 {
   "name": {
-    "message": "code cola"
+    "message": "Code Cola"
   },
   "description": {
-    "message": "code cola是一个可视化编辑在线页面css样式的chrome插件。"
+    "message": "Code Cola是一个可视化编辑在线页面css样式的chrome插件。"
   },
   "error_google": {
-    "message": "由于安全限制，code cola无法在一些google的页面上运行。"
+    "message": "由于安全限制，Code Cola无法在一些google的页面上运行。"
   },
   "error_local": {
-    "message": "由于安全限制，code cola无法在本地页面上运行，请将当前页面上传至服务器，或移至本地服务器目录下。"
+    "message": "由于安全限制，Code Cola无法在本地页面上运行，请将当前页面上传至服务器，或移至本地服务器目录下。"
   },
   "error_connect_server": {
     "message": "链接到服务器失败"
@@ -27,7 +27,7 @@
     "message": "展开"
   },
   "opt_about": {
-  	"message": "关于code cola"
+  	"message": "关于Code Cola"
   },
   "opt_cNode": {
   	"message": "当前节点"

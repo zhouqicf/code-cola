@@ -1,15 +1,15 @@
 {
   "name": {
-    "message": "code cola"
+    "message": "Code Cola"
   },
   "description": {
-    "message": "code cola is a chrome extension for editing online pages' css style visually."
+    "message": "Code Cola is a chrome extension for editing online pages' css style visually."
   },
   "error_google": {
-    "message": "For security reasons,code cola cannot run content scripts at some pages of google."
+    "message": "For security reasons,Code Cola cannot run content scripts at some pages of google."
   },
   "error_local": {
-    "message": "For security reasons,code cola cannot run content scripts at local page.\r\nPlase upload this page to server or move it to a local server folder."
+    "message": "For security reasons,Code Cola cannot run content scripts at local page.\r\nPlase upload this page to server or move it to a local server folder."
   },
   "error_connect_server": {
     "message": "Communicate with server unsuccessfully."
@@ -27,7 +27,7 @@
     "message": "unfold"
   },
   "opt_about": {
-  	"message": "About code cola"
+  	"message": "About Code Cola"
   },
   "opt_cNode": {
   	"message": "current nodes"
