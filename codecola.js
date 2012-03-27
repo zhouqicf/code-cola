@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
-version: 3.3.0
+version: 3.4.0
 */
 (function(){
 
@@ -145,7 +145,7 @@ YUI().add('codecola', function(Y) {
                 '       <div class="codeCola-about-content">'+
                 '           <div class="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
                 '               <cctitle class="codeCola-about-name">Code Cola</cctitle>'+
-                '               <p class="codeCola-about-version">v3.3.0</p>'+
+                '               <p class="codeCola-about-version">v3.4.0</p>'+
                 '           </div>'+
                 '           <div class="codeCola-about-detail">'+
                 '               <p class="codeCola-about-doc">'+
@@ -340,9 +340,11 @@ YUI().add('codecola', function(Y) {
             var _this = this,
                 codecola = document.getElementById('codeCola'),
                 noteWrap = document.getElementById('codeCola-notes-wrap'),
+                //TODO: test
                 isType = function(){
-                    var activeTag = document.activeElement.tagName.toLowerCase();
-                    return activeTag === 'input' || activeTag === 'select' || activeTag === 'textarea';
+                    var activeTag = document.activeElement,
+                        activeTagName = activeTag.tagName.toLowerCase();
+                    return activeTag.getAttribute('contenteditable') === 'true' || activeTagName === 'input' || activeTagName === 'select' || activeTagName === 'textarea';
                 };
             Y.on('keypress', function(e){
                 if(!window.codeColaTurnOn || e.keyCode != 102 || isType()){
@@ -458,7 +460,9 @@ YUI().add('codecola', function(Y) {
 
         _bindOpenControl: function(){
             Y.on('click', function(e) {
-                this.get('parentNode').toggleClass('codeCola-item-open');
+                if(e.target.get('nodeName') !== 'A'){
+                    this.get('parentNode').toggleClass('codeCola-item-open');
+                }
             }, 'cctitle');
         },
 
@@ -475,6 +479,10 @@ YUI().add('codecola', function(Y) {
                     _this.setStyle(_this.get('codeColaCurrentNode'), n, '');
                     cssStuff[n] = '';
                     if (!mutil) {
+                        //TODO: terrible
+                        if(n === 'backgroundImage'){
+                            n = 'linearGradient';
+                        }
                         _this.initControls(n);
                     }
                 });
@@ -499,7 +507,7 @@ YUI().add('codecola', function(Y) {
                     });
                     //TODO: terrible
                     if (data == 'backgroundImage') {
-                        _this.backgroundImage.gradient.able();
+                        _this.linearGradient.gradient.able();
                     }else if(data == 'webkitMaskImage'){
                         _this.webkitMaskImage.gradient.able();
                     }else if(data == 'webkitBoxReflect'){
@@ -518,7 +526,7 @@ YUI().add('codecola', function(Y) {
                         _this.setStyle(codeColaCurrentNode, n, '');
                     });
                     if (data == 'backgroundImage') {
-                        _this.backgroundImage.gradient.disable();
+                        _this.linearGradient.gradient.disable();
                     }else if(data == 'webkitMaskImage'){
                         _this.webkitMaskImage.gradient.disable();
                     }else if(data == 'webkitBoxReflect'){
@@ -891,7 +899,7 @@ YUI().add('codecola', function(Y) {
         },
 
         getCombinedStyle: function(style) {
-            var styles = Y.Lang.trim(style).split(';'),
+            var styles = Y.Lang.trim(style).split(/;(?!base64)/),
                 cssRules = {},
                 styleProperty = '',
                 deleteFun = function(array) {
@@ -922,7 +930,7 @@ YUI().add('codecola', function(Y) {
                 if (styles[i] == '') {
                     continue;
                 }
-                var s = styles[i].split(/:(?!\/\/)/),
+                var s = styles[i].split(/:(?!\/\/|image)/),
                     //url(http://xxx)
                     s0 = Y.Lang.trim(s[0]),
                     s1 = Y.Lang.trim(s[1]);
@@ -969,7 +977,6 @@ YUI().add('codecola', function(Y) {
             layoutFun(['margin-top', 'margin-right', 'margin-bottom', 'margin-left'], 'margin', '0px');
             //combine border-radius
             layoutFun(['border-top-left-radius', 'border-top-right-radius', 'border-bottom-right-radius', 'border-bottom-left-radius'], 'border-radius', '0px 0px', ',');
-
             for (var i in cssRules) {
                 if (i == 'font-family') {
                     styleProperty += 'font-family:' + escape(cssRules[i].replace(/\s*,\s*/g, ',')).replace(/%/g, '\\').replace(/\\2C/g, ',').replace(/\\20/g, ' ').replace(/\\27/g, '"') + ';';
@@ -977,8 +984,8 @@ YUI().add('codecola', function(Y) {
                     styleProperty += ('-webkit-box-shadow:' + cssRules[i] + ';-moz-box-shadow:' + cssRules[i] + ';box-shadow:' + cssRules[i] + ';');
                 } else if (i == 'border-radius') {
                     styleProperty += ('-webkit-border-radius:' + cssRules[i] + ';-moz-border-radius:' + cssRules[i] + ';border-radius:' + cssRules[i] + ';');
-                } else if (i == 'background-image') {
-                    var _gradients = this.backgroundImage.gradient.getGradient(true);
+                } else if (i == 'background-image' && /linear\-gradient/.test(cssRules[i])) {
+                    var _gradients = this.linearGradient.gradient.getGradient(true);
                     styleProperty += ('background-image:' + _gradients.webkit + ';background-image:' + _gradients.moz + ';background-image:' + _gradients.o + ';background-image:' + _gradients.ms + ';');
                 } else if (i == 'transform') {
                     styleProperty += ('-webkit-transform:' + cssRules[i] + ';-moz-transform:' + cssRules[i] + ';-o-transform:' + cssRules[i] + ';-ms-transform:' + cssRules[i] + ';transform:' + cssRules[i] + ';');
@@ -992,7 +999,8 @@ YUI().add('codecola', function(Y) {
                     styleProperty += i + ':' + cssRules[i] + ';';
                 }
             }
-            return styleProperty.replace(/;/g, ';\r\n');
+            return styleProperty;
+            //return styleProperty.replace(/;/g, ';\r\n');
         },
 
         setStyle: function(nodes, property, value) {
@@ -1214,10 +1222,10 @@ YUI().add('codecola', function(Y) {
             plugs: {
                 value: function(){
                     var LOADER = {
-                        all: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size', 'listStyle'],
-                        normal: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size'],
-                        list: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'backgroundColor', 'backgroundImage', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'layout', 'size'],
-                        img: ['size', 'border', 'boxShadow', 'transform', 'opacity', 'backgroundColor', 'backgroundImage', 'webkitMaskImage', 'webkitBoxReflect', 'layout']
+                        all: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'background', 'linearGradient', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'borderRadius', 'layout', 'size', 'listStyle'],
+                        normal: ['fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'background', 'linearGradient', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'border', 'borderRadius', 'layout', 'size'],
+                        list: ['listStyle', 'fontFamily', 'fontSize', 'lineHeight', 'color', 'fontOther', 'textAlign', 'textShadow', 'webkitTextStroke', 'background', 'linearGradient', 'opacity', 'boxShadow', 'webkitMaskImage', 'webkitBoxReflect', 'transform', 'borderRadius', 'border', 'layout', 'size'],
+                        img: ['size', 'border', 'borderRadius', 'boxShadow', 'transform', 'opacity', 'background', 'linearGradient', 'webkitMaskImage', 'webkitBoxReflect', 'layout']
                     };
                     if(!Y.UA.webkit){
                         Y.each(LOADER, function(i, key){
@@ -1239,7 +1247,7 @@ YUI().add('codecola', function(Y) {
             }
         }
     });
-}, '3.3.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
+}, '3.4.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
 
 YUI().use('codecola', function(Y){
     var _codeCola = new Y.codecola({

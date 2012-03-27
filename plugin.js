@@ -263,7 +263,7 @@ codecola.plug.textShadow.NS = "textShadow";
 codecola.plug.textShadow.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-textShadow">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_ts") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="textShadow"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="textShadow"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_ts") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="textShadow"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="textShadow"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=css-textshadow"></a></cctitle>' +
     '<div class="codeCola-editorWrap">' +
     '   <ccfieldset id="codeCola-textShadowWrap">' +
     '	    <ol>' +
@@ -348,56 +348,143 @@ codecola.plug.textShadow.prototype.sync = function(CODECOLA, Y){
     size.set('value', value[2]).next().set('value', value[2]);
 };
 
-codecola.plug.backgroundColor = function(config) {};
-codecola.plug.backgroundColor.NS = "backgroundColor";
-codecola.plug.backgroundColor.prototype.render = function(CODECOLA){
+//codecola.plug.backgroundColor = function(config) {};
+//codecola.plug.backgroundColor.NS = "backgroundColor";
+//codecola.plug.backgroundColor.prototype.render = function(CODECOLA){
+//    CODECOLA.renderPlug(
+//    '<li id="codeCola-item-backgroundColor">'+
+//    '<cctitle><label for="codeCola-backgroundColor">' + CODECOLA.chromeGetMSG("style_bc") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="backgroundColor"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="backgroundColor"></cci></cctitle>' +
+//    '<div class="codeCola-editorWrap" id="codeCola-backgroundColor"></div>'+
+//    '</li>'
+//    )
+//};
+//codecola.plug.backgroundColor.prototype.bind = function(CODECOLA, Y){
+//    CODECOLA.backgroundColor.color = new Y.codecolaColor({
+//        wrap: '#codeCola-backgroundColor',
+//        onChange: function(color) {
+//            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundColor', color);
+//        }
+//    }).render();
+//};
+//codecola.plug.backgroundColor.prototype.sync = function(CODECOLA, Y){
+//    var bgc = CODECOLA.getStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundColor');
+//    //bgc = bgc == 'rgba(0, 0, 0, 0)' ? 'transparent' : bgc;
+//    CODECOLA.backgroundColor.color.set('color', bgc).syncUI();
+//};
+
+
+codecola.plug.background = function(config) {};
+codecola.plug.background.NS = "background";
+codecola.plug.background.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
-    '<li id="codeCola-item-backgroundColor">'+
-    '<cctitle><label for="codeCola-backgroundColor">' + CODECOLA.chromeGetMSG("style_bc") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="backgroundColor"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="backgroundColor"></cci></cctitle>' +
-    '<div class="codeCola-editorWrap" id="codeCola-backgroundColor"></div>'+
+    '<li id="codeCola-item-background">'+
+    '<cctitle><label for="codeCola-background">' + CODECOLA.chromeGetMSG("style_bg") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="background"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="background"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=datauri"></a></cctitle>' +
+    '<div class="codeCola-editorWrap">' +
+    '   <ccfieldset id="codeCola-backgroundWrap">' +
+    '	    <ol>' +
+    '			<li><label>Color:</label><div id="codeCola-backgroundColor"></div></li>' +
+    '			<li><label for="codeCola-backgroundImage">Image:</label><input type="file" id="codeCola-backgroundImage"/></li>' +
+    '			<li id="codeCola-backgroundPositionX-wrap">'+
+    '               <label for="codeCola-backgroundPositionX" title="Position X">X:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-backgroundPositionX" name="background-position-x"/>'+
+    '               <input type="number" id="codeCola-backgroundPositionX-c" class="codeCola-currentStyle" name="background-position-x"/>(%)'+
+    '           </li>' +
+    '			<li id="codeCola-backgroundPositionY-wrap">'+
+    '               <label for="codeCola-backgroundPositionY" title="Position Y">Y:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-backgroundPositionY" name="background-position-y"/>'+
+    '               <input type="number" id="codeCola-backgroundPositionY-c" class="codeCola-currentStyle" name="background-position-y"/>(%)'+
+    '           </li>' +
+    '			<li>' +
+    '				<label for="codeCola-backgroundRepeat">Repeat:</label>' +
+    '  				<select id="codeCola-backgroundRepeat" name="backgroundRepeat">' +
+    '      			    <option selected="seleted" value="no-repeat">no-repeat</option>' +
+    '      			    <option value="repeat-x">repeat-x</option>' +
+    '      			    <option value="repeat-y">repeat-y</option>' +
+    '      			    <option value="repeat">repeat</option>' +
+    '  				</select>' +
+    '			</li>' +
+    '		</ol>' +
+    '	</ccfieldset>' +
+    '</div>'+
     '</li>'
     )
 };
-codecola.plug.backgroundColor.prototype.bind = function(CODECOLA, Y){
-    CODECOLA.backgroundColor.color = new Y.codecolaColor({
+codecola.plug.background.prototype.bind = function(CODECOLA, Y){
+    CODECOLA.background.color = new Y.codecolaColor({
         wrap: '#codeCola-backgroundColor',
         onChange: function(color) {
             CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundColor', color);
         }
     }).render();
+
+    CODECOLA.bindRange('#codeCola-backgroundPositionX-wrap', function(v){
+        return v + '%';
+    });
+    CODECOLA.bindRange('#codeCola-backgroundPositionY-wrap', function(v){
+        return v + '%';
+    });
+
+    Y.on('change', function(e){
+        CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'background-repeat', this.get('value'));
+    }, '#codeCola-backgroundRepeat');
+
+    Y.on('change', function(e){
+        var oFReader = new FileReader(),
+            oFile = e.target._node.files[0];
+        oFReader.onload = function(e) {
+            CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'background-image', 'url(' + e.target.result + ')');
+        };
+        oFReader.readAsDataURL(oFile);
+    }, '#codeCola-backgroundImage');
 };
-codecola.plug.backgroundColor.prototype.sync = function(CODECOLA, Y){
-    var bgc = CODECOLA.getStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundColor');
+codecola.plug.background.prototype.sync = function(CODECOLA, Y){
+    var cNode = CODECOLA.get('codeColaCurrentNode');
+    var bgc = CODECOLA.getStyle(cNode, 'backgroundColor');
     //bgc = bgc == 'rgba(0, 0, 0, 0)' ? 'transparent' : bgc;
-    CODECOLA.backgroundColor.color.set('color', bgc).syncUI();
+    CODECOLA.background.color.set('color', bgc).syncUI();
+
+    CODECOLA.initRange('#codeCola-backgroundPositionX', null, function(v){
+        return parseInt(v, 10);
+    });
+    CODECOLA.initRange('#codeCola-backgroundPositionY', null, function(v){
+        return parseInt(v, 10);
+    });
+
+    var bgr = CODECOLA.getStyle(cNode, 'backgroundRepeat');
+    document.getElementById('codeCola-backgroundRepeat').value = bgr;
+
+    document.getElementById('codeCola-backgroundImage').value = '';
 };
 
 
-codecola.plug.backgroundImage = function(config) {};
-codecola.plug.backgroundImage.NS = "backgroundImage";
-codecola.plug.backgroundImage.prototype.render = function(CODECOLA){
+codecola.plug.linearGradient = function(config) {};
+codecola.plug.linearGradient.NS = "linearGradient";
+codecola.plug.linearGradient.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
-    '<li id="codeCola-item-backgroundImage">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_lg") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="backgroundImage"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="backgroundImage"></cci></cctitle>' +
-    '<div class="codeCola-editorWrap" id="codeCola-backgroundImage"></div>'+
+    '<li id="codeCola-item-linearGradient">'+
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_lg") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="backgroundImage"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="backgroundImage"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=css-gradients"></a></cctitle>' +
+    '<div class="codeCola-editorWrap" id="codeCola-linearGradient"></div>'+
     '</li>'
     )
 };
-codecola.plug.backgroundImage.prototype.bind = function(CODECOLA, Y){
-    CODECOLA.backgroundImage.gradient = new Y.codecolaGradient({
-        wrap: '#codeCola-backgroundImage',
+codecola.plug.linearGradient.prototype.bind = function(CODECOLA, Y){
+    CODECOLA.linearGradient.gradient = new Y.codecolaGradient({
+        wrap: '#codeCola-linearGradient',
         panelWidth: 255,
         onChange: function(gradient) {
             CODECOLA.setStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundImage', gradient);
         }
     }).render();
 };
-codecola.plug.backgroundImage.prototype.sync = function(CODECOLA, Y){
+codecola.plug.linearGradient.prototype.sync = function(CODECOLA, Y){
     var v = CODECOLA.getStyle(CODECOLA.get('codeColaCurrentNode'), 'backgroundImage');
+    if(/url\(\w+\)/.test(v)){
+        return;
+    }
     if (!/linear/.test(v)) {
         v = '';
     }
-    CODECOLA.backgroundImage.gradient.set('gradient', v).syncUI();
+    CODECOLA.linearGradient.gradient.set('gradient', v).syncUI();
 };
 
 codecola.plug.webkitMaskImage = function(config) {};
@@ -432,7 +519,7 @@ codecola.plug.webkitBoxReflect.NS = "webkitBoxReflect";
 codecola.plug.webkitBoxReflect.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-webkitBoxReflect">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_wbr") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="webkitBoxReflect"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="webkitBoxReflect"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_wbr") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="webkitBoxReflect"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="webkitBoxReflect"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=css-reflections"></a></cctitle>' +
     '<div class="codeCola-editorWrap codeCola-editor-multi">'+
     '   <ccfieldset>'+
     '       <cclegend>' + CODECOLA.chromeGetMSG("style_wbr_d") + '</cclegend>'+
@@ -505,7 +592,7 @@ codecola.plug.opacity.NS = "opacity";
 codecola.plug.opacity.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-opacity">'+
-    '<cctitle><label for="codeCola-opacity">' + CODECOLA.chromeGetMSG("style_op") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="opacity"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="opacity"></cci></cctitle>' +
+    '<cctitle><label for="codeCola-opacity">' + CODECOLA.chromeGetMSG("style_op") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="opacity"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="opacity"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=css-opacity"></a></cctitle>' +
     '<div class="codeCola-editorWrap">'+
     '   <input type="range" min="0" max="1" id="codeCola-opacity" step="0.01" name="opacity"/>'+
     '   <input type="number" id="codeCola-opacity-c" class="codeCola-currentStyle" min="0" max="1" step="0.01" name="opacity"/>'+
@@ -527,7 +614,7 @@ codecola.plug.boxShadow.NS = "boxShadow";
 codecola.plug.boxShadow.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-boxShadow">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_bs") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="boxShadow"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="boxShadow"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_bs") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="boxShadow"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="boxShadow"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=css-boxshadow"></a></cctitle>' +
     '<div class="codeCola-editorWrap">' +
     '   <ccfieldset id="codeCola-boxShadowWrap">' +
     '	    <ol>' +
@@ -640,7 +727,7 @@ codecola.plug.border.NS = "border";
 codecola.plug.border.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-border">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_b") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="borderTop,borderRight,borderBottom,borderLeft,borderRadius" mutil="border"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="border,borderRadius" mutil="border"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_b") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="borderTop,borderRight,borderBottom,borderLeft" mutil="border"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="border"></cci></cctitle>' +
     '<div class="codeCola-editorWrap codeCola-editor-multi">' +
     '	<ccfieldset id="codeCola-borderWidthWrap">' +
     '	    <cclegend>' + CODECOLA.chromeGetMSG("style_b_width") + '</cclegend>' +
@@ -740,32 +827,6 @@ codecola.plug.border.prototype.render = function(CODECOLA){
     '			<li><label for="codeCola-borderLeftColor">Left:</label><div id="codeCola-borderLeftColor"></div></li>' +
     '		</ol>' +
     '	</ccfieldset>' +
-    '	<ccfieldset id="codeCola-borderRadiusWrap">' +
-    '		<cclegend>' + CODECOLA.chromeGetMSG("style_b_radius") + '</cclegend>' +
-    '		<label><input type="checkbox" class="set-same" name="borderRadius" id="codeCola-sameBorderRadius"/> ' + CODECOLA.chromeGetMSG("opt_same") + '</label>' +
-    '		<ol>' +
-    '			<li>'+
-    '               <label for="codeCola-borderTopLeftRadius">TL:</label>'+
-    '               <input type="range" min="0" max="100" id="codeCola-borderTopLeftRadius" name="borderTopLeftRadius"/>'+
-    '               <input type="number" id="codeCola-borderTopLeftRadius-c" class="codeCola-currentStyle" min="0" name="borderTopLeftRadius"/>(px)'+
-    '           </li>' +
-    '			<li>'+
-    '               <label for="codeCola-borderTopRightRadius">TR:</label>'+
-    '               <input type="range" min="0" max="100" id="codeCola-borderTopRightRadius" name="borderTopRightRadius"/>'+
-    '               <input type="number" id="codeCola-borderTopRightRadius-c" class="codeCola-currentStyle" min="0" name="borderTopRightRadius"/>(px)'+
-    '           </li>' +
-    '			<li>'+
-    '               <label for="codeCola-borderBottomRightRadius">BR:</label>'+
-    '               <input type="range" min="0" max="100" id="codeCola-borderBottomRightRadius" name="borderBottomRightRadius"/>'+
-    '               <input type="number" id="codeCola-borderBottomRightRadius-c" class="codeCola-currentStyle" min="0" name="borderBottomRightRadius"/>(px)'+
-    '           </li>' +
-    '			<li>'+
-    '               <label for="codeCola-borderBottomLeftRadius">BL:</label>'+
-    '               <input type="range" min="0" max="100" id="codeCola-borderBottomLeftRadius" name="borderBottomLeftRadius"/>'+
-    '               <input type="number" id="codeCola-borderBottomLeftRadius-c" class="codeCola-currentStyle" min="0" name="borderBottomLeftRadius"/>(px)'+
-    '           </li>' +
-    '		</ol>' +
-    '	</ccfieldset>' +
     '</div>'+
     '</li>'
     )
@@ -773,11 +834,7 @@ codecola.plug.border.prototype.render = function(CODECOLA){
 codecola.plug.border.prototype.bind = function(CODECOLA, Y){
     CODECOLA.bindSame('#codeCola-sameBorderWidth');
     CODECOLA.bindSame('#codeCola-sameBorderStyle');
-    CODECOLA.bindSame('#codeCola-sameBorderRadius');
     CODECOLA.bindRange('#codeCola-borderWidthWrap', function(v){
-        return v +'px'
-    });
-    CODECOLA.bindRange('#codeCola-borderRadiusWrap', function(v){
         return v +'px'
     });
     CODECOLA.bindRange('#codeCola-borderStyleWrap', null, 'select');
@@ -824,7 +881,55 @@ codecola.plug.border.prototype.sync = function(CODECOLA, Y){
     Y.each(['borderTopStyle', 'borderRightStyle', 'borderBottomStyle', 'borderLeftStyle'], function(n) {
         CODECOLA.initSelect('#codeCola-'+n);
     });
-    Y.each(['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius', 'borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'], function(n) {
+    Y.each(['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'], function(n) {
+        CODECOLA.initRange('#codeCola-'+n);
+    });
+};
+
+codecola.plug.borderRadius = function(config) {};
+codecola.plug.borderRadius.NS = "borderRadius";
+codecola.plug.borderRadius.prototype.render = function(CODECOLA){
+    CODECOLA.renderPlug(
+    '<li id="codeCola-item-borderRadius">'+
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_b_radius") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" data="borderRadius"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" data="borderRadius"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=border-radius"></a></cctitle>' +
+    '<div class="codeCola-editorWrap">' +
+    '	<ccfieldset id="codeCola-borderRadiusWrap">' +
+    '		<label><input type="checkbox" class="set-same" name="borderRadius" id="codeCola-sameBorderRadius"/> ' + CODECOLA.chromeGetMSG("opt_same") + '</label>' +
+    '		<ol>' +
+    '			<li>'+
+    '               <label for="codeCola-borderTopLeftRadius">TL:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-borderTopLeftRadius" name="borderTopLeftRadius"/>'+
+    '               <input type="number" id="codeCola-borderTopLeftRadius-c" class="codeCola-currentStyle" min="0" name="borderTopLeftRadius"/>(px)'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-borderTopRightRadius">TR:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-borderTopRightRadius" name="borderTopRightRadius"/>'+
+    '               <input type="number" id="codeCola-borderTopRightRadius-c" class="codeCola-currentStyle" min="0" name="borderTopRightRadius"/>(px)'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-borderBottomRightRadius">BR:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-borderBottomRightRadius" name="borderBottomRightRadius"/>'+
+    '               <input type="number" id="codeCola-borderBottomRightRadius-c" class="codeCola-currentStyle" min="0" name="borderBottomRightRadius"/>(px)'+
+    '           </li>' +
+    '			<li>'+
+    '               <label for="codeCola-borderBottomLeftRadius">BL:</label>'+
+    '               <input type="range" min="0" max="100" id="codeCola-borderBottomLeftRadius" name="borderBottomLeftRadius"/>'+
+    '               <input type="number" id="codeCola-borderBottomLeftRadius-c" class="codeCola-currentStyle" min="0" name="borderBottomLeftRadius"/>(px)'+
+    '           </li>' +
+    '		</ol>' +
+    '	</ccfieldset>' +
+    '</div>'+
+    '</li>'
+    )
+};
+codecola.plug.borderRadius.prototype.bind = function(CODECOLA, Y){
+    CODECOLA.bindSame('#codeCola-sameBorderRadius');
+    CODECOLA.bindRange('#codeCola-borderRadiusWrap', function(v){
+        return v +'px'
+    });
+};
+codecola.plug.borderRadius.prototype.sync = function(CODECOLA, Y){
+    Y.each(['borderTopLeftRadius', 'borderTopRightRadius', 'borderBottomRightRadius', 'borderBottomLeftRadius'], function(n) {
         CODECOLA.initRange('#codeCola-'+n);
     });
 };
@@ -1003,7 +1108,7 @@ codecola.plug.transform.prototype.transformOrigin = function(){
 codecola.plug.transform.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-transform">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_transform") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_transform") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=transforms2d"></a></cctitle>' +
     '<div class="codeCola-editorWrap codeCola-editor-multi">' +
     '	<ccfieldset id="codeCola-transform-origin">' +
     '		<ol>' +
@@ -1138,7 +1243,7 @@ codecola.plug.webkitTextStroke.NS = "webkitTextStroke";
 codecola.plug.webkitTextStroke.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codeCola-item-webkitTextStroke">'+
-    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_webkitTextStroke") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci></cctitle>' +
+    '<cctitle><label>' + CODECOLA.chromeGetMSG("style_webkitTextStroke") + '</label><cci class="codeCola-arrow"></cci><cci class="codeCola-eye" title="' + CODECOLA.chromeGetMSG("opt_hide") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><cci class="codeCola-cancel" title="' + CODECOLA.chromeGetMSG("opt_undo") + '" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><a target="_blank" class="codeCola-compatibility" title="' + CODECOLA.chromeGetMSG("opt_compatibility") + '" href="http://caniuse.com/#feat=text-stroke"></a></cctitle>' +
     '<div class="codeCola-editorWrap">' +
     '<ccfieldset>'+
     '	<ol>' +
