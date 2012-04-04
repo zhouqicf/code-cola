@@ -8,7 +8,7 @@ License
 ###Copyright (c) 2011 http://zhouqicf.com###
 author: zhouqicf@gmail.com
 
-version: 3.4.0
+version: 3.4.1
 
 license: Released under the MIT License.
 

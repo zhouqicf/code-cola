@@ -202,7 +202,7 @@ YUI().add('codecola-gradient', function(Y) {
                 for (var i = 1, j = gradient.length; i < j; i++) {
                     var c = gradient[i].split(" ");
                     stops.push({
-                        "position": this._percentToFloat(c[1]),
+                        "position": typeof c[1] === 'undefined'?(i === 1?0:1):this._percentToFloat(c[1]),
                         "color": c[0]
                     });
                 }

@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
-version: 3.4.0
+version: 3.4.1
 */
 (function(){
 
@@ -145,7 +145,7 @@ YUI().add('codecola', function(Y) {
                 '       <div class="codeCola-about-content">'+
                 '           <div class="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
                 '               <cctitle class="codeCola-about-name">Code Cola</cctitle>'+
-                '               <p class="codeCola-about-version">v3.4.0</p>'+
+                '               <p class="codeCola-about-version">v3.4.1</p>'+
                 '           </div>'+
                 '           <div class="codeCola-about-detail">'+
                 '               <p class="codeCola-about-doc">'+
@@ -1247,7 +1247,7 @@ YUI().add('codecola', function(Y) {
             }
         }
     });
-}, '3.4.0', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
+}, '3.4.1', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
 
 YUI().use('codecola', function(Y){
     var _codeCola = new Y.codecola({
