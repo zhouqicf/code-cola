@@ -61,6 +61,9 @@
   padding-left:58px;
   margin-top:-18px;
 }
+.codecola-gradient-wrap .codecola-gradient-orientation{
+    display:inline-block;
+}
 .codecola-gradient-stop-delete{
   padding-left:55px;
 }

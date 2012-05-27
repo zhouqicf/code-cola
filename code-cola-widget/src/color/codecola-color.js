@@ -283,9 +283,13 @@ YUI().add('codecola-color', function(Y) {
          * @return {String|Object}
          */
         getColor: function(isAll) {
-            var rgba = this.vars.rule.rgba,rgb;
-            rgba = 'rgba(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ',' + rgba.a + ')';
-            rgb = 'rgb(' + rgba.r + ',' + rgba.g + ',' + rgba.b + ')';
+            var color = this.vars.rule.rgba,
+                rgba,
+                rgb,
+                alpha = parseFloat(color.a);
+            alpha = (alpha < 1 && alpha != 0)?alpha.toFixed(2):alpha;
+            rgba = 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + alpha + ')';
+            rgb = 'rgb(' + color.r + ',' + color.g + ',' + color.b + ')';
             if(isAll){
                 return {
                     rgba: rgba,
@@ -293,7 +297,7 @@ YUI().add('codecola-color', function(Y) {
                 }
             }else{
                 if(Y.codecolaColor.isSupportRGBA){
-                    return rgba;
+                    return alpha == 1?rgb:rgba;
                 }else{
                     return rgb;
                 }
@@ -690,11 +694,11 @@ YUI().add('codecola-color', function(Y) {
          * @type Boolean
          * @description if the current broswer is support rgba
          */
-        isSupportRGBA: (function() {
+        isSupportRGBA: function() {
             var i = document.createElement('i');
             i.style.color = 'rgba(0,0,0,0.1)';
             return /^rgba/.test(i.style.color);
-        })(),
+        }(),
         /**
          * @attribute keywords
          * @type Object

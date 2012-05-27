@@ -40,11 +40,8 @@ YUI().add('codecola-gradient', function(Y) {
                         '   </div>' +
                         '   <div class="codecola-gradient-stops" id="' + ids.stops + '"></div>' +
                         '   <div class="codecola-gradient-orientation-wrap">' +
-                        '       <label class="codecola-gradient-label" for="' + ids.orientation + '">Orientation:</label>' +
-                        '	    <select class="codecola-gradient-orientation" id="' + ids.orientation + '">' +
-                        '		    <option value="horizontal">horizontal</option>' +
-                        '		    <option value="vertical">vertical</option>' +
-                        '	    </select>' +
+                        '       <label class="codecola-gradient-label" for="' + ids.orientation + '">Degree:</label>' +
+                        '	    <div class="codecola-gradient-orientation" id="' + ids.orientation + '"></div>' +
                         '   </div>' +
                         '   <div class="codecola-gradient-stop-detail" id="' + ids.stopDetail + '">' +
                         '	    <div class="codecola-gradient-color-wrap">' +
@@ -76,6 +73,7 @@ YUI().add('codecola-gradient', function(Y) {
                 stopDetail: Y.one('#'+ids.stopDetail),
                 id: 0,
                 colorControl: null,
+                degreeControl: null,
                 currentStop: null,
                 disable: false,
                 rule: {
@@ -88,6 +86,17 @@ YUI().add('codecola-gradient', function(Y) {
             that.vars.panelWrap.setStyle("width", that.get('panelWidth'));
             that.vars.stops.setStyle("width", that.get('panelWidth'));
 
+            that.vars.degreeControl = new Y.codecolaDegree({
+                wrap: '#'+ids.orientation,
+                onChange: function(degree) {
+                    if (that.vars.disable) {
+                        return;
+                    }
+                    that.vars.rule.orientation = degree;
+                    that._initPanel()._fireCallback();
+                }
+            });
+            that.vars.degreeControl.render();
             that.vars.colorControl = new Y.codecolaColor({
                 wrap: '#'+ids.color,
                 onChange: function(color) {
@@ -108,10 +117,6 @@ YUI().add('codecola-gradient', function(Y) {
             var that = this,
                 vars = that.vars,
                 rule = vars.rule;
-            vars.orientation.on("change", function(e) {
-                rule.orientation = this.get('value');
-                that._initPanel()._fireCallback();
-            });
             vars.stops.on("click", function(e) {
                 if (e.target.get('nodeName') == "I" || vars.disable) {
                     return;
@@ -143,6 +148,7 @@ YUI().add('codecola-gradient', function(Y) {
                 delete rule.stops[cStop.getAttribute("index")];
                 vars.stops.removeChild(cStop);
                 vars.colorControl.disable();
+                vars.degreeControl.disable();
                 vars.location.set('disabled', true);
                 vars.button.set('disabled', true);
                 that._initPanel()._fireCallback();
@@ -161,6 +167,62 @@ YUI().add('codecola-gradient', function(Y) {
             return this;
         },
 
+        _transformDegree: function(orientation){
+            var rule = this.vars.rule;
+            if(orientation.indexOf('%') !== -1){
+                orientation = orientation.replace(/%/g, '').split(",");
+                orientation[1] = orientation[1].split(' ');
+                orientation[2] = orientation[2].split(' ');
+                rule.orientation = - Math.ceil(Math.atan2(orientation[2][1] - orientation[1][1], orientation[2][0] - orientation[1][0]) * (360 / (2 * Math.PI)));
+            }else{
+                switch(orientation){
+                    case 'left':
+                        rule.orientation = '0';
+                        break;
+                    case 'top':
+                        rule.orientation = '-90';
+                        break;
+                    case 'bottom':
+                        rule.orientation = '90';
+                        break;
+                    case 'right':
+                        rule.orientation = '180';
+                        break;
+                    case 'top left':
+                        rule.orientation = '-45';
+                        break;
+                    case 'left top':
+                        rule.orientation = '-45';
+                        break;
+                    case 'top right':
+                        rule.orientation = '-135';
+                        break;
+                    case 'right top':
+                        rule.orientation = '-135';
+                        break;
+                    case 'bottom left':
+                        rule.orientation = '45';
+                        break;
+                    case 'left bottom':
+                        rule.orientation = '45';
+                        break;
+                    case 'bottom right':
+                        rule.orientation = '135';
+                        break;
+                    case 'right bottom':
+                        rule.orientation = '135';
+                        break;
+                    default:
+                        if(orientation.indexOf('deg') !== -1){
+                            rule.orientation = orientation.replace('deg', '');
+                        }else{
+                            rule.orientation = '0'
+                        }
+                        break;
+                }
+            }
+        },
+
         /**
          * update the this.vars.rule object
          * @method _initRule
@@ -175,12 +237,11 @@ YUI().add('codecola-gradient', function(Y) {
 
             if (/-webkit-gradient/.test(gradient)) {
                 gradient = gradient.replace(/\s*,\s*/g, ",").replace("-webkit-gradient(", "").replace(/\)$/, "").split(/,(?=[fct])/);
-                var part1 = gradient[0].split(",");
-                rule.type = part1[0];
-                rule.orientation = part1[1] + "," + part1[2];
-                rule.orientation = rule.orientation == "0% 0%,100% 0%" ? "horizontal" : "vertical";
+                var part1 = gradient[0];
+                this._transformDegree(part1);
+
                 for (var i = 1, j = gradient.length; i < j; i++) {
-                    var c = gradient[i];
+                    var c = gradient[i];    
                     if (/color/.test(c)) {
                         c = c.replace("color-stop(", "").replace(/\)$/, "").split(/,(?=r)/);
                     } else if (/from/.test(c)) {
@@ -194,10 +255,8 @@ YUI().add('codecola-gradient', function(Y) {
                     });
                 }
             } else {
-                gradient = gradient.replace(/\s*,\s*/g, ",").replace(/-(moz|o|ms|webkit)-linear-gradient\(/, "").replace(/\)$/, "").split(/,(?=[r#])/);
-                rule.type = "linear";
-                rule.orientation = gradient[0];
-                rule.orientation = rule.orientation == "left" ? "horizontal" : "vertical";
+                gradient = gradient.replace(/\s*,\s*/g, ",").replace(/-(moz|o|ms|webkit)-linear-gradient\(/, "").replace(/\)$/, "").split(/,(?=[^\d])/);
+                this._transformDegree(gradient[0]);
 
                 for (var i = 1, j = gradient.length; i < j; i++) {
                     var c = gradient[i].split(" ");
@@ -217,7 +276,8 @@ YUI().add('codecola-gradient', function(Y) {
          * @chainable
          */
         _initOrientation: function() {
-            this.vars.orientation.set('value', this.vars.rule.orientation);
+            this.vars.degreeControl.set('degree', this.vars.rule.orientation);
+            this.vars.degreeControl.syncUI();
             return this;
         },
 
@@ -352,6 +412,7 @@ YUI().add('codecola-gradient', function(Y) {
             stop.addClass(selectClassName);
             that.vars.currentStop = stop;
             that.vars.colorControl.able();
+            that.vars.degreeControl.able();
             that.vars.location.set('disabled', false);
             that.vars.button.set('disabled', false);
 
@@ -372,24 +433,22 @@ YUI().add('codecola-gradient', function(Y) {
         getGradient: function(isAll, isPanel) {
             var rule = this.vars.rule,
                 tempStops = [].concat(rule.stops),
-                stops = {
-                    webkit: "",
-                    moz: ""
-                },
-                webkit, moz, o, ms,
-                orientation = {};
-
-            if (rule.orientation == "horizontal" || isPanel) {
-                orientation = {
-                    "webkit": "0% 0%,100% 0%",
-                    "moz": "left"
-                }
-            } else {
-                orientation = {
-                    "webkit": "0% 0%,0% 100%",
-                    "moz": "top"
-                }
+                stops = "", webkit, moz, o, ms,
+                orientation = rule.orientation == 0?0:rule.orientation + "deg";
+            if(isPanel){
+                orientation = 0;
             }
+//            if (rule.orientation == "horizontal" || isPanel) {
+//                orientation = {
+//                    "webkit": "0% 0%,100% 0%",
+//                    "moz": "left"
+//                }
+//            } else {
+//                orientation = {
+//                    "webkit": "0% 0%,0% 100%",
+//                    "moz": "top"
+//                }
+//            }
 
             tempStops.sort(function(a, b) {
                 return a.position - b.position;
@@ -401,20 +460,14 @@ YUI().add('codecola-gradient', function(Y) {
                 }
                 var p = cStop.position,
                     c = cStop.color;
-                if (p == 0) {
-                    stops.webkit += ",from(" + c + ")";
-                } else if (p == 1) {
-                    stops.webkit += ",to(" + c + ")";
-                } else {
-                    stops.webkit += ",color-stop(" + p + "," + c + ")";
-                }
-                stops.moz += "," + c + " " + this._floatToPercent(p);
+                stops += "," + c + " " + this._floatToPercent(p);
             }
 
-            webkit = "-webkit-gradient(" + rule.type + "," + orientation.webkit + stops.webkit + ")";
-            moz = "-moz-linear-gradient(" + orientation.moz + stops.moz + ")";
-            o = "-o-linear-gradient(" + orientation.moz + stops.moz + ")";
-            ms = "-ms-linear-gradient(" + orientation.moz + stops.moz + ")";
+            webkit = "-webkit-linear-gradient(" + orientation + stops + ")";
+            moz = "-moz-linear-gradient(" + orientation + stops + ")";
+            o = "-o-linear-gradient(" + orientation + stops + ")";
+            ms = "-ms-linear-gradient(" + orientation + stops + ")";
+
             if (isAll){
                 return {
                     "webkit": webkit,
@@ -520,7 +573,7 @@ YUI().add('codecola-gradient', function(Y) {
         disable: function() {
             var vars = this.vars;
             vars.colorControl.disable();
-            vars.orientation.set('disabled', true);
+            vars.degreeControl.disable();
             vars.location.set('disabled', true);
             vars.button.set('disabled', true);
             vars.disable = true;
@@ -535,7 +588,7 @@ YUI().add('codecola-gradient', function(Y) {
         able: function() {
             var vars = this.vars;
             vars.colorControl.able();
-            vars.orientation.set('disabled', false);
+            vars.degreeControl.able();
             vars.location.set('disabled', false);
             vars.button.set('disabled', false);
             vars.disable = false;
@@ -556,14 +609,14 @@ YUI().add('codecola-gradient', function(Y) {
             /**
              * @attribute gradient
              * @type String
-             * @default "-webkit-gradient(linear, 0% 0%, 100% 0%, from(#000), to(#fff))" or "-moz-linear-gradient(left , #000 0%, #fff 100%)" or "-o-linear-gradient(left , #000 0%, #fff 100%)" or "-ms-linear-gradient(left , #000 0%, #fff 100%)"
+             * @default "-webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#fff))" or "-moz-linear-gradient(top , #000 0%, #fff 100%)" or "-o-linear-gradient(top , #000 0%, #fff 100%)" or "-ms-linear-gradient(top , #000 0%, #fff 100%)"
              * @description gradient for init
              */
             gradient: {
-                value: "-webkit-linear-gradient(top , #000 0%, #fff 100%)",
+                value: "-webkit-linear-gradient(left , #000 0%, #fff 100%)",
                 setter: function(v){
                     if(!v){
-                        return "-webkit-linear-gradient(top , #000 0%, #fff 100%)"
+                        return "-webkit-linear-gradient(left , #000 0%, #fff 100%)"
                     }
                 }
             },
@@ -611,4 +664,4 @@ YUI().add('codecola-gradient', function(Y) {
             }
         }
     });
-}, '1.0.0', {requires:['codecola-color', 'node', 'widget-base', 'ua', 'codecola-gradient-css']});
+}, '1.0.0', {requires:['codecola-color', 'codecola-degree', 'node', 'widget-base', 'ua', 'codecola-gradient-css']});

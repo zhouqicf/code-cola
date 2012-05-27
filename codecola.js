@@ -1,7 +1,7 @@
 /*
 Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
-version: 3.4.1
+version: 3.4.3
 */
 (function(){
 
@@ -145,7 +145,7 @@ YUI().add('codecola', function(Y) {
                 '       <div class="codeCola-about-content">'+
                 '           <div class="codeCola-about-global" style="background-image:url(' + _this.chromeGetURL('128.png') + ')">'+
                 '               <cctitle class="codeCola-about-name">Code Cola</cctitle>'+
-                '               <p class="codeCola-about-version">v3.4.1</p>'+
+                '               <p class="codeCola-about-version">v3.4.3</p>'+
                 '           </div>'+
                 '           <div class="codeCola-about-detail">'+
                 '               <p class="codeCola-about-doc">'+
@@ -935,7 +935,7 @@ YUI().add('codecola', function(Y) {
                     s0 = Y.Lang.trim(s[0]),
                     s1 = Y.Lang.trim(s[1]);
                 //webkit only
-                if(s0 != '-webkit-mask-image' && s0 != '-webkit-box-reflect' && s0 != '-webkit-text-stroke' && s0 != '-webkit-text-stroke-width' && s0 != '-webkit-text-stroke-color' && s0 != '-webkit-text-fill-color' && s0 != '-webkit-text-size-adjust'){
+                if(s0 != '-webkit-mask-image' && s0 != '-webkit-mask' && s0 != '-webkit-box-reflect' && s0 != '-webkit-text-stroke' && s0 != '-webkit-text-stroke-width' && s0 != '-webkit-text-stroke-color' && s0 != '-webkit-text-fill-color' && s0 != '-webkit-text-size-adjust'){
                     s0 = s0.replace(/-webkit-|-o-|-ms-|-moz-/, '');
                 }
                 cssRules[s0] = s1;
@@ -984,7 +984,7 @@ YUI().add('codecola', function(Y) {
                     styleProperty += ('-webkit-box-shadow:' + cssRules[i] + ';-moz-box-shadow:' + cssRules[i] + ';box-shadow:' + cssRules[i] + ';');
                 } else if (i == 'border-radius') {
                     styleProperty += ('-webkit-border-radius:' + cssRules[i] + ';-moz-border-radius:' + cssRules[i] + ';border-radius:' + cssRules[i] + ';');
-                } else if (i == 'background-image' && /linear\-gradient/.test(cssRules[i])) {
+                } else if (i == 'background-image' && (/linear\-gradient/.test(cssRules[i]) || /webkit\-gradient\(linear/.test(cssRules[i]))) {
                     var _gradients = this.linearGradient.gradient.getGradient(true);
                     styleProperty += ('background-image:' + _gradients.webkit + ';background-image:' + _gradients.moz + ';background-image:' + _gradients.o + ';background-image:' + _gradients.ms + ';');
                 } else if (i == 'transform') {
@@ -999,8 +999,7 @@ YUI().add('codecola', function(Y) {
                     styleProperty += i + ':' + cssRules[i] + ';';
                 }
             }
-            return styleProperty;
-            //return styleProperty.replace(/;/g, ';\r\n');
+            return styleProperty.replace(/;(?!base64)/g, ';\r\n');
         },
 
         setStyle: function(nodes, property, value) {
@@ -1247,7 +1246,7 @@ YUI().add('codecola', function(Y) {
             }
         }
     });
-}, '3.4.1', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
+}, '3.4.3', {requires:['codecola-i18n', 'codecola-plugs', 'codecola-color', 'codecola-gradient', 'codecola-degree', 'codecola-css', 'widget-base', 'node-base', 'event-base', 'io-base', 'dd-plugin', 'ua', 'json-parse']});
 
 YUI().use('codecola', function(Y){
     var _codeCola = new Y.codecola({
