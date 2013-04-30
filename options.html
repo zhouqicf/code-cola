@@ -70,14 +70,14 @@ footer{
   padding-top:10px;
   overflow:hidden;
 }
-#codeCola-doc::before{
+#codecola-doc::before{
   content:url("cc-on.png");
   width:22px;
   height:22px;
   margin-right:5px;
   vertical-align:middle;
 }
-#codeCola-author{
+#codecola-author{
   font-size: 10px;
   -webkit-text-size-adjust: none;
 }
@@ -109,7 +109,7 @@ footer{
 </head>
 <body>
 <header>
-  <h1>Code Cola<sup class="version">V3.4.3</sup></h1>
+  <h1>Code Cola<sup class="version">V3.5.0</sup></h1>
 </header>
 <section id="main">
 	<aside>
@@ -139,8 +139,8 @@ $fileName = <span class="keyword">time</span>();</code></pre>
   </div>
 </section>
 <footer>
-    <p id="codeCola-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>
-    <p id="codeCola-author">© 2010-2011 <a rel="work" href="http://www.koubei.com" target="_blank">KouBei</a> <a rel="team" href="http://ued.koubei.com" target="_blank">UED</a> - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>
+    <p id="codecola-doc">Code Cola <a href="http://www.zhouqicf.com/code-cola" target="_blank">Documentation</a>, <a href="https://chrome.google.com/extensions/detail/lomkpheldlbkkfiifcbfifipaofnmnkn" target="_blank">Chrome extension</a>, <a href="https://github.com/zhouqicf/code-cola" target="_blank">Source</a></p>
+    <p id="codecola-author">© 2010-2013 - created by <a href="http://www.zhouqicf.com/about" target="_blank">Zhou Qi</a></p>
 </footer>
 <script>
 var info = document.getElementById("info");
@@ -149,7 +149,7 @@ function(e) {
   e.preventDefault();
   var action = document.getElementById("action").value;
   if (/^([^:]+):\/\/(?:([^:@]+):?([^@]*)@)?(?:([^/?#:]+):?(\d*))([^?#]*)(?:\?([^#]+))?(?:#(.+))?$/.test(action)) {
-    localStorage["codecola_getLink_action"] = action;
+    localStorage["codecola_save_action"] = action;
     localStorage["codecola_stylesheet"] = action.replace(/\/\w+\.\w+$/, "/codecola.css");
     info.innerHTML = "Options Saved.";
     info.className = "success";

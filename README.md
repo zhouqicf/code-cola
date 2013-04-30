@@ -5,19 +5,12 @@ Download from Chrome Web Store: https://chrome.google.com/webstore/detail/lomkph
 
 License
 -------
-###Copyright (c) 2011 http://zhouqicf.com###
+###Copyright (c) 2013 http://zhouqicf.com###
 author: zhouqicf@gmail.com
 
-version: 3.4.3
+version: 3.5.0
 
 license: Released under the MIT License.
-
-###Powered by YUI3###
-http://developer.yahoo.com/yui/3
-
-Copyright (c) 2011, Yahoo! Inc. All rights reserved.
-
-license: Released under the BSD License.
 
 Broswer support
 ---------------
@@ -39,3 +32,11 @@ Share Your Css Patterns
 -----------------------
 http://codecolapatterns.com/
 CodeCola Patterns is designed to collect and share css code. With Code Cola, you can share your css code easy, the only thing you have to do is click the share button.
+
+Thanks
+------
+###YUI 3###
+http://developer.yahoo.com/yui/3
+
+###Font Awesome###
+http://fortawesome.github.io/Font-Awesome/

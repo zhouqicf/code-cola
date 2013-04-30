@@ -44,7 +44,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
     if(request == "getUrls"){
-		sendResponse({"action": localStorage["codecola_getLink_action"]?localStorage["codecola_getLink_action"]:"", "css": localStorage["codecola_stylesheet"]?localStorage["codecola_stylesheet"]:""});
+		sendResponse({"action": localStorage["codecola_save_action"]?localStorage["codecola_save_action"]:"", "css": localStorage["codecola_stylesheet"]?localStorage["codecola_stylesheet"]:""});
 	}
 });
 </script>

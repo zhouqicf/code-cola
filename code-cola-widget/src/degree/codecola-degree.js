@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2011, ZHOUQICF.COM. All rights reserved.
+Copyright (c) 2013, ZHOUQICF.COM. All rights reserved.
 Code licensed under the MIT License:
 version: 1.0.0
 */

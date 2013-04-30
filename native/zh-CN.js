@@ -145,6 +145,9 @@ codecola.i18n =
     "style_ta_right":{
         "message":"右对齐"
     },
+    "style_ta_justify":{
+        "message":"两端对齐"
+    },
     "style_c":{
         "message":"字色"
     },

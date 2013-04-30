@@ -11,7 +11,7 @@ header("Content-type: text/html; charset: utf-8");
 
 
 //Users can visit modified pages through this address.
-$path = "http://dev/getLink/";
+$path = "http://dev/save/";
 //set filename
 $fileName = time();
 
