@@ -1,7 +1,8 @@
 @charset "utf-8";
 @font-face {
     font-family: 'FontAwesome';
-    src: url('font/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+    src: url('font/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+         url('font/fontawesome-webfont.ttf?v=3.0.1') format("truetype");
 }
 @-webkit-keyframes popIn{
 	0% {
@@ -77,6 +78,7 @@
     text-align: center;
     vertical-align: middle;
     text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+    -webkit-font-smoothing: antialiased;
 }
 
 #codecola .codecola-icon:hover,
@@ -585,7 +587,7 @@ codecola-current-info:after {
 
 #codecola-getStyles,
 #codecola-getHTML {
-    font: bold 12px/18px arial;
+    font: bold 12px/18px arial !important;
     letter-spacing: 1px;
 }
 
