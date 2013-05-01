@@ -150,7 +150,6 @@ function(e) {
   var action = document.getElementById("action").value;
   if (/^([^:]+):\/\/(?:([^:@]+):?([^@]*)@)?(?:([^/?#:]+):?(\d*))([^?#]*)(?:\?([^#]+))?(?:#(.+))?$/.test(action)) {
     localStorage["codecola_save_action"] = action;
-    localStorage["codecola_stylesheet"] = action.replace(/\/\w+\.\w+$/, "/codecola.css");
     info.innerHTML = "Options Saved.";
     info.className = "success";
   } else {

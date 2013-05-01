@@ -33,19 +33,5 @@ if(!$fp){
 	$message = $success;
 }
 
-
-//create stylesheet
-$stylesheetName = "codecola.css";
-$stylesheetPath = $path.$stylesheetName;
-if(file_exists($stylesheetPath)){
-	echo $message;
-	exit();
-}
-$css = $_POST["css"];
-$pc=file_put_contents($stylesheetName,$css);
-if(!$pc){
-	echo $fail;
-}else{
-	echo $success;
-}
+echo $message;
 ?>
