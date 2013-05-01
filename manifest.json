@@ -1,4 +1,5 @@
 {
+    "manifest_version": 2,
 	"name": "__MSG_name__",
 	"version": "3.5.0",
 	"default_locale": "en",
@@ -9,11 +10,18 @@
 		"32": "32.png",
 		"48": "48.png"
 	},
-	"background_page": "background.html",
+    "background": {
+        "scripts": ["background.js"]
+    },
 	"options_page": "options.html",
 	"browser_action": {
 		"default_icon":"cc-off.png",
 		"default_title":"Code Cola(off)"
 	},
-	"permissions": [ "tabs","*://*/*"]
+	"permissions": ["tabs", "*://*/*"],
+    "web_accessible_resources": [
+        "font/fontawesome-webfont.ttf",
+        "font/fontawesome-webfont.woff",
+        "128.png"
+    ]
 }
