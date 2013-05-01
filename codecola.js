@@ -4,24 +4,6 @@ Code licensed under the MIT License:
 version: 3.5.0
 */
 (function(){
-
-//if extension is loaded
-var _temp_cc = document.getElementById('codecola');
-if (_temp_cc && _temp_cc.style.display != 'none') {
-    _temp_cc.style.display = 'none';
-    window.codecolaTurnOn = false;
-    return;
-} else if (_temp_cc && _temp_cc.style.display == 'none') {
-    _temp_cc.style.display = 'block';
-    if (/cc-open/.test(document.getElementById('codecola-switch').className)) {
-        window.codecolaTurnOn = true;
-    }
-    return;
-} else {
-    if (!window.codecolaTurnOn) {
-        window.codecolaTurnOn = true;
-    }
-}
 /**
  * a chrome extension to modify css style visually
  * @module codecola
@@ -37,6 +19,8 @@ YUI().add('codecola', function(Y) {
      * @requires codecola-color codecola-gradient codecola-degree codecola-css widget-base node-base event-base io-base dd-plugin ua
      */
     Y.codecola = Y.Base.create('codecola', Y.Widget, [], {
+        isOn: true,
+
         initializer: function() {
             this.set('codecolaCurrentNode', null);
         },
@@ -49,6 +33,7 @@ YUI().add('codecola', function(Y) {
         },
 
         bindUI: function() {
+            this._bindBrowserAction();
             this._bindModules();
             this._bindOpenControl();
             this._bindCancel();
@@ -57,7 +42,6 @@ YUI().add('codecola', function(Y) {
             this._bindShowCurrentNode();
             this._bindSwitch();
             this._bindGetStyle();
-            this._bindNote();
             this._bindSetStyle();
             this._bindGetHtml();
             this._bindGetLink();
@@ -101,48 +85,46 @@ YUI().add('codecola', function(Y) {
                 '<div id="codecola" class="codecola-wrap">'+
                 '   <div id="codecola-option">'+
                 '       <div id="codecola-fold" title="{{opt_fold}}"><ccs></ccs><ccb></ccb></div>'+
-                '       <cci id="codecola-show-about" class="codecola-icon" title="{{opt_about}}"></cci>'+
+                '       <span id="codecola-show-about" class="codecola-icon" title="{{opt_about}}"></span>'+
                 '       <div id="codecola-drag"></div>'+
                 '   </div>' +
                 '   <div id="codecola-current-info">'+
                 '       <cccode id="codecola-current-node">none</cccode> * '+
                 '       <cccode id="codecola-current-node-count">0</cccode>'+
                 '       <vabbr id="codecola-show-currentNode" title="{{opt_cNode}}">?</vabbr>'+
-                '       <cci id="codecola-open-all" title="{{opt_unfoldAll}}"><ccb></ccb><ccu></ccu></cci>'+
-                '       <cci id="codecola-share" title="{{opt_share}}" class="codecola-opt-button codecola-icon"></cci>'+
-                '       <cci id="codecola-getNote" title="{{opt_showNote}}" class="codecola-opt-button codecola-icon"></cci>'+
-                '       <cci id="codecola-getStyles" title="{{opt_showStyle}}" class="codecola-opt-button codecola-icon">{}</cci>'+
-                '       <cci id="codecola-getHTML" title="{{opt_html}}" class="codecola-opt-button codecola-icon">&lt;&gt;</cci>'+
-                '       <cci id="codecola-save" title="{{opt_link}}" class="codecola-opt-button codecola-icon"></cci>'+
-                '       <cci id="codecola-switch" title="{{opt_turnOff}}" class="codecola-opt-button codecola-icon cc-open"></cci>'+
+                '       <span id="codecola-open-all" title="{{opt_unfoldAll}}"><ccb></ccb><ccu></ccu></span>'+
+                '       <span id="codecola-share" title="{{opt_share}}" class="codecola-opt-button codecola-icon"></span>'+
+                '       <span id="codecola-save" title="{{opt_link}}" class="codecola-opt-button codecola-icon"></span>'+
+                '       <span id="codecola-getHTML" title="{{opt_html}}" class="codecola-opt-button codecola-icon">&lt;&gt;</span>'+
+                '       <span id="codecola-getStyles" title="{{opt_showStyle}}" class="codecola-opt-button codecola-icon">{}</span>'+
+                '       <span id="codecola-switch" title="{{opt_turnOff}}" class="codecola-opt-button codecola-icon cc-open"></span>'+
                 '   </div>'+
                 '   <form id="codecola-patterns" action="http://codecolapatterns.com/submit" method="POST" target="_blank">'+
                 '       <textarea id="codecola-styles" class="codecola-code" name="css"></textarea><input type="hidden" name="client" value="codecola">'+
                 '   </form>'+
-                '   <textarea id="codecola-note"></textarea>'+
                 '   <ul id="codecola-controls" class="cc-close"></ul>'+
                 '   <ol id="codecola-selectors" class="codecola-wrap"></ol>'+
                 '   <div id="codecola-getHTML-wrap" class="codecola-pop codecola-wrap">'+
                 '       <span id="codecola-getHTML-title" class="codecola-pop-title">HTML</span>'+
-                '       <cci id="codecola-getHTML-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></cci>'+
+                '       <span id="codecola-getHTML-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></span>'+
                 '       <textarea id="codecola-getHTML-content" class="codecola-code"></textarea>'+
                 '   </div>'+
                 '   <div id="codecola-save-wrap" class="codecola-pop codecola-wrap">'+
                 '       <span id="codecola-save-title" class="codecola-pop-title">URL</span>'+
-                '       <cci id="codecola-save-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></cci>'+
+                '       <span id="codecola-save-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></span>'+
                 '       <input id="codecola-save-content">'+
                 '   </div>'+
                 '   <div id="codecola-finder-wrap" class="codecola-pop codecola-wrap">'+
                 '       <span id="codecola-finder-title" class="codecola-pop-title">{{opt_finder}}</span>'+
-                '       <cci id="codecola-finder-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></cci>'+
+                '       <span id="codecola-finder-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></span>'+
                 '       <input id="codecola-finder-content">'+
                 '   </div>'+
                 '   <div id="codecola-about-wrap" class="codecola-pop codecola-wrap">'+
                 '       <span class="codecola-about-title codecola-pop-title">About</span>'+
-                '       <cci id="codecola-about-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></cci>'+
+                '       <span id="codecola-about-close" class="codecola-icon codecola-pop-close" title="{{opt_close}}"></span>'+
                 '       <div class="codecola-about-content">'+
-                '           <div class="codecola-about-global" style="background-image:url(' + this.chromeGetURL('128.png') + ')">'+
-                '               <cctitle class="codecola-about-name">Code Cola</cctitle>'+
+                '           <div class="codecola-about-global">'+
+                '               <div class="codecola-about-name">Code Cola</div>'+
                 '               <p class="codecola-about-version">v3.5.0</p>'+
                 '           </div>'+
                 '           <div class="codecola-about-detail">'+
@@ -158,9 +140,22 @@ YUI().add('codecola', function(Y) {
                 '           </div>'+
                 '       </div>'+
                 '   </div>'+
-                '</div>'+
-                '<div id="codecola-notes-wrap"></div>'
+                '</div>'
             )));
+        },
+
+        _bindBrowserAction: function(){
+            var _this = this;
+            this.chromeOnMessage(function(event){
+                if(event === 'browserAction'){
+                    if(_this.isOn){
+                        document.getElementById('codecola').style.display = 'none';
+                    }else{
+                        document.getElementById('codecola').style.display = 'block';
+                    }
+                    _this.isOn = !_this.isOn;
+                }
+            });
         },
 
         _bindModules: function(){
@@ -173,7 +168,6 @@ YUI().add('codecola', function(Y) {
 
         _bindInspect: function(){
             //TODO: can't stop event sametimes
-            //TODO: window.codecolaTurnOn
             var _this = this,
                 mask = Y.Node.create('<ccmask id="codecola-mask"></ccmask>'),
                 NODE_tempNode,
@@ -184,7 +178,7 @@ YUI().add('codecola', function(Y) {
             Y.one('#codecola').append(mask);
 
             Y.on('mouseover', function(e) {
-                if (!window.codecolaTurnOn) {
+                if (!_this.isOn) {
                     return;
                 }
                 var target = e.target,
@@ -196,14 +190,14 @@ YUI().add('codecola', function(Y) {
                 mask.setAttribute('style', 'left:' + (p[0] - window.pageXOffset) + 'px;top:' + (p[1] - window.pageYOffset) + 'px;width:' + width + 'px;height:' + height + 'px;');
             }, 'body');
             Y.on('mouseout', function(e) {
-                if (!window.codecolaTurnOn) {
+                if (!_this.isOn) {
                     return;
                 }
                 mask.setStyle('left', '-4000px');
             }, 'body');
             //TODO: yui3 support event capture?
             document.body.addEventListener('click', function(e) {
-                if (!window.codecolaTurnOn) {
+                if (!_this.isOn) {
                     return;
                 }
                 e.preventDefault();
@@ -234,7 +228,7 @@ YUI().add('codecola', function(Y) {
                 }
             }, true);
             Y.on('keyup', function(e) {
-                if (window.codecolaTurnOn && (e.keyCode == 17 || e.keyCode == 224 || e.keyCode == 91) && !mutilNodes.isEmpty()) {
+                if (_this.isOn && (e.keyCode == 17 || e.keyCode == 224 || e.keyCode == 91) && !mutilNodes.isEmpty()) {
                     mutilNodes.removeClass(CLASS_selecting);
                     _this.initTab(mutilNodes, 'mix');
                     mutilStart = false;
@@ -292,7 +286,7 @@ YUI().add('codecola', function(Y) {
                     }, 1500);
                 };
             Y.on('contextmenu', function(e) {
-                if (!window.codecolaTurnOn) {
+                if (!_this.isOn) {
                     return
                 }
                 e.preventDefault();
@@ -335,7 +329,6 @@ YUI().add('codecola', function(Y) {
         _bindInspectByFinder: function(){
             var _this = this,
                 codecola = document.getElementById('codecola'),
-                noteWrap = document.getElementById('codecola-notes-wrap'),
                 //TODO: test
                 isType = function(){
                     var activeTag = document.activeElement,
@@ -343,7 +336,7 @@ YUI().add('codecola', function(Y) {
                     return activeTag.getAttribute('contenteditable') === 'true' || activeTagName === 'input' || activeTagName === 'select' || activeTagName === 'textarea';
                 };
             Y.on('keypress', function(e){
-                if(!window.codecolaTurnOn || e.keyCode != 102 || isType()){
+                if(!_this.isOn || e.keyCode != 102 || isType()){
                     return;
                 }
                 e.preventDefault();
@@ -351,14 +344,13 @@ YUI().add('codecola', function(Y) {
                 Y.one('#codecola-finder-content').focus();
             });
             Y.on('keypress', function(e){
-                if(!window.codecolaTurnOn || e.keyCode != 13){
+                if(!_this.isOn || e.keyCode != 13){
                     return;
                 }
                 var selector = this.get('value'),
                     allNodes = Y.all(selector)._nodes,
                     dropNodes = codecola.getElementsByTagName('*'),
-                    nodes = Y.all('codecola-nodelist'),
-                    notes = noteWrap.getElementsByTagName('*');
+                    nodes = Y.all('codecola-nodelist');
                 //TODO: bad
                 for(var i = allNodes.length;i>-1;i--){
                     var use = true, node = allNodes[i];
@@ -369,13 +361,7 @@ YUI().add('codecola', function(Y) {
                                 return;
                             }
                         }
-                        for(var j = notes.length;j>-1;j--){
-                            if(node == notes[j]){
-                                use = false;
-                                return;
-                            }
-                        }
-                        if(node == noteWrap || node == codecola){
+                        if(node == codecola){
                             use = false;
                             return;
                         }
@@ -401,8 +387,6 @@ YUI().add('codecola', function(Y) {
         initTab: function(node, selector){
             var _this = this,
                 wrap = Y.one('#codecola-controls'),
-                inputs = wrap.all('input'),
-                selects = wrap.all('select'),
                 eyes = Y.all('.cc-close'),
                 items = [],
                 nodeType = node._nodes[0].nodeName.toLowerCase(),
@@ -417,13 +401,6 @@ YUI().add('codecola', function(Y) {
                 items = plugs['normal'];
             }
 
-            inputs.each(function(n) {
-                n.set('disabled', false);
-                if (n.get('type') == 'checkbox') {
-                    n.set('checked', false);
-                }
-            });
-            selects.set('disabled', false);
             eyes.removeClass('cc-close').set('title', _this.chromeGetMSG('opt_hide'));
 
             Y.each(plugs.all, function(n) {
@@ -437,6 +414,7 @@ YUI().add('codecola', function(Y) {
                 if (isShow) {
                     li.addClass('codecola-item-open');
                 }
+                li.removeClass('codecola-disable');
                 _this.initControls(n);
                 //sort
                 wrap.append(li);
@@ -446,7 +424,6 @@ YUI().add('codecola', function(Y) {
             wrap.set('className', '');
             _this.updateCurrentNode(node.size(), selector);
             _this.updateStyle();
-            _this.updateNote();
         },
 
         updateCurrentNode: function(len, selector) {
@@ -455,19 +432,21 @@ YUI().add('codecola', function(Y) {
         },
 
         _bindOpenControl: function(){
-            Y.on('click', function(e) {
-                if(e.target.get('nodeName') !== 'A'){
-                    this.get('parentNode').toggleClass('codecola-item-open');
+            Y.one('#codecola-controls').delegate('click', function(e) {
+                if(e.target.hasClass('codecola-icon')){
+                    return;
                 }
-            }, 'cctitle');
+                this.get('parentNode').toggleClass('codecola-item-open');
+            }, '.codecola-item-title');
         },
 
         _bindCancel: function(){
             var cssStuff = [],
-                _this = this;
-            Y.on('click', function(e) {
+                _this = this,
+                delegator = Y.one('#codecola-controls');
+            delegator.delegate('click', function(e) {
                 e.stopPropagation();
-                var that = this,
+                var that = e.target,
                     data = this.getAttribute('data'),
                     propertys = data.split(','),
                     mutil = that.getAttribute('mutil');
@@ -487,52 +466,25 @@ YUI().add('codecola', function(Y) {
                 }
             }, '.codecola-cancel');
 
-            Y.on('click', function(e) {
+            delegator.delegate('click', function(e) {
                 e.stopPropagation();
-                var that = this,
+                var that = e.target,
                     data = that.getAttribute('data'),
                     propertys = data.split(','),
-                    divWrap = that.get('parentNode').next(),
-                    inputs = divWrap.all('input'),
-                    selects = divWrap.all('select'),
-                    codecolaCurrentNode = _this.get('codecolaCurrentNode');
+                    codecolaCurrentNode = _this.get('codecolaCurrentNode'),
+                    wrap = that.ancestor('.codecola-item');
                 if (that.hasClass('cc-close')) {
+                    wrap.removeClass('codecola-disable');
                     Y.each(propertys, function(n) {
                         _this.setStyle(codecolaCurrentNode, n, cssStuff[n]);
                     });
-                    //TODO: terrible
-                    if (data == 'backgroundImage') {
-                        _this.linearGradient.gradient.able();
-                    }else if(data == 'webkitMaskImage'){
-                        _this.webkitMaskImage.gradient.able();
-                    }else if(data == 'webkitBoxReflect'){
-                        _this.webkitBoxReflect.gradient.able();
-                    }else if(data == 'textShadow'){
-                        _this.textShadow.degree.able();
-                    }else if(data == 'boxShadow'){
-                        _this.boxShadow.degree.able();
-                    }
-                    inputs.set('disabled', false);
-                    selects.set('disabled', false);
                     that.removeClass('cc-close').set('title', _this.chromeGetMSG('opt_hide'));
                 } else {
+                    wrap.addClass('codecola-disable');
                     Y.each(propertys, function(n) {
                         cssStuff[n] = _this.getStyle(codecolaCurrentNode, n);
                         _this.setStyle(codecolaCurrentNode, n, '');
                     });
-                    if (data == 'backgroundImage') {
-                        _this.linearGradient.gradient.disable();
-                    }else if(data == 'webkitMaskImage'){
-                        _this.webkitMaskImage.gradient.disable();
-                    }else if(data == 'webkitBoxReflect'){
-                        _this.webkitBoxReflect.gradient.disable();
-                    }else if(data == 'textShadow'){
-                        _this.textShadow.degree.disable();
-                    }else if(data == 'boxShadow'){
-                        _this.boxShadow.degree.disable();
-                    }
-                    inputs.set('disabled', true);
-                    selects.set('disabled', true);
                     that.addClass('cc-close').set('title', _this.chromeGetMSG('opt_show'));
                 }
             }, '.codecola-eye');
@@ -576,7 +528,7 @@ YUI().add('codecola', function(Y) {
                     codecolaCurrentNode.addClass('codecola-selecting');
                     Y.one('#codecola').addClass('cc-fade');
                 }
-            }, '#codecola-show-currentNode')
+            }, '#codecola-show-currentNode');
             Y.on('mouseout', function(e) {
                 var codecolaCurrentNode = _this.get('codecolaCurrentNode');
                 if (codecolaCurrentNode) {
@@ -590,10 +542,10 @@ YUI().add('codecola', function(Y) {
             var _this = this;
             Y.on('click', function(e) {
                 if (this.hasClass('cc-open')) {
-                    window.codecolaTurnOn = false;
-                    this.removeClass('cc-open').addClass('cc-close').set('title', _this.chromeGetMSG('opt_turnOn'));
+                    _this.isOn = false;
+                    this.removeClass('cc-open').addClass('cc-close').set('title', _this.chromeGetMSG('opt_isOn'));
                 } else {
-                    window.codecolaTurnOn = true;
+                    _this.isOn = true;
                     this.removeClass('cc-close').addClass('cc-open').set('title', _this.chromeGetMSG('opt_turnOff'));
                 }
             }, '#codecola-switch');
@@ -612,70 +564,18 @@ YUI().add('codecola', function(Y) {
             }, '#codecola-getStyles');
         },
 
-        _bindNote: function(){
-            var _this = this;
-            Y.on('click', function(e) {
-                if (this.hasClass('cc-open')) {
-                    this.removeClass('cc-open').set('title', _this.chromeGetMSG('opt_showNote'));
-                    Y.one('#codecola-note').removeClass('cc-open');
-                } else {
-                    this.addClass('cc-open').set('title', _this.chromeGetMSG('opt_hideNote'));
-                    Y.one('#codecola-note').addClass('cc-open');
-                }
-            }, '#codecola-getNote');
-            Y.on('change', function(e) {
-                var codecolaCurrentNode = _this.get('codecolaCurrentNode');
-                if (!window.codecolaTurnOn || !codecolaCurrentNode) {
-                    return
-                }
-                var value = this.get('value'),
-                    filter = function(v) {
-                        return v.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\r\n|\n|\r/g, '<br>').replace(/'/g, '&quot;').replace(/'/g, '&apos;')
-                    };
-                if (value != '') {
-                    codecolaCurrentNode.each(function(node) {
-                        if (node.getAttribute('codecolaNoteIcon')) {
-                            var i = Y.one('#' + node.getAttribute('codecolaNoteIcon'));
-                            i.set('innerHTML', filter(value));
-                        } else {
-                            var s = 'note-'+(new Date()).getTime(),
-                                xy = node.getXY(),
-                                i = Y.Node.create('<span class="codecola-note" id="'+s+'" style="top:'+(xy[1] + node.get('clientHeight') - 2)+'px;left:'+xy[0]+'px;">'+filter(value)+'</span>');
-                            node.addClass(s).setAttribute('codecolaNoteIcon', s);
-                            i.on('mouseover', function(e) {
-                                node.addClass('codecola-selecting');
-                            });
-                            i.on('mouseout', function(e) {
-                                node.removeClass('codecola-selecting');
-                            });
-                            i.appendTo(document.getElementById('codecola-notes-wrap'));
-                        }
-                    });
-                } else {
-                    codecolaCurrentNode.each(function(node) {
-                        var noteId = node.getAttribute('codecolaNoteIcon');
-                        if (noteId) {
-                            var note = Y.one('#'+noteId);
-                            note.remove();
-                            node.removeAttribute('codecolaNoteIcon');
-                        }
-                    });
-                }
-            }, '#codecola-note');
-        },
-
         _bindSetStyle: function(){
             var node = Y.one('#codecola-styles'),
                 _this = this;
             node.on('keyup', function(e) {
                 var codecolaCurrentNode = _this.get('codecolaCurrentNode');
-                if (!window.codecolaTurnOn || !codecolaCurrentNode) {
+                if (!_this.isOn || !codecolaCurrentNode) {
                     return
                 }
                 codecolaCurrentNode.setAttribute('style', this.get('value'));
             });
             node.on('change', function(e) {
-                if (!window.codecolaTurnOn || !_this.get('codecolaCurrentNode')) {
+                if (!_this.isOn || !_this.get('codecolaCurrentNode')) {
                     return
                 }
                 _this.initControls();
@@ -685,7 +585,6 @@ YUI().add('codecola', function(Y) {
         _bindGetHtml: function(){
             var wrap = Y.one('#codecola-getHTML-wrap'),
                 content = Y.one('#codecola-getHTML-content'),
-                notes = Y.one('#codecola-notes-wrap'),
                 _this = this;
             Y.on('click', function() {
                 Y.io(window.location.href, {
@@ -696,14 +595,11 @@ YUI().add('codecola', function(Y) {
                             content.set('value', 'loadding...');
                         },
                         success: function(id, o) {
-                            var r = o.responseText.replace(/<\/head>/i, '<style>' + Y.codecola.STYLE_codecola + '</style></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                            var r = o.responseText.replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                                 var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, '').replace(/("|')$/, '');
                                 return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                             });
 
-                            if (notes.get('innerHTML') != '') {
-                                r = r.replace(/<\/html>/i, notes.get('innerHTML') + Y.codecola.SCRIPT_codecola + '</html>');
-                            }
                             content.set('value', r);
                             wrap.addClass('cc-open');
                         }
@@ -718,13 +614,12 @@ YUI().add('codecola', function(Y) {
         _bindGetLink: function(){
             var wrap = Y.one('#codecola-save-wrap'),
                 content = Y.one('#codecola-save-content'),
-                notes = Y.one('#codecola-notes-wrap'),
                 _this = this;
             Y.on('click', function() {
-                var action,css,optionUrl = _this.chromeGetURL('options.html');
+                var action,
+                    optionUrl = _this.chromeGetURL('options.html');
                 _this.chromeSendRequest('getUrls', function(o) {
                     action = o.action;
-                    css = o.css;
                     if (!action) {
                         window.open(optionUrl);
                         return;
@@ -737,17 +632,14 @@ YUI().add('codecola', function(Y) {
                                 content.set('value', 'loadding...');
                             },
                             success: function(id, o) {
-                                var r = o.responseText.replace(/<\/head>/i, '<link rel="stylesheet" href="' + css + '"></head>').replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
+                                var r = o.responseText.replace(/<body[\s\S]*<\/body>/i, document.body.outerHTML).replace(/(href|src|action)\s*\=\s*("|')[^"']+("|')/ig, function(url) {
                                     var rUrl = url.replace(/^(href|src|action)\s*\=\s*("|')/i, '').replace(/("|')$/, '');
                                     return url.replace(rUrl, _this.getAbsolutePath(rUrl));
                                 });
-                                if (notes.get('innerHTML') != '') {
-                                    r = r.replace(/<\/html>/i, notes.get('innerHTML') + Y.codecola.SCRIPT_codecola + '</html>');
-                                }
                                 try {
                                     Y.io(action, {
                                         method: 'POST',
-                                        data: 'charset=' + document.charset + '&html=' + encodeURIComponent(r) + '&css=' + encodeURIComponent(Y.codecola.STYLE_codecola.replace('STYLESHEETURL', css)),
+                                        data: 'charset=' + document.charset + '&html=' + encodeURIComponent(r),
                                         headers: {
                                             'Content-Type': 'application/x-www-form-urlencoded'
                                         },
@@ -838,10 +730,15 @@ YUI().add('codecola', function(Y) {
                         return;
                     }
                     callback({
-                        action: action,
-                        css: action.replace(/\/\w+\.\w+$/, "/codecola.css")
+                        action: action
                     });
                 }
+            }
+        },
+
+        chromeOnMessage: function(callback){
+            if(Y.codecola.isChromeExtension){
+                chrome.runtime.onMessage.addListener(callback);
             }
         },
 
@@ -1016,7 +913,7 @@ YUI().add('codecola', function(Y) {
 
         updateStyle: function() {
             var codecolaCurrentNode = this.get('codecolaCurrentNode');
-            if (!codecolaCurrentNode || !window.codecolaTurnOn) {
+            if (!codecolaCurrentNode || !this.isOn) {
                 return;
             } //fix -webkit-user-select
             var style = this.getAttr(codecolaCurrentNode, 'style');
@@ -1024,19 +921,6 @@ YUI().add('codecola', function(Y) {
                 Y.one('#codecola-styles').set('value', '');
             } else {
                 Y.one('#codecola-styles').set('value', this.getCombinedStyle(style));
-            }
-        },
-
-        updateNote: function() {
-            var codecolaCurrentNode = this.get('codecolaCurrentNode');
-            if (!window.codecolaTurnOn || !codecolaCurrentNode) {
-                return;
-            }
-            var iconId = this.getAttr(codecolaCurrentNode, 'codecolaNoteIcon');
-            if (iconId) {
-                Y.one('#codecola-note').set('value', Y.one('#'+iconId).get('innerHTML').replace(/<br>/g, '\r\n').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '\'').replace(/&apos;/g, '\''));
-            } else {
-                Y.one('#codecola-note').set('value', '');
             }
         },
 
@@ -1145,76 +1029,6 @@ YUI().add('codecola', function(Y) {
             }
         }
     }, {
-        SCRIPT_codecola:    '<script>' +
-                            '	var getElementsByClassName = function(className,tagName){' +
-                            '			if(typeof document.getElementsByClassName == "function"){' +
-                            '					return document.getElementsByClassName(className);' +
-                            '			}else{' +
-                            '					var allNodes = document.getElementsByTagName(tagName?tagName:"*"),' +
-                            '							nodes = [];' +
-                            '					for(var i=0,j=allNodes.length;i<j;i++){' +
-                            '							var c = allNodes[i];' +
-                            '							if(c.className.indexOf(className) != -1){' +
-                            '									nodes.push(c);' +
-                            '							}' +
-                            '					}' +
-                            '					return nodes;' +
-                            '			}' +
-                            '	};' +
-                            '	var codecolaNotes = getElementsByClassName("codecola-note", "span");' +
-                            '	for(var i=0,j=codecolaNotes.length;i<j;i++){' +
-                            '			codecolaNotes[i].onmouseover = function(){' +
-                            '					var targets = getElementsByClassName("note-"+this.id);' +
-                            '					for(var k=0,l=targets.length;k<l;k++){' +
-                            '						targets[k].className+=" codecola-selecting";' +
-                            '					}' +
-                            '			};' +
-                            '			codecolaNotes[i].onmouseout = function(){' +
-                            '					var targets = getElementsByClassName(this.id);' +
-                            '					for(var k=0,l=targets.length;k<l;k++){' +
-                            '						targets[k].className = targets[k].className.replace(" codecola-selecting","");' +
-                            '					}' +
-                            '			}' +
-                            '	}' +
-                            '</script>',
-
-        STYLE_codecola:     '/*\r\n'+
-                            'Content-Type: multipart/related; boundary="_ANY_STRING_WILL_DO_AS_A_SEPARATOR"\r\n'+
-                            '\r\n'+
-                            '--_ANY_STRING_WILL_DO_AS_A_SEPARATOR'+
-                            'Content-Location:comment.png'+
-                            'Content-Transfer-Encoding:base64\r\n'+
-                            '\r\n'+
-                            'iVBORw0KGgoAAAANSUhEUgAAABkAAAAWCAMAAAF1ZvcSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR1QTFRF//+c//+y//+5//+s//+1//+X//+p//+VLS0t//+h//+k//+T//+b//+QMzMz//+4//+R//+m//+x//+0//+U//+S//+u//+e//+Y//+aIyMjKysrGBgYFhYWHh4eGRkZDg4O//+oLy8v//+j//+W//+r//+g8LxX7Zso/7eVISEh/4Bl//+dHR0dHBwc00Au/9Bc/8hK6mIA1mYC8qUw/7xI9qYqERER/8BL/8pCoTUA/89X2WIA/3NR1WUC8apF//TOaG9v//+i/8s+cnFxAgIC77BJrFsz//+f/8RP24cnHx8f//+zFBQU/8NHExMTICAg//+va3Nz/5Bu+cha/9Zh3z8hzlwAGhoaycnJIiIi//+ZAAAA////////qFZ3sAAAAF90Uk5T/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wCTml8sAAABj0lEQVR42mKIjY2NY4hlNgASrHxxAAHEAOQyMDPHMgDZAAHEEMvExBTlGMsQy+kUExEHVBARAaTiAAIIpCY2LpaBn4mJnyOMQZWZ2d4mjkGNkzMWqEaFFagzjgGoMjIuDiCAGGKjoCBWWx9ojhAjCAiFeHKA7BQUjIkRjDU0jgWbycMAAjwycWCeqCg3N7e0dCSIBxBAYPvAIDI2kgFuYkxsDEMU0A1AV/DHcNjGMGiBjReKseSIiWTwBjqLmTnG1CQmMo5BF2hTTIy7WQzITRGcQADUDLZWBmwtDw+Y4wt0PND5fGCOOcgF3KKxYBdEgAGYHQcQYAhPwZ0SGQs0Hui2WDkF1xgEUAA60sVBMzgG6PUoYWEWGBAW9olR5+DgCALrCRATC4TpEItxs7B2NgKKgwJBTlGRDQpivPxCNezA4iAZPWVlLgiIiY21CoeKg2TkxcXFwUZ5gAgdeYibQTKyEtFAICkpCaIkJGQRMv4iIuxQoCQiogQzDCgjxQsEAiDAKyUFFwfJIAOEeFwcAAjkiPN/+5wYAAAAAElFTkSuQmCC\r\n'+
-                            '\r\n'+
-                            '*/'+
-                            '.codecola-note{'+
-                            '   position:absolute;'+
-                            '   background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAWCAMAAAF1ZvcSAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAR1QTFRF//+c//+y//+5//+s//+1//+X//+p//+VLS0t//+h//+k//+T//+b//+QMzMz//+4//+R//+m//+x//+0//+U//+S//+u//+e//+Y//+aIyMjKysrGBgYFhYWHh4eGRkZDg4O//+oLy8v//+j//+W//+r//+g8LxX7Zso/7eVISEh/4Bl//+dHR0dHBwc00Au/9Bc/8hK6mIA1mYC8qUw/7xI9qYqERER/8BL/8pCoTUA/89X2WIA/3NR1WUC8apF//TOaG9v//+i/8s+cnFxAgIC77BJrFsz//+f/8RP24cnHx8f//+zFBQU/8NHExMTICAg//+va3Nz/5Bu+cha/9Zh3z8hzlwAGhoaycnJIiIi//+ZAAAA////////qFZ3sAAAAF90Uk5T/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////wCTml8sAAABj0lEQVR42mKIjY2NY4hlNgASrHxxAAHEAOQyMDPHMgDZAAHEEMvExBTlGMsQy+kUExEHVBARAaTiAAIIpCY2LpaBn4mJnyOMQZWZ2d4mjkGNkzMWqEaFFagzjgGoMjIuDiCAGGKjoCBWWx9ojhAjCAiFeHKA7BQUjIkRjDU0jgWbycMAAjwycWCeqCg3N7e0dCSIBxBAYPvAIDI2kgFuYkxsDEMU0A1AV/DHcNjGMGiBjReKseSIiWTwBjqLmTnG1CQmMo5BF2hTTIy7WQzITRGcQADUDLZWBmwtDw+Y4wt0PND5fGCOOcgF3KKxYBdEgAGYHQcQYAhPwZ0SGQs0Hui2WDkF1xgEUAA60sVBMzgG6PUoYWEWGBAW9olR5+DgCALrCRATC4TpEItxs7B2NgKKgwJBTlGRDQpivPxCNezA4iAZPWVlLgiIiY21CoeKg2TkxcXFwUZ5gAgdeYibQTKyEtFAICkpCaIkJGQRMv4iIuxQoCQiogQzDCgjxQsEAiDAKyUFFwfJIAOEeFwcAAjkiPN/+5wYAAAAAElFTkSuQmCC) no-repeat 0 0;'+
-                            '	*background-image:url(mhtml:STYLESHEETURL!comment.png);'+
-                            '   width:0;'+
-                            '   height:24px;'+
-                            '   padding-left:24px;'+
-                            '   overflow:hidden;'+
-                            '   z-index:2147483645;'+
-                            '   color:#333;'+
-                            '   font:12px/24px arial;'+
-                            '   text-shadow:none;'+
-                            '}'+
-                            '.codecola-note:hover{'+
-                            '   width:auto;'+
-                            '   height:auto;'+
-                            '   max-width:300px;'+
-                            '   word-wrap:break-word;'+
-                            '   padding:0 5px 0 29px;'+
-                            '   background-color:#ffffe1;'+
-                            '   border-radius:2px;'+
-                            '   border:1px solid #ffcc55;'+
-                            '   z-index:2147483646;'+
-                            '}'+
-                            '.codecola-selecting{'+
-                            '   outline:2px solid blue;'+
-                            '}',
 
         isChromeExtension: typeof chrome != 'undefined' && chrome.extension,
 
