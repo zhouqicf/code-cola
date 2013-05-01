@@ -12,7 +12,7 @@ codecola.plug.fontSize.NS = "fontSize";
 codecola.plug.fontSize.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
         '<li id="codecola-item-fontSize">'+
-        '   <cctitle><label for="codecola-fontSize">{{style_fz}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontSize"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontSize"></cci></cctitle>' +
+        '   <div class="codecola-item-title"><label for="codecola-fontSize">{{style_fz}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontSize"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontSize"></span></div>' +
         '   <div class="codecola-editorWrap">'+
         '       <input type="range" min="0" max="100" id="codecola-fontSize" name="fontSize"/>'+
         '       <input type="number" id="codecola-fontSize-c" class="codecola-currentStyle" min="0" name="fontSize"/>(px)'+
@@ -50,7 +50,7 @@ codecola.plug.lineHeight.NS = "lineHeight";
 codecola.plug.lineHeight.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
         '<li id="codecola-item-lineHeight">'+
-        '   <cctitle><label for="codecola-lineHeight">{{style_lh}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="lineHeight"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="lineHeight"></cci></cctitle>' +
+        '   <div class="codecola-item-title"><label for="codecola-lineHeight">{{style_lh}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="lineHeight"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="lineHeight"></span></div>' +
         '   <div class="codecola-editorWrap">'+
         '       <input type="range" min="0" max="100" id="codecola-lineHeight" name="lineHeight"/>'+
         '       <input type="number" id="codecola-lineHeight-c" class="codecola-currentStyle" min="0" name="lineHeight"/>(px)'+
@@ -77,7 +77,7 @@ codecola.plug.fontFamily.prototype.render = function(CODECOLA){
     //TODO android and ios typeface
     CODECOLA.renderPlug(
         '<li id="codecola-item-fontFamily">'+
-        '   <cctitle><label for="codecola-fontFamily">{{style_ff}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontFamily"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontFamily"></cci></cctitle>' +
+        '   <div class="codecola-item-title"><label for="codecola-fontFamily">{{style_ff}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontFamily"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontFamily"></span></div>' +
         '   <div class="codecola-editorWrap">' +
         '       <select id="codecola-fontFamily" name="fontFamily">' +
         '           <optgroup label="Safe List">' +
@@ -182,7 +182,7 @@ codecola.plug.fontOther.NS = "fontOther";
 codecola.plug.fontOther.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
         '<li id="codecola-item-fontOther">'+
-        '   <cctitle><label>{{style_fs}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></cci></cctitle>' +
+        '   <div class="codecola-item-title"><label>{{style_fs}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="fontWeight,fontStyle,textDecoration" mutil="fontOther"></span></div>' +
         '   <div class="codecola-editorWrap">'+
         '       <label><input type="checkbox" value="bold" name="fontWeight" id="codecola-fontWeight" name="fontWeight"> {{style_fs_bold}}</label>'+
         '       <label><input type="checkbox" value="italic" name="fontStyle" id="codecola-fontStyle" name="fontStyle"> {{style_fs_italic}}</label>'+
@@ -210,7 +210,7 @@ codecola.plug.textAlign.NS = "textAlign";
 codecola.plug.textAlign.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
         '<li id="codecola-item-textAlign">'+
-        '   <cctitle><label>{{style_ta}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="textAlign"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="textAlign"></cci></cctitle>' +
+        '   <div class="codecola-item-title"><label>{{style_ta}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="textAlign"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="textAlign"></span></div>' +
         '   <div class="codecola-editorWrap">'+
         '       <label><input type="radio" value="left" name="textAlign"> {{style_ta_left}}</label>'+
         '       <label><input type="radio" value="center" name="textAlign"> {{style_ta_center}}</label>'+
@@ -239,7 +239,7 @@ codecola.plug.color.NS = "color";
 codecola.plug.color.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
         '<li id="codecola-item-color">'+
-        '<cctitle><label for="codecola-color">{{style_c}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="color"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="color"></cci></cctitle>' +
+        '<div class="codecola-item-title"><label for="codecola-color">{{style_c}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="color"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="color"></span></div>' +
         '<div class="codecola-editorWrap" id="codecola-color"></div>'+
         '</li>'
     )
@@ -261,7 +261,7 @@ codecola.plug.textShadow.NS = "textShadow";
 codecola.plug.textShadow.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-textShadow">'+
-    '<cctitle><label>{{style_ts}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="textShadow"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="textShadow"></cci><a target="_blank" class="codecola-compatibility codecola-icon codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-textshadow"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_ts}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="textShadow"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="textShadow"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-textshadow"></a></div>' +
     '<div class="codecola-editorWrap">' +
     '   <ccfieldset id="codecola-textShadowWrap">' +
     '	    <ol>' +
@@ -352,7 +352,7 @@ codecola.plug.background.NS = "background";
 codecola.plug.background.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-background">'+
-    '<cctitle><label for="codecola-background">{{style_bg}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="background"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="background"></cci><a target="_blank" class="codecola-compatibility codecola-icon codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=datauri"></a></cctitle>' +
+    '<div class="codecola-item-title"><label for="codecola-background">{{style_bg}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="background"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="background"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=datauri"></a></div>' +
     '<div class="codecola-editorWrap">' +
     '   <ccfieldset id="codecola-backgroundWrap">' +
     '	    <ol>' +
@@ -436,7 +436,7 @@ codecola.plug.linearGradient.NS = "linearGradient";
 codecola.plug.linearGradient.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-linearGradient">'+
-    '<cctitle><label>{{style_lg}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="backgroundImage"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="backgroundImage"></cci><a target="_blank" class="codecola-compatibility codecola-icon codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-gradients"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_lg}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="backgroundImage"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="backgroundImage"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-gradients"></a></div>' +
     '<div class="codecola-editorWrap" id="codecola-linearGradient"></div>'+
     '</li>'
     )
@@ -466,7 +466,7 @@ codecola.plug.webkitMaskImage.NS = "webkitMaskImage";
 codecola.plug.webkitMaskImage.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-webkitMaskImage">'+
-    '<cctitle><label>{{style_wmi}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="webkitMaskImage"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="webkitMaskImage"></cci></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_wmi}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="webkitMaskImage"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="webkitMaskImage"></span></div>' +
     '<div class="codecola-editorWrap" id="codecola-webkitMaskImage"></div>'+
     '</li>'
     )
@@ -493,7 +493,7 @@ codecola.plug.webkitBoxReflect.NS = "webkitBoxReflect";
 codecola.plug.webkitBoxReflect.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-webkitBoxReflect">'+
-    '<cctitle><label>{{style_wbr}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="webkitBoxReflect"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="webkitBoxReflect"></cci><a target="_blank" class="codecola-compatibility codecola-icon codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-reflections"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_wbr}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="webkitBoxReflect"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="webkitBoxReflect"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-reflections"></a></div>' +
     '<div class="codecola-editorWrap codecola-editor-multi">'+
     '   <ccfieldset>'+
     '       <cclegend>{{style_wbr_d}}</cclegend>'+
@@ -566,7 +566,7 @@ codecola.plug.opacity.NS = "opacity";
 codecola.plug.opacity.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-opacity">'+
-    '<cctitle><label for="codecola-opacity">{{style_op}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="opacity"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="opacity"></cci><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-opacity"></a></cctitle>' +
+    '<div class="codecola-item-title"><label for="codecola-opacity">{{style_op}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="opacity"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="opacity"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-opacity"></a></div>' +
     '<div class="codecola-editorWrap">'+
     '   <input type="range" min="0" max="1" id="codecola-opacity" step="0.01" name="opacity"/>'+
     '   <input type="number" id="codecola-opacity-c" class="codecola-currentStyle" min="0" max="1" step="0.01" name="opacity"/>'+
@@ -588,7 +588,7 @@ codecola.plug.boxShadow.NS = "boxShadow";
 codecola.plug.boxShadow.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-boxShadow">'+
-    '<cctitle><label>{{style_bs}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="boxShadow"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="boxShadow"></cci><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-boxshadow"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_bs}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="boxShadow"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="boxShadow"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=css-boxshadow"></a></div>' +
     '<div class="codecola-editorWrap">' +
     '   <ccfieldset id="codecola-boxShadowWrap">' +
     '	    <ol>' +
@@ -701,7 +701,7 @@ codecola.plug.border.NS = "border";
 codecola.plug.border.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-border">'+
-    '<cctitle><label>{{style_b}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="borderTop,borderRight,borderBottom,borderLeft" mutil="border"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="border"></cci></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_b}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="borderTop,borderRight,borderBottom,borderLeft" mutil="border"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="border"></span></div>' +
     '<div class="codecola-editorWrap codecola-editor-multi">' +
     '	<ccfieldset id="codecola-borderWidthWrap">' +
     '	    <cclegend>{{style_b_width}}</cclegend>' +
@@ -865,7 +865,7 @@ codecola.plug.borderRadius.NS = "borderRadius";
 codecola.plug.borderRadius.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-borderRadius">'+
-    '<cctitle><label>{{style_b_radius}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="borderRadius"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="borderRadius"></cci><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=border-radius"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_b_radius}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="borderRadius"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="borderRadius"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=border-radius"></a></div>' +
     '<div class="codecola-editorWrap">' +
     '	<ccfieldset id="codecola-borderRadiusWrap">' +
     '		<label><input type="checkbox" class="set-same" name="borderRadius" id="codecola-sameBorderRadius"/>{{opt_same}}</label>' +
@@ -913,7 +913,7 @@ codecola.plug.listStyle.NS = "listStyle";
 codecola.plug.listStyle.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-listStyle">'+
-    '<cctitle><label>{{style_ls}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="listStyle"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="listStyle"></cci></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_ls}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="listStyle"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="listStyle"></span></div>' +
     '<div class="codecola-editorWrap">' +
     '   <select id="codecola-listStyleType" name="listStyleType">' +
     '       <option selected="seleted" value="none">{{style_ls_none}}</option>' +
@@ -954,7 +954,7 @@ codecola.plug.layout.NS = "layout";
 codecola.plug.layout.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-layout">'+
-    '<cctitle><label>{{style_l}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="padding,margin" mutil="layout"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="padding,margin" mutil="layout"></cci></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_l}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="padding,margin" mutil="layout"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="padding,margin" mutil="layout"></span></div>' +
     '<div class="codecola-editorWrap codecola-editor-multi">' +
     '   <ccfieldset id="codecola-paddingWrap">' +
     '		<cclegend>{{style_l_padding}}</cclegend>' +
@@ -1033,7 +1033,7 @@ codecola.plug.size.NS = "size";
 codecola.plug.size.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-size">'+
-    '<cctitle><label>{{style_s}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" data="width,height" mutil="size"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="width,height" mutil="size"></cci></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_s}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" data="width,height" mutil="size"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" data="width,height" mutil="size"></span></div>' +
     '<div class="codecola-editorWrap">' +
     '	<ccfieldset id="codecola-size">' +
     '		<ol>' +
@@ -1082,7 +1082,7 @@ codecola.plug.transform.prototype.transformOrigin = function(){
 codecola.plug.transform.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-transform">'+
-    '<cctitle><label>{{style_transform}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" mutil="transform" data="transform,'+this.transformOrigin+'"></cci><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=transforms2d"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_transform}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" mutil="transform" data="transform,'+this.transformOrigin+'"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" mutil="transform" data="transform,'+this.transformOrigin+'"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=transforms2d"></a></div>' +
     '<div class="codecola-editorWrap codecola-editor-multi">' +
     '	<ccfieldset id="codecola-transform-origin">' +
     '		<ol>' +
@@ -1217,7 +1217,7 @@ codecola.plug.webkitTextStroke.NS = "webkitTextStroke";
 codecola.plug.webkitTextStroke.prototype.render = function(CODECOLA){
     CODECOLA.renderPlug(
     '<li id="codecola-item-webkitTextStroke">'+
-    '<cctitle><label>{{style_webkitTextStroke}}</label><cci class="codecola-eye codecola-icon" title="{{opt_hide}}" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><cci class="codecola-cancel codecola-icon" title="{{opt_undo}}" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></cci><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=text-stroke"></a></cctitle>' +
+    '<div class="codecola-item-title"><label>{{style_webkitTextStroke}}</label><span class="codecola-eye codecola-icon" title="{{opt_hide}}" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></span><span class="codecola-cancel codecola-icon" title="{{opt_undo}}" mutil="webkitTextStroke" data="webkitTextStrokeWidth,webkitTextStrokeColor,webkitTextFillColor"></span><a target="_blank" class="codecola-compatibility codecola-icon" title="{{opt_compatibility}}" href="http://caniuse.com/#feat=text-stroke"></a></div>' +
     '<div class="codecola-editorWrap">' +
     '<ccfieldset>'+
     '	<ol>' +
